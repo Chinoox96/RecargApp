@@ -892,64 +892,64 @@ function seedIfEmpty(){
 seedIfEmpty();
 renderAll();
 
-  (function(){
-    // 1) Registrar el Service Worker con prefijo del repo
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
-        .catch(err => console.error('SW fail', err));
+  (function () {
+  // Registrar el Service Worker (rutas con prefijo del repo)
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
+      .catch(err => console.error('SW fail', err));
 
-      // Recargar cuando se active un SW nuevo
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (refreshing) return;
-        refreshing = true;
-        window.location.reload();
-      });
-    }
-
-    // 2) Botón "Instalar" (beforeinstallprompt)
-    let deferredPrompt = null;
-    const btnInstall = document.getElementById('btnInstall');
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      if (btnInstall) btnInstall.style.display = 'inline-block';
+    // Recargar cuando se active un SW nuevo
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
     });
+  }
 
-    if (btnInstall) {
-      btnInstall.addEventListener('click', async () => {
-        if (!deferredPrompt) return;
-        await deferredPrompt.prompt();
-        await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        btnInstall.style.display = 'none';
-      });
-    }
+  // Botón de instalar
+  let deferredPrompt = null;
+  const btnInstall = document.getElementById('btnInstall');
 
-    // 3) Aviso de actualización
-    navigator.serviceWorker?.getRegistration().then((reg) => {
-      if (!reg) return;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Usamos UI propia → prevenimos el banner automático
+    e.preventDefault();
+    deferredPrompt = e;
+    if (btnInstall) btnInstall.style.display = 'inline-block';
+  });
 
-      function askToUpdate() {
-        const ok = confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?');
-        if (ok) reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+  if (btnInstall) {
+    btnInstall.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      await deferredPrompt.prompt();                  // <<— aquí mostramos el prompt oficial
+      await deferredPrompt.userChoice;               // opcional: { outcome: 'accepted' | 'dismissed' }
+      deferredPrompt = null;
+      btnInstall.style.display = 'none';
+    });
+  }
+
+  // Aviso de actualización disponible
+  navigator.serviceWorker?.getRegistration().then((reg) => {
+    if (!reg) return;
+    function askToUpdate() {
+      if (confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?')) {
+        reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
       }
-
-      if (reg.waiting) askToUpdate();
-
-      reg.addEventListener('updatefound', () => {
-        const newSW = reg.installing;
-        if (!newSW) return;
-        newSW.addEventListener('statechange', () => {
-          if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-            askToUpdate();
-          }
-        });
+    }
+    if (reg.waiting) askToUpdate();
+    reg.addEventListener('updatefound', () => {
+      const newSW = reg.installing;
+      if (!newSW) return;
+      newSW.addEventListener('statechange', () => {
+        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+          askToUpdate();
+        }
       });
     });
-  })();
-  </script>
+  });
+})();
+
+ </script>
 
   <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
     Versión V1.1
