@@ -2,7 +2,7 @@
 // Service Worker para RecargApp
 // Versión V1.1
 // ===============================
-const CACHE_NAME = 'recargapp-v1.1';
+const CACHE_NAME = 'recargapp-v1.2';
 const FILES_TO_CACHE = [
   '/RecargApp/',
   '/RecargApp/index.html',
