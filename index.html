@@ -1027,6 +1027,20 @@ navigator.serviceWorker?.getRegistration().then((reg) => {
   Versión V1.1
 </footer>
 
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
+    .catch(err => console.error('SW fail', err));
+
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+}
+</script>
+
 </body>
 </html>
 

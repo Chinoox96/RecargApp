@@ -1,51 +1,40 @@
-<script>
-// Registrar Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(console.error);
+// ===============================
+// Service Worker para RecargApp
+// Versión V1.1
+// ===============================
+const CACHE_NAME = 'recargapp-v1.1';
+const FILES_TO_CACHE = [
+  '/RecargApp/',
+  '/RecargApp/index.html',
+  '/RecargApp/manifest.webmanifest',
+  '/RecargApp/icons/icon-192x192.png',
+  '/RecargApp/icons/icon-512x512.png'
+];
 
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
-}
-
-// Botón para instalar (opcional si agregas un botón con id="btnInstall")
-let deferredPrompt = null;
-const btnInstall = document.getElementById('btnInstall');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (btnInstall) btnInstall.style.display = 'inline-block';
+// Instalar y precachear
+self.addEventListener('install', event => {
+  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE)));
 });
 
-if (btnInstall) {
-  btnInstall.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    await deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    btnInstall.style.display = 'none';
-  });
-}
-
-// Aviso de actualización
-navigator.serviceWorker?.getRegistration().then((reg) => {
-  if (!reg) return;
-  function askToUpdate() {
-    if (confirm('Hay una actualización de RecargApp V1.1. ¿Aplicar ahora?')) {
-      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
-    }
-  }
-  if (reg.waiting) askToUpdate();
-  reg.addEventListener('updatefound', () => {
-    const newSW = reg.installing;
-    if (!newSW) return;
-    newSW.addEventListener('statechange', () => {
-      if (newSW.state === 'installed' && navigator.serviceWorker.controller) askToUpdate();
-    });
-  });
+// Activar y limpiar cachés viejas
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
 });
-</script>
+
+// Responder desde caché primero
+self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
+  event.respondWith(
+    caches.match(event.request).then(r => r || fetch(event.request))
+  );
+});
+
+// Forzar actualización bajo demanda
+self.addEventListener('message', event => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+});
