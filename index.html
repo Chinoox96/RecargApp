@@ -5,19 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RecargApp</title>
 
-  <!-- Botón de instalación PWA -->
-  <button class="btn" id="btnInstall" style="display:none">Instalar</button>
-
-  <!-- PWA Manifest -->
-  <link rel="manifest" href="manifest.json">
+  <!-- PWA -->
+  <link rel="manifest" href="/RecargApp/manifest.json">
   <meta name="theme-color" content="#0b1223" />
+
+  <!-- Opcional iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" href="/RecargApp/icons/icon-192x192.png">
 
   <style>
     :root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8}
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
-
-    /* ===== Header centrado + tabs abajo ===== */
     header{padding:10px 12px;border-bottom:1px solid #1f2937;background:#0b1223;position:sticky;top:0;z-index:5}
     .header-top{display:flex;align-items:center;justify-content:center;gap:8px}
     h1{font-size:18px;margin:0;text-align:center}
@@ -25,19 +24,16 @@
     .tabs{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
     .tab{background:#0b1223;border:1px solid #1f2937;color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
     .tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
-
     main{padding:10px;max-width:1150px;margin:0 auto}
     .section{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:12px;margin-bottom:12px}
     h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
     .grid{display:grid;gap:10px}
     .grid-2{grid-template-columns:1fr 1fr}
     @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
-
     .tableWrap{width:100%;overflow-x:auto}
     table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:680px}
     th,td{padding:6px 8px;border-bottom:1px solid #1f2937;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
-    /* Anchos sugeridos por columna (ajusta si querés) */
     #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:42px}
     #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:200px}
     #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
@@ -45,12 +41,10 @@
     #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:120px}
     #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:180px}
     #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:120px}
-
     #tablaPasivos{min-width:0}
     #tablaPasivos th:nth-child(1),#tablaPasivos td:nth-child(1){width:42px}
     #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:220px}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
-
     #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:60px}
     #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:220px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
@@ -60,12 +54,10 @@
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
     #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:220px}
     #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:140px}
-
     input,select,textarea{background:#0b1223;border:1px solid #1f2937;color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
     textarea{resize:vertical;min-height:30px;max-height:120px}
     .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-
     button{border:0;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
     .btn{background:#0b1223;border:1px solid #1f2937;color:#d1d5db}
     .icon-btn{padding:6px 8px;min-width:0;line-height:1}
@@ -79,7 +71,6 @@
     .primary{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0}
     .warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
     .danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
-
     .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap}
     .pill.warn{background:#2a1b05;color:#fbbf24}
     .pill.err{background:#3b0a0a;color:#fca5a5}
@@ -87,15 +78,11 @@
     .muted{color:var(--muted)}
     .note{font-size:12px;color:#9ca3af}
     .lock{opacity:.6}
-
     .banner{background:#065f46;border:1px solid #14532d;color:#d1fae5;border-radius:12px;padding:8px 12px;margin:8px auto;max-width:1150px;display:none}
     .banner strong{letter-spacing:.02em}
-
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
     .modal{background:#0b1223;border:1px solid #1f2937;border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
     .modal .row.justify-end{justify-content:flex-end}
-
-    /* ===== Modo móvil compacto ===== */
     @media (max-width:600px){
       html,body{font-size:13px}
       main{padding:8px}
@@ -109,6 +96,9 @@
   </style>
 </head>
 <body>
+  <!-- Botón de instalación (debe estar en el body) -->
+  <button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
+
   <header>
     <div class="header-top">
       <h1>RecargApp</h1>
@@ -902,163 +892,68 @@ function seedIfEmpty(){
 seedIfEmpty();
 renderAll();
 
-/* ====== PWA: Service Worker + Banner "Actualizar" ====== */
-(function setupPWA(){
-  if(!('serviceWorker' in navigator)) return;
+  (function(){
+    // 1) Registrar el Service Worker con prefijo del repo
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
+        .catch(err => console.error('SW fail', err));
 
-  let newWorkerWaiting = null;
-  let refreshing = false;
-
-  function showUpdateBanner(reg){
-    var html = `
-      <div class="row" style="justify-content:space-between;gap:8px;align-items:center">
-        <span><strong>Actualización disponible</strong>. Recargá para aplicar la última versión.</span>
-        <span class="row" style="gap:6px">
-          <button class="primary" id="btnUpdateNow">Actualizar</button>
-          <button class="btn" id="btnLater">Más tarde</button>
-        </span>
-      </div>
-    `;
-    showBanner(html, {html:true, sticky:true});
-    var b1=document.getElementById('btnUpdateNow');
-    var b2=document.getElementById('btnLater');
-    if(b1) b1.onclick=function(){
-      if(newWorkerWaiting) newWorkerWaiting.postMessage({type:'SKIP_WAITING'});
-    };
-    if(b2) b2.onclick=function(){
-      var b=$qs(null,'#banner'); if(b) b.style.display='none';
-    };
-  }
-
-  navigator.serviceWorker.addEventListener('controllerchange', function(){
-    if(refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
-
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js').then(function(reg){
-      // Si hay update detectada:
-      reg.addEventListener('updatefound', function(){
-        const newWorker = reg.installing;
-        if(!newWorker) return;
-        newWorker.addEventListener('statechange', function(){
-          if(newWorker.state === 'installed' && navigator.serviceWorker.controller){
-            newWorkerWaiting = reg.waiting || newWorker;
-            showUpdateBanner(reg);
-          }
-        });
+      // Recargar cuando se active un SW nuevo
+      let refreshing = false;
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
       });
+    }
 
-      // Si ya está waiting (escenario de actualización previa)
-      if(reg.waiting){
-        newWorkerWaiting = reg.waiting;
-        showUpdateBanner(reg);
-      }
-
-      // Mensaje desde SW (opcional)
-      navigator.serviceWorker.addEventListener('message', function(ev){
-        if(ev && ev.data && ev.data.type==='NEW_VERSION'){
-          newWorkerWaiting = reg.waiting;
-          showUpdateBanner(reg);
-        }
-      });
-    }).catch(function(err){
-      console.error('SW fail', err);
-    });
-  });
-})();
-</script>
-...
-<script>
-    // Script para manejar la instalación
-    let deferredPrompt;
+    // 2) Botón "Instalar" (beforeinstallprompt)
+    let deferredPrompt = null;
     const btnInstall = document.getElementById('btnInstall');
 
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      btnInstall.style.display = 'block';
+      if (btnInstall) btnInstall.style.display = 'inline-block';
     });
 
-    btnInstall.addEventListener('click', () => {
-      btnInstall.style.display = 'none';
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
+    if (btnInstall) {
+      btnInstall.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        await deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
         deferredPrompt = null;
+        btnInstall.style.display = 'none';
+      });
+    }
+
+    // 3) Aviso de actualización
+    navigator.serviceWorker?.getRegistration().then((reg) => {
+      if (!reg) return;
+
+      function askToUpdate() {
+        const ok = confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?');
+        if (ok) reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+      }
+
+      if (reg.waiting) askToUpdate();
+
+      reg.addEventListener('updatefound', () => {
+        const newSW = reg.installing;
+        if (!newSW) return;
+        newSW.addEventListener('statechange', () => {
+          if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+            askToUpdate();
+          }
+        });
       });
     });
- </script>
+  })();
+  </script>
 
-<script>
-// Registrar Service Worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js').catch(console.error);
-
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
-}
-
-// Botón "Instalar" (beforeinstallprompt)
-let deferredPrompt = null;
-const btnInstall = document.getElementById('btnInstall');
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  if (btnInstall) btnInstall.style.display = 'inline-block';
-});
-
-if (btnInstall) {
-  btnInstall.addEventListener('click', async () => {
-    if (!deferredPrompt) return;
-    await deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    btnInstall.style.display = 'none';
-  });
-}
-
-// Aviso de actualización
-navigator.serviceWorker?.getRegistration().then((reg) => {
-  if (!reg) return;
-  function askToUpdate() {
-    if (confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?')) {
-      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
-    }
-  }
-  if (reg.waiting) askToUpdate();
-  reg.addEventListener('updatefound', () => {
-    const newSW = reg.installing;
-    if (!newSW) return;
-    newSW.addEventListener('statechange', () => {
-      if (newSW.state === 'installed' && navigator.serviceWorker.controller) askToUpdate();
-    });
-  });
-});
-</script>
-
-<footer style="text-align:center;color:#aaa;font-size:0.8em;">
-  Versión V1.1
-</footer>
-
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
-    .catch(err => console.error('SW fail', err));
-
-  let refreshing = false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
-}
-</script>
+  <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
+    Versión V1.1
+  </footer>
 
 
 </body>
