@@ -1,56 +1,51 @@
-const CACHE = 'recargapp-v1';
-const CORE_ASSETS = [
-  './',
-  './index.html',
-  './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png'
-];
+<script>
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(console.error);
 
-self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(CORE_ASSETS)));
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+}
+
+// Botón para instalar (opcional si agregas un botón con id="btnInstall")
+let deferredPrompt = null;
+const btnInstall = document.getElementById('btnInstall');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (btnInstall) btnInstall.style.display = 'inline-block';
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
+if (btnInstall) {
+  btnInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    await deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    btnInstall.style.display = 'none';
+  });
+}
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
+// Aviso de actualización
+navigator.serviceWorker?.getRegistration().then((reg) => {
+  if (!reg) return;
+  function askToUpdate() {
+    if (confirm('Hay una actualización de RecargApp V1.1. ¿Aplicar ahora?')) {
+      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+    }
   }
+  if (reg.waiting) askToUpdate();
+  reg.addEventListener('updatefound', () => {
+    const newSW = reg.installing;
+    if (!newSW) return;
+    newSW.addEventListener('statechange', () => {
+      if (newSW.state === 'installed' && navigator.serviceWorker.controller) askToUpdate();
+    });
+  });
 });
-
-self.addEventListener('fetch', (event) => {
-  const req = event.request;
-  if (req.method !== 'GET') return;
-
-  const accept = req.headers.get('accept') || '';
-  const isHTML = accept.includes('text/html');
-
-  if (isHTML) {
-    event.respondWith(
-      fetch(req)
-        .then((res) => {
-          caches.open(CACHE).then((c) => c.put(req, res.clone()));
-          return res;
-        })
-        .catch(() => caches.match(req).then((r) => r || caches.match('./index.html')))
-    );
-  } else {
-    event.respondWith(
-      caches.match(req).then((cached) => {
-        const fetchAndCache = fetch(req).then((res) => {
-          caches.open(CACHE).then((c) => c.put(req, res.clone()));
-          return res;
-        });
-        return cached || fetchAndCache;
-      })
-    );
-  }
-});
+</script>

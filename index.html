@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RecargApp</title>
+  <button class="btn" id="btnInstall" style="display:none">Instalar</button>
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest">
@@ -966,5 +967,66 @@ renderAll();
   });
 })();
 </script>
+...
+<!-- Aquí iría todo tu contenido de la app -->
+
+<!-- Script para el PWA e instalación -->
+<script>
+// Registrar Service Worker
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(console.error);
+
+  let refreshing = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
+  });
+}
+
+// Botón "Instalar" (beforeinstallprompt)
+let deferredPrompt = null;
+const btnInstall = document.getElementById('btnInstall');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (btnInstall) btnInstall.style.display = 'inline-block';
+});
+
+if (btnInstall) {
+  btnInstall.addEventListener('click', async () => {
+    if (!deferredPrompt) return;
+    await deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    btnInstall.style.display = 'none';
+  });
+}
+
+// Aviso de actualización
+navigator.serviceWorker?.getRegistration().then((reg) => {
+  if (!reg) return;
+  function askToUpdate() {
+    if (confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?')) {
+      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+    }
+  }
+  if (reg.waiting) askToUpdate();
+  reg.addEventListener('updatefound', () => {
+    const newSW = reg.installing;
+    if (!newSW) return;
+    newSW.addEventListener('statechange', () => {
+      if (newSW.state === 'installed' && navigator.serviceWorker.controller) askToUpdate();
+    });
+  });
+});
+</script>
+
+<footer style="text-align:center;color:#aaa;font-size:0.8em;">
+  Versión V1.1
+</footer>
+
 </body>
 </html>
+
