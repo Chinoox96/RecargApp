@@ -5,8 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RecargApp</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="/RecargApp/manifest.webmanifest">
+  <!-- Botón de instalación PWA -->
+  <button class="btn" id="btnInstall" style="display:none">Instalar</button>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0b1223" />
 
   <style>
@@ -34,6 +37,7 @@
     table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:680px}
     th,td{padding:6px 8px;border-bottom:1px solid #1f2937;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
+    /* Anchos sugeridos por columna (ajusta si querés) */
     #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:42px}
     #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:200px}
     #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
@@ -91,6 +95,7 @@
     .modal{background:#0b1223;border:1px solid #1f2937;border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
     .modal .row.justify-end{justify-content:flex-end}
 
+    /* ===== Modo móvil compacto ===== */
     @media (max-width:600px){
       html,body{font-size:13px}
       main{padding:8px}
@@ -104,10 +109,6 @@
   </style>
 </head>
 <body>
-
-  <!-- Botón de instalación PWA -->
-  <button class="btn" id="btnInstall" style="display:none">Instalar</button>
-  
   <header>
     <div class="header-top">
       <h1>RecargApp</h1>
