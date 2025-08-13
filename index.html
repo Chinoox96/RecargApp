@@ -970,6 +970,48 @@ updateVisibleVersion();
   Versión <span id="appVersion">—</span>
 </footer>
 
+<script>
+(async function updateVisibleVersion() {
+  const el = document.getElementById('appVersion');
+  if (!el) return;
+
+  // Probar ambas rutas posibles del manifest (json y webmanifest)
+  const candidates = [
+    '/RecargApp/manifest.json',
+    '/RecargApp/manifest.webmanifest'
+  ];
+
+  let manifest = null;
+  let lastErr = null;
+
+  for (const url of candidates) {
+    try {
+      const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status + ' on ' + url);
+      manifest = await res.json();
+      break; // listo, lo encontramos
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+
+  if (!manifest) {
+    console.error('No pude leer manifest:', lastErr);
+    el.textContent = 'V?';
+    return;
+  }
+
+  // 1) Preferir campo "version"
+  // 2) Si no, extraer algo tipo "V1.2" del name
+  const fromField = (manifest.version && String(manifest.version).trim()) || '';
+  const fromName = (manifest.name && (manifest.name.match(/V\d+(\.\d+)*/i)?.[0] || '').trim()) || '';
+  const v = fromField ? ('V' + fromField) : fromName;
+
+  el.textContent = v || 'V?';
+})();
+</script>
+
+
 
 </body>
 </html>
