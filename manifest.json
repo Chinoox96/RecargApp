@@ -1,13 +1,13 @@
 {
   "name": "RecargApp V1.2",
   "short_name": "RecargApp",
+  "version": "1.2",
   "id": "/RecargApp/index.html",
   "start_url": "/RecargApp/index.html",
   "scope": "/RecargApp/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#0b1223",
-  "orientation": "portrait",
   "icons": [
     { "src": "/RecargApp/icons/icon-192x192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/RecargApp/icons/icon-512x512.png", "sizes": "512x512", "type": "image/png" }

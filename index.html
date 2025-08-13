@@ -944,6 +944,21 @@ renderAll();
         if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
           askToUpdate();
         }
+		async function updateVisibleVersion() {
+  const el = document.getElementById('appVersion');
+  if (!el) return;
+  try {
+    const res = await fetch('/RecargApp/manifest.json?t=' + Date.now(), { cache: 'no-store' });
+    const m = await res.json();
+    // Prioriza el campo "version"; si no, intenta extraer "Vx.y" del name
+    const v = m.version ? 'V' + m.version :
+              (m.name && (m.name.match(/V\d+(\.\d+)*/)?.[0] || ''));
+    el.textContent = v || 'V?';
+  } catch (e) {
+    el.textContent = 'V?';
+  }
+}
+updateVisibleVersion();
       });
     });
   });
@@ -951,9 +966,9 @@ renderAll();
 
  </script>
 
-  <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
-    Versión V1.1
-  </footer>
+<footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
+  Versión <span id="appVersion">—</span>
+</footer>
 
 
 </body>
