@@ -1,0 +1,12 @@
+[
+  {
+    "version": "1.5.1",
+    "date": "2025-08-13",
+    "notes": "Móvil: vuelve la columna Estado (4ª). Las pills “ART 13/26” alternan con “PRESENTE ART 13/26”. Pill “04” disponible solo con LIC o día posterior. LIC muestra fechas.\nHistorial: despliegue corregido.\nAgregar extra: modal con campos opcionales.\nFecha: ya no avanza sola.\nLista General: cruz de eliminar solo en Editar, con confirmación."
+  },
+  {
+    "version": "1.5.0",
+    "date": "2025-08-10",
+    "notes": "Refactor de interfaz y correcciones varias."
+  }
+]

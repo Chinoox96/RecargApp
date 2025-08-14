@@ -14,138 +14,156 @@
   <link rel="apple-touch-icon" href="/RecargApp/icons/icon-192x192.png">
 
   <style>
-    :root{
-      --bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8;
-      --blue:#2563eb;--blue2:#1f6feb;--blue3:#1463d6;--border:#1f2937
-    }
+    :root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8}
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
-
-    /* ===== Header ===== */
-    header{padding:10px 12px;border-bottom:1px solid var(--border);background:#0b1223;position:sticky;top:0;z-index:5}
-    .appbar{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;max-width:1150px;margin:0 auto}
-    .brand{display:flex;align-items:center;gap:10px;justify-content:flex-start}
-    .brand img{width:32px;height:32px;border-radius:8px;display:block}
-    .brand-title{justify-self:center;text-align:center;font-weight:800;font-size:22px;letter-spacing:.5px}
-    @media (min-width:700px){.brand-title{font-size:26px}}
-    .actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
-    .btn{background:#0b1223;border:1px solid var(--border);color:#d1d5db;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer}
-    .btn.primary,.primary{background:linear-gradient(180deg,var(--blue2),var(--blue3));color:#fff;border:0}
-    .btn.warn,.warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff;border:0}
-    .btn.danger,.danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border:0}
-    .icon-btn{padding:6px 8px;min-width:0;line-height:1}
-    .muted{color:var(--muted)}
-    .lock{opacity:.6}
-
-    /* Tabs principales */
-    .tabs-wrap{border-top:1px solid var(--border);margin-top:10px}
-    .tabs{display:flex;gap:6px;justify-content:center;padding:8px 6px;flex-wrap:wrap;max-width:1150px;margin:0 auto}
-    .tab{background:#0b1223;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
-    .tab.active{color:#fff;border-color:var(--blue);background:linear-gradient(180deg,var(--blue2),var(--blue3))}
-
+    header{padding:10px 12px;border-bottom:1px solid #1f2937;background:#0b1223;position:sticky;top:0;z-index:5}
+    .header-top{display:flex;align-items:center;justify-content:center;gap:8px;position:relative}
+    h1{font-size:22px;margin:0;text-align:center} /* un poco más grande */
+    .brand-left{
+      position:absolute;left:8px;top:50%;transform:translateY(-50%);
+      display:flex;align-items:center;gap:8px
+    }
+    .brand-left img{width:28px;height:28px;border-radius:6px}
+    .header-actions{
+      position:absolute;right:8px;top:50%;transform:translateY(-50%);
+      display:flex;gap:6px;align-items:center
+    }
+    .tabs{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
+    .tab{background:#0b1223;border:1px solid #1f2937;color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
+    .tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
     main{padding:10px;max-width:1150px;margin:0 auto}
-    .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin:12px 0}
+    .section{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:12px;margin-bottom:12px}
     h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
-
+    .grid{display:grid;gap:10px}
+    .grid-2{grid-template-columns:1fr 1fr}
+    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
     .tableWrap{width:100%;overflow-x:auto}
-    table{width:100%;border-collapse:collapse;table-layout:fixed}
-    th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:680px}
+    th,td{padding:6px 8px;border-bottom:1px solid #1f2937;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
-
-    /* Listado del día */
-    #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:40px}
-    #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:220px}
+    #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:42px}
+    #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:200px}
     #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
-    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:auto}   /* ESTADO */
-    #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:130px}
-    #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:220px}
-    #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:70px}   /* ⚙️ */
+    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:260px} /* Estado más ancho por pills */
+    #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:120px}
+    #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:180px}
+    #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:120px}
 
-    /* Pasivos */
+    #tablaPasivos{min-width:0}
     #tablaPasivos th:nth-child(1),#tablaPasivos td:nth-child(1){width:42px}
-    #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:auto}
+    #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:220px}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
 
-    /* Lista general (última col para eliminar en modo editar) */
-    #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:56px}
-    #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:260px}
+    #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:60px}
+    #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:220px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
     #tablaGeneral th:nth-child(4),#tablaGeneral td:nth-child(4){width:120px}
     #tablaGeneral th:nth-child(5),#tablaGeneral td:nth-child(5){width:140px}
     #tablaGeneral th:nth-child(6),#tablaGeneral td:nth-child(6){width:80px}
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
-    #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:auto}
-    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:60px;text-align:center}
+    #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:220px}
+    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:80px} /* Acciones (solo en Editar) */
 
-    input,select,textarea{background:#0b1223;border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
+    input,select,textarea{background:#0b1223;border:1px solid #1f2937;color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
     textarea{resize:vertical;min-height:30px;max-height:120px}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 
-    /* Pills */
-    .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap;cursor:default}
-    .pill.toggle{cursor:pointer}
+    button{border:0;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
+    .btn{background:#0b1223;border:1px solid #1f2937;color:#d1d5db}
+    .icon-btn{padding:6px 8px;min-width:0;line-height:1}
+    .btn-acciones{background:#0891b2;border-color:#0e7490;color:#fff}
+    .btn-art13{background:#b91c1c;border-color:#7f1d1d;color:#fff}
+    .btn-art26{background:#d97706;border-color:#a16207;color:#fff}
+    .btn-pres04{background:#15803d;border-color:#166534;color:#fff}
+    .btn-autorizado{background:#1d4ed8;border-color:#1e40af;color:#fff}
+    .btn-saltear{background:#6d28d9;border-color:#5b21b6;color:#fff}
+    .btn-secondary{background:#374151;border-color:#4b5563;color:#e5e7eb}
+    .primary{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0}
+    .warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
+    .danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
+
+    .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap}
     .pill.warn{background:#2a1b05;color:#fbbf24}
     .pill.err{background:#3b0a0a;color:#fca5a5}
     .pill.ok{background:#052e1a;color:#86efac}
-
-    .banner{background:#065f46;border:1px solid #14532d;color:#d1fae5;border-radius:12px;padding:8px 12px;margin:8px auto;display:none}
+    .pill.act{background:#0b2e13;border-color:#14532d;color:#86efac} /* presente activo */
+    .pill.toggle{cursor:pointer;border-style:dashed}
+    .muted{color:var(--muted)}
     .note{font-size:12px;color:#9ca3af}
+    .lock{opacity:.6}
+
+    .banner{background:#065f46;border:1px solid #14532d;color:#d1fae5;border-radius:12px;padding:8px 12px;margin:8px auto;max-width:1150px;display:none}
+    .banner strong{letter-spacing:.02em}
 
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
-    .modal{background:#0b1223;border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
-    .modal .row{margin:6px 0}
+    .modal{background:#0b1223;border:1px solid #1f2937;border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
+    .modal .row.justify-end{justify-content:flex-end}
 
-    /* Botonera recargos */
-    .actions-line{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
-    .left-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-    .right-actions{margin-left:auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    /* FAB + Panel About */
+    .fab {
+      position: fixed; right: 14px; bottom: 14px; z-index: 40;
+      background: #0b1223; color: #e5e7eb; border:1px solid #1f2937;
+      border-radius: 999px; padding: 10px 14px; font-weight: 700; cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
+    }
+    #aboutPanelBackdrop{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:39;}
+    #aboutPanel{
+      position:fixed; right:0; top:0; height:100vh; width:min(560px,96vw);
+      background:#0b1223; border-left:1px solid #1f2937; z-index:41;
+      transform: translateX(100%); transition: transform .22s ease;
+      display:flex; flex-direction:column;
+    }
+    #aboutPanel.open{ transform: translateX(0); }
+    #aboutPanel header{
+      display:flex; align-items:center; justify-content:space-between;
+      padding:12px; border-bottom:1px solid #1f2937; background:#0f172a;
+    }
+    #aboutPanel .content{ padding:12px; overflow:auto }
+    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #334155;color:#93c5fd;margin-left:6px}
+    .noteItem{border:1px solid #1f2937;background:#111827;border-radius:10px;padding:10px;margin:8px 0}
+    .noteItem h4{margin:0 0 4px;font-size:14px;color:#e5e7eb}
+    .noteItem p{margin:0;color:#cbd5e1;font-size:13px;white-space:pre-wrap}
+    .inlineBtns{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 
-    /* Historial con subtabs */
-    .subtabs{display:flex;gap:6px;margin:6px 0 10px;flex-wrap:wrap}
-    .subtab{padding:6px 10px;border:1px solid var(--border);border-radius:10px;background:#0b1223;color:var(--muted);cursor:pointer}
-    .subtab.active{color:#fff;background:linear-gradient(180deg,var(--blue2),var(--blue3));border:0}
-    .history-toolbar{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin:6px 0}
-    .history-row{border:1px solid var(--border);border-radius:10px;padding:8px;margin:8px 0;background:#0b1223}
-    .history-row-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
-    .history-row-body{display:none;margin-top:8px}
-    .history-row.open .history-row-body{display:block}
-    .history-meta{color:var(--muted);font-size:12px}
-
+    /* Móvil */
     @media (max-width:600px){
       html,body{font-size:13px}
       main{padding:8px}
       .section{padding:10px}
-      .row{gap:6px}
+      .row{gap:4px}
       button{padding:7px 9px}
       table{min-width:0}
-      .brand img{width:28px;height:28px}
+      #backdrop{align-items:flex-end}
+      .modal{width:100vw;max-width:none;border-radius:12px 12px 0 0}
     }
   </style>
 </head>
 <body>
+  <!-- Botón instalar PWA -->
+  <button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
 
-  <!-- ===== Header ===== -->
   <header>
-    <div class="appbar">
-      <div class="brand">
-        <img src="/RecargApp/icons/icon-192x192.png" alt="Logo">
+    <div class="header-top">
+      <!-- Izquierda: logo -->
+      <div class="brand-left">
+        <img src="/RecargApp/icons/icon-192x192.png" alt="RecargApp">
       </div>
-      <div class="brand-title">RecargApp</div>
-      <div class="actions">
-        <span id="lockState" class="muted lock" style="align-self:center">Modo lectura</span>
-        <button class="btn" id="btnToggleAdmin" title="Ingresar PIN">Iniciar sesión</button>
-        <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN del Admin">🔑</button>
-        <button class="btn" id="btnInstall" style="display:none" title="Instalar app">Instalar</button>
+      <!-- Centro: título -->
+      <h1>RecargAPP</h1>
+      <!-- Derecha: login -->
+      <div class="header-actions">
+        <span id="lockState" class="muted lock">Modo lectura</span>
+        <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN Admin">🔑</button>
+        <button class="btn" id="btnToggleAdmin" title="Iniciar sesión (Admin)">Iniciar sesión</button>
       </div>
     </div>
-
-    <div class="tabs-wrap">
-      <div class="tabs">
-        <div class="tab active" data-tab="hoy">Recargos</div>
-        <div class="tab" data-tab="general">Lista</div>
-        <div class="tab" data-tab="historial">Historial</div>
-      </div>
+    <!-- Tabs debajo del banner -->
+    <div class="tabs">
+      <div class="tab active" data-tab="hoy">Recargos</div>
+      <div class="tab" data-tab="general">Lista</div>
+      <div class="tab" data-tab="historial">Historial</div>
     </div>
   </header>
 
@@ -155,66 +173,57 @@
     <!-- TAB: HOY -->
     <section class="section" data-panel="hoy">
       <h2 id="tituloDia">RECARGOS DEL DÍA</h2>
-
       <div class="row">
         <label>Fecha</label>
         <input id="fecha" type="date" style="max-width:160px">
         <label>Faltantes</label>
         <input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
-        <button class="btn" id="btnActualizar" title="Refrescar lista">🔄 Actualizar</button>
-        <button class="btn" id="btnCopiarListado" title="Copiar sólo el orden (sin pasivos)">Copiar orden</button>
-        <button class="btn" id="btnAgregarExtra" title="Agregar extra">➕ Agregar extra</button>
-        <button class="danger" id="btnReiniciar" style="margin-left:auto">⚠️ Reiniciar rotación</button>
+        <button class="danger" id="btnReiniciar" style="margin-left:auto">⚠️ Reiniciar lista</button>
+        <button class="btn" id="btnActualizar">🔄 Actualizar</button>
+        <button class="btn" id="btnCopiarListado">Copiar orden</button>
       </div>
 
-      <div>
-        <h2>Listado del día</h2>
-        <div class="tableWrap">
-          <table id="tablaDia">
-            <thead>
-              <tr>
-                <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+      <div class="grid grid-2" style="margin-top:8px">
+        <div>
+          <h2>Listado del día</h2>
+          <div class="tableWrap">
+            <table id="tablaDia">
+              <thead>
+                <tr>
+                  <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
         </div>
-        <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
-      </div>
-
-      <!-- Pasivos DEBAJO -->
-      <div style="margin-top:14px">
-        <h2>Pasivos</h2>
-        <div class="row">
-          <label>Franco de pasivos</label>
-          <select id="francoPasivos" style="max-width:160px">
-            <option value="1" selected>1° Franco</option>
-            <option value="2">2° Franco</option>
-          </select>
-        </div>
-        <div class="tableWrap" style="margin-top:6px">
-          <table id="tablaPasivos">
-            <thead><tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr></thead>
-            <tbody></tbody>
-          </table>
+        <div>
+          <h2>Pasivos</h2>
+          <div class="tableWrap">
+            <table id="tablaPasivos">
+              <thead><tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="row" style="margin-top:6px;justify-content:flex-end">
+            <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
+          </div>
         </div>
       </div>
 
-      <div class="actions-line">
-        <div class="left-actions">
+      <div class="row" style="margin-top:10px;gap:10px;justify-content:space-between">
+        <div class="row" style="gap:10px">
           <button class="primary" id="btnConfirmar">Confirmar guardia</button>
-          <button class="btn" id="btnUndo">Deshacer</button>
+          <button class="warn" id="btnDeshacer">Deshacer última</button>
         </div>
-        <div class="right-actions">
-          <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
-          <button class="btn" id="btnCopiarResultado">Copiar recargos+pasivos</button>
-        </div>
+        <button class="btn" id="btnCopiarResultado">Copiar recargos+pasivos</button>
       </div>
     </section>
 
     <!-- TAB: GENERAL -->
     <section class="section" data-panel="general" style="display:none">
-      <h2>Listado general (Editar requiere <b>Admin</b>)</h2>
+      <h2>Listado general (solo Superadmin puede editar)</h2>
       <div class="row">
         <input id="nombre" placeholder="Nombre y Apellido" style="max-width:240px">
         <input id="dni" placeholder="DNI" style="max-width:140px">
@@ -226,12 +235,12 @@
         <button class="primary" id="btnAgregar">Agregar</button>
         <button class="btn" id="btnOrdenarCriterios">Ordenar (Jerarquía → Antigüedad)</button>
         <button class="btn" id="btnDeshacerOrden" title="Volver al orden anterior">Deshacer orden</button>
-        <button class="warn" id="btnEditarGeneral" title="Editar en línea y arrastrar">Editar</button>
+        <button class="warn" id="btnEditarGeneral" title="Editar en línea y arrastrar (solo Admin)">Editar</button>
       </div>
       <div class="tableWrap">
         <table id="tablaGeneral" style="margin-top:6px">
           <thead><tr>
-            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th><th></th>
+            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th><th>Acciones</th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -240,43 +249,34 @@
         <button class="btn" id="btnExportar">Exportar JSON</button>
         <button class="btn" id="btnImportar">Importar JSON</button>
       </div>
-      <div class="note">ART/LIC/AUT/SALTEAR se gestionan desde la pestaña <b>Recargos</b>.</div>
+      <div class="note">ART/LIC/AUT/SALTEAR se gestionan desde la **pestaña Recargos** (día).</div>
     </section>
 
     <!-- TAB: HISTORIAL -->
     <section class="section" data-panel="historial" style="display:none">
-      <h2>Historial</h2>
-
-      <!-- Subtabs -->
-      <div class="subtabs">
-        <div class="subtab active" data-sub="rec">Recargos</div>
-        <div class="subtab" data-sub="chg">Cambios</div>
+      <h2>Historial de guardias</h2>
+      <div class="row" style="margin:6px 0 8px;justify-content:space-between">
+        <button class="primary" id="btnGuardarLlamados">Guardar llamados del último</button>
+        <button class="danger" id="btnBorrarHistorial" style="display:none">Borrar todo el historial</button>
       </div>
-
-      <!-- Toolbars -->
-      <div id="toolbarRec" class="history-toolbar">
-        <button class="btn" id="btnGuardarLlamados">Guardar llamados (último)</button>
-        <button class="danger" id="btnBorrarHistRec">Borrar historial de recargos</button>
+      <div class="tableWrap">
+        <table id="tablaHistorial">
+          <thead><tr><th>Fecha</th><th>Recargos (lista)</th><th>Pasivos (lista)</th><th>Acciones</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
-      <div id="toolbarChg" class="history-toolbar" style="display:none">
-        <button class="danger" id="btnBorrarHistChg">Borrar historial de cambios</button>
-      </div>
-
-      <!-- Contenedores -->
-      <div id="histRec"></div>
-      <div id="histChg" style="display:none"></div>
     </section>
   </main>
 
-  <!-- Modal de acciones por persona -->
-  <div id="backdrop" style="display:none">
+  <!-- Modal de acciones -->
+  <div id="backdrop">
     <div class="modal">
       <h3 style="margin:0 0 8px;font-size:15px">Acciones para <span id="modalNombre"></span></h3>
       <div class="row">
-        <button class="btn danger icon-btn" onclick="modalSetArt('13')">13</button>
-        <button class="btn warn icon-btn" onclick="modalSetArt('26')">26</button>
-        <button class="btn icon-btn" onclick="modalSetArt('clear')" title="Quitar ART">✕</button>
-        <button class="btn primary" onclick="modalTogglePresente04()">Presente 04</button>
+        <button class="btn btn-art13 icon-btn" onclick="modalSetArt('13')">13</button>
+        <button class="btn btn-art26 icon-btn" onclick="modalSetArt('26')">26</button>
+        <button class="btn btn-secondary icon-btn" onclick="modalSetArt('clear')" title="Quitar ART">✕</button>
+        <button class="btn btn-pres04" onclick="modalTogglePresente04()">Presente 04</button>
       </div>
       <hr style="border-color:#1f2937; margin:10px 0">
       <div class="row">
@@ -289,182 +289,176 @@
       </div>
       <hr style="border-color:#1f2937; margin:10px 0">
       <div class="row">
-        <button class="btn" onclick="modalToggleAutorizado()">AUTORIZADO</button>
-        <button class="btn" onclick="modalToggleSalteado()">SALTEAR</button>
+        <button class="btn btn-autorizado" onclick="modalToggleAutorizado()">AUTORIZADO</button>
+        <button class="btn btn-saltear" onclick="modalToggleSalteado()">SALTEAR</button>
       </div>
-      <div class="row" style="margin-top:6px;justify-content:flex-end">
+      <div class="row justify-end" style="margin-top:6px">
         <button class="primary" onclick="closeModal()">Listo</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal Agregar Extra -->
-  <div id="backdropExtra" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:21">
-    <div class="modal">
-      <h3 style="margin:0 0 8px;font-size:15px">Agregar extra</h3>
-      <div class="row"><input id="extraNombre" placeholder="Nombre (opcional)"></div>
-      <div class="row"><input id="extraJerarquia" placeholder="Jerarquía (opcional)"></div>
-      <div class="row"><input id="extraObs" placeholder="Observación (opcional)"></div>
-      <div class="row">
-        <select id="extraPab">
-          <option value="">Pabellón (opcional)</option>
-          <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option>
-          <option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option>
-          <option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Portón</option>
-        </select>
+  <!-- FAB + Panel About/Notas/Updates -->
+  <button class="fab" id="btnOpenAbout" title="Más">⋯</button>
+  <div id="aboutPanelBackdrop"></div>
+  <aside id="aboutPanel" aria-hidden="true">
+    <header>
+      <div>
+        <strong>RecargApp</strong>
+        <span class="badge">v <span id="aboutVersion">—</span></span>
       </div>
-      <div class="row" style="justify-content:flex-end;margin-top:8px">
-        <button class="btn" id="extraCancel">Cancelar</button>
-        <button class="primary" id="extraOk">Agregar</button>
-      </div>
+      <button class="btn" id="btnCloseAbout">Cerrar</button>
+    </header>
+    <div class="content">
+      <section class="section">
+        <h2>Acerca de</h2>
+        <p style="margin:6px 0 0;color:#cbd5e1">
+          Herramienta para organizar recargos, pasivos y seguimiento de historial.
+        </p>
+        <div class="inlineBtns" style="margin-top:8px">
+          <button class="primary" id="btnCheckUpdates">Buscar actualizaciones</button>
+          <button class="warn" id="btnApplyUpdate" style="display:none">Instalar actualización</button>
+          <span id="updateStatus" class="muted"></span>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>Notas de actualización</h2>
+        <div id="releaseNotes"><div class="muted">Cargando notas…</div></div>
+      </section>
     </div>
-  </div>
+  </aside>
 
 <script>
-/* ===== utils ===== */
+/* ===== util compat ===== */
 function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
 function $qs(root, sel){ return (root||document).querySelector(sel); }
-window.addEventListener('error', e=>{ try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
 
-/* ===== Modelo ===== */
+/* Mostrar errores en Android antiguos */
+window.addEventListener('error', function(e){ try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
+
+/* ===== Modelo =====
+Persona: {id, nombre, dni, legajo, jerarquia, antiguedad, obs:{art:null|"13"|"26", licencia:{desde:null,hasta:null}, autorizado:boolean}, order, rorder, debeLista:number, salteado:boolean}
+Historial: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore}
+*/
 const KEY='recargapp.v1';
 let ADMIN_PIN = localStorage.getItem('recargapp.admin.pin') || '1111';
 const SUPERADMIN_PIN='9999';
-
 function setAdminPin(newPin){ ADMIN_PIN=String(newPin); localStorage.setItem('recargapp.admin.pin', ADMIN_PIN); }
+
 function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
 function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function today(){ return new Date().toISOString().slice(0,10); }
 function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
-function addDays(iso,n){ var d=new Date(iso); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
 function inLicencia(p, fecha){ var L=p.obs.licencia; if(!L||!L.desde||!L.hasta) return false; return (fecha>=L.desde && fecha<=L.hasta); }
 function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var d=new Date(dateStr), b=new Date(baseStr); var next = new Date(d.getTime()+86400000); return next.toISOString().slice(0,10)===b.toISOString().slice(0,10); }
 
-let db = load() || { personas: [], historial: [], generalHead: 0, cambios: [] };
-if(!db.cambios) db.cambios=[];
-if(db.personas){
-  var base=Date.now();
-  db.personas.forEach(function(p,i){
-    if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); }
-    if(typeof p.debeLista!=='number'){ p.debeLista=0; }
-    if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; }
-  });
-}
+let db = load() || { personas: [], historial: [], generalHead: 0 };
+if(db.personas){ var base=Date.now(); db.personas.forEach(function(p,i){ if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); } if(typeof p.debeLista!=='number'){ p.debeLista=0; } if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; } }); }
 
 let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
 let modalId=null;
 let role='viewer';
 
-/* ===== Undo ===== */
-const undoStack=[];
-function snapshot(label){
-  undoStack.push({
-    label:label||'',
-    personas: JSON.parse(JSON.stringify(db.personas)),
-    generalHead: db.generalHead,
-    prioridadHoy: JSON.parse(JSON.stringify(prioridadHoy)),
-    extras: JSON.parse(JSON.stringify(dayExtras)),
-    franco: getFranco()
-  });
-  if(undoStack.length>80) undoStack.shift();
-}
-function restoreLast(){
-  var last=undoStack.pop(); if(!last) return false;
-  db.personas = last.personas; db.generalHead = last.generalHead;
-  prioridadHoy = last.prioridadHoy; dayExtras = last.extras||[];
-  setFranco(last.franco||1);
-  save(); renderAll(); return true;
-}
-
-/* ===== Logging cambios ===== */
-function logCambio(tipo, detalle){
-  db.cambios.push({ts:Date.now(), fechaISO:today(), tipo:tipo, detalle:detalle});
-  if(db.cambios.length>2000) db.cambios.shift();
-  save();
-}
-
-/* ===== Login ===== */
+/* ===== Accesos ===== */
 var lockState=$qs(null,'#lockState');
 var btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 var btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
+
 function isAdmin(){ return role==='admin' || role==='superadmin'; }
 function isSuper(){ return role==='superadmin'; }
 
-btnToggleAdmin.onclick=function(){
-  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.title='Ingresar PIN'; btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
-  var code=prompt('Ingresá PIN (Admin o Superadmin)');
-  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='Modo ADMIN'; btnToggleAdmin.title='Cerrar sesión'; btnCambiarPinAdmin.style.display='none'; renderAll(); }
-  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.title='Cerrar sesión'; btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
-  else if(code!==null){ alert('PIN incorrecto'); }
-};
+/* ===== Banner helper ===== */
+function showBanner(msg, opts){
+  opts = opts || {};
+  var b=$qs(null,'#banner'); if(!b) return;
+  if(opts.html){ b.innerHTML = msg; } else { b.textContent = msg; }
+  b.style.display='block';
+  if(showBanner._t){ clearTimeout(showBanner._t); showBanner._t=null; }
+  if(!opts.sticky){ showBanner._t=setTimeout(function(){ b.style.display='none'; }, opts.timeout || 3200); }
+}
+
 if(btnCambiarPinAdmin){
   btnCambiarPinAdmin.onclick=function(){
     if(!isSuper()) return alert('Solo superadmin');
     var np=prompt('Nueva contraseña de ADMIN (4-8 dígitos):'); if(np==null) return;
     np=np.trim(); if(!/^\d{4,8}$/.test(np)) return alert('Debe ser de 4 a 8 dígitos.');
-    setAdminPin(np); alert('Contraseña de ADMIN actualizada');
+    setAdminPin(np); showBanner('Contraseña de ADMIN actualizada ✅');
   };
 }
 
+btnToggleAdmin.onclick=function(){
+  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.textContent='Iniciar sesión'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
+  var code=prompt('Ingresá PIN (Admin)');
+  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='Modo ADMIN'; btnToggleAdmin.textContent='Salir'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); }
+  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.textContent='Salir'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
+  else if(code!==null){ alert('PIN incorrecto'); }
+};
+
 /* ===== Tabs ===== */
-var tabs = $all('.tab'); var panels = $all('[data-panel]');
+var tabs = $all('.tab');
+var panels = $all('[data-panel]');
 tabs.forEach(function(t){
   t.addEventListener('click', function(){
-    tabs.forEach(x=>x.classList.remove('active')); t.classList.add('active');
+    tabs.forEach(function(x){ x.classList.remove('active'); }); t.classList.add('active');
     var name=t.getAttribute('data-tab');
-    panels.forEach(p=>p.style.display = (p.getAttribute('data-panel')===name)?'block':'none');
+    panels.forEach(function(p){ p.style.display = (p.getAttribute('data-panel')===name)?'block':'none'; });
     renderAll();
   });
 });
 
 /* ===== General ===== */
-var snapshotOrden=null, editGeneral=false;
+var snapshotOrden=null;
+var editGeneral=false;
 var nombreEl=$qs(null,'#nombre'), dniEl=$qs(null,'#dni'), legajoEl=$qs(null,'#legajo'), jerarquiaEl=$qs(null,'#jerarquia'), antigEl=$qs(null,'#antiguedad');
 
 $qs(null,'#btnAgregar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
+  if(!isSuper()) return alert('Solo superadmin');
   if(!nombreEl.value.trim()) return alert('Nombre requerido');
-  snapshot('agregar persona');
-  var p={ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false };
-  db.personas.push(p);
-  logCambio('add', {id:p.id, nombre:p.nombre});
+  db.personas.push({ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false });
   save(); nombreEl.value=''; dniEl.value=''; legajoEl.value=''; antigEl.value=''; renderGeneral(); renderHoy();
 };
 
 $qs(null,'#btnOrdenarCriterios').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  snapshot('ordenar por jerarquía/antigüedad');
-  snapshotOrden = db.personas.map(p=>p.id);
+  if(!isSuper()) return alert('Solo superadmin');
+  snapshotOrden = db.personas.map(function(p){return p.id;});
   var rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1° (CG)':3,'AYTE 2° (CG)':4,'AYTE 3° (CG)':5,'AYTE 4° (CG)':6,'AYTE 5° (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9};
-  db.personas.sort((a,b)=> (rank[a.jerarquia]-rank[b.jerarquia]) || ((b.antiguedad||0)-(a.antiguedad||0)));
-  var base=Date.now(); db.personas.forEach((p,i)=>{ p.order=base+i; });
-  logCambio('bulk-reorder',{motivo:'jerarquia-antiguedad'});
+  db.personas.sort(function(a,b){ if(rank[a.jerarquia]!==rank[b.jerarquia]) return rank[a.jerarquia]-rank[b.jerarquia]; return (b.antiguedad||0)-(a.antiguedad||0); });
+  var base=Date.now(); db.personas.forEach(function(p,i){ p.order=base+i; });
   save(); renderGeneral(); renderHoy();
 };
 
 $qs(null,'#btnDeshacerOrden').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
+  if(!isSuper()) return alert('Solo superadmin');
   if(!snapshotOrden) return alert('No hay orden anterior guardado');
-  snapshot('deshacer orden criterios');
   var base=Date.now(); snapshotOrden.forEach(function(id,i){ var p=getById(id); if(p){ p.order=base+i; } });
-  logCambio('bulk-reorder',{motivo:'deshacer-criterios'});
   save(); renderGeneral(); renderHoy();
 };
 
+$qs(null,'#btnExportar').onclick=function(){
+  var blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}); var url=URL.createObjectURL(blob);
+  var a=document.createElement('a'); a.href=url; a.download='recargapp_db.json'; a.click(); URL.revokeObjectURL(url);
+};
+
+$qs(null,'#btnImportar').onclick=function(){
+  if(!isSuper()) return alert('Solo superadmin');
+  var inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json';
+  inp.onchange=function(e){ var f=e.target.files[0]; if(!f) return; var fr=new FileReader(); fr.onload=function(){ try{ db=JSON.parse(fr.result); save(); renderAll(); }catch(err){ alert('Archivo inválido'); } }; fr.readAsText(f); };
+  inp.click();
+};
+
 $qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  editGeneral=!editGeneral;
-  $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar edición' : 'Editar';
+  if(!isSuper()) return alert('Solo superadmin');
+  editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar' : 'Editar';
   renderGeneral();
 };
 
 function renderGeneral(){
   var tbody=$qs(null,'#tablaGeneral tbody'); tbody.innerHTML='';
-  var list=[].concat(db.personas).sort((a,b)=>a.order-b.order);
+  var list=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
   list.forEach(function(p,i){
-    const tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
-
+    var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
     if(editGeneral){
       tr.setAttribute('draggable','true');
       tr.ondragstart=function(ev){ ev.dataTransfer.setData('text/plain', p.id); tr.classList.add('dragging'); };
@@ -474,23 +468,18 @@ function renderGeneral(){
       tr.ondrop=function(ev){
         ev.preventDefault(); tr.style.outline='';
         var fromId=ev.dataTransfer.getData('text/plain'); if(!fromId||fromId===p.id) return;
-        snapshot('drag reorder general');
-        var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order);
-        var fromIdx=ordered.findIndex(x=>x.id===fromId);
-        var toIdx=ordered.findIndex(x=>x.id===p.id);
+        var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
+        var fromIdx=-1, toIdx=-1;
+        for(var z=0;z<ordered.length;z++){ if(ordered[z].id===fromId) fromIdx=z; if(ordered[z].id===p.id) toIdx=z; }
         if(fromIdx<0||toIdx<0) return;
         var moved=ordered.splice(fromIdx,1)[0]; ordered.splice(toIdx,0,moved);
-        var base=Date.now(); ordered.forEach((x,idx)=>{ x.order=base+idx; });
-        logCambio('move',{id:moved.id,nombre:moved.nombre,from:fromIdx+1,to:toIdx+1});
+        var base=Date.now(); ordered.forEach(function(x,idx){ x.order=base+idx; });
         save(); renderGeneral(); renderHoy();
       };
     }
-
     function cell(txt){ return '<td>'+txt+'</td>'; }
     var cOrden = cell(i+1);
-    var cNombre = editGeneral
-      ? '<td>'+p.nombre+'</td>'
-      : '<td>'+p.nombre+'</td>';
+    var cNombre = cell(p.nombre);
     var cDNI = editGeneral ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
     var cLegajo = editGeneral ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
     var jerOpts = ['AYTE MY (CG)','AYTE PR (CG)','AYTE 1° (CG)','AYTE 2° (CG)','AYTE 3° (CG)','AYTE 4° (CG)','AYTE 5° (CG)','SUBAYTE (CG)','- vacio -'].map(function(j){ return '<option '+(p.jerarquia===j?'selected':'')+'>'+j+'</option>'; }).join('');
@@ -503,28 +492,30 @@ function renderGeneral(){
     if(p.obs.autorizado) obsParts.push('AUTORIZADO'); if(p.salteado) obsParts.push('SALTEADO');
     var cObs = cell(obsParts.join(' · ')||'<span class="muted">—</span>');
 
-    var cDel = editGeneral ? "<td style='text-align:center'><button class='danger icon-btn' title='Eliminar' onclick=\"eliminar('"+p.id+"')\">✕</button></td>" : "<td></td>";
+    var cAcc = editGeneral
+      ? "<td style='text-align:right'><button class='danger' onclick=\"eliminar('"+p.id+"')\">✕</button></td>"
+      : "<td><span class='muted'>—</span></td>";
 
-    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cDel;
-    if(!isAdmin()){
-      $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo Admin'; });
-    }
+    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cAcc;
+    if(!isSuper()){ $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo superadmin'; }); }
     tbody.appendChild(tr);
   });
 }
 
-window.setField=function(id,key,val){
-  if(!isAdmin()) return alert('Solo Admin'); var p=getById(id); if(!p) return;
-  snapshot('editar campo '+key); p[key]=val; save();
-};
-
+window.setField=function(id,key,val){ if(!isSuper()) return alert('Solo superadmin'); var p=getById(id); if(!p) return; p[key]=val; save(); };
+function mover(id,dir){
+  if(!isSuper()) return alert('Solo superadmin');
+  var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
+  var idx=-1; for(var i=0;i<ordered.length;i++){ if(ordered[i].id===id){ idx=i; break; } }
+  if(idx<0) return; var swap=idx+dir; if(swap<0||swap>=ordered.length) return;
+  var moved=ordered.splice(idx,1)[0]; ordered.splice(swap,0,moved);
+  var base=Date.now(); ordered.forEach(function(x,i){ x.order=base+i; });
+  save(); renderGeneral(); renderHoy();
+}
 function eliminar(id){
-  if(!isAdmin()) return alert('Solo Admin');
-  var p=getById(id); if(!p) return;
-  if(!confirm('¿Eliminar a "'+p.nombre+'" de la lista general?')) return;
-  snapshot('eliminar persona');
-  db.personas=db.personas.filter(x=>x.id!==id);
-  logCambio('del',{id:id,nombre:p.nombre});
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Eliminar de la lista?')) return;
+  db.personas=db.personas.filter(function(p){return p.id!==id;});
   save(); renderGeneral(); renderHoy();
 }
 function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id===id) return db.personas[i]; return null; }
@@ -532,78 +523,32 @@ function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id
 /* ===== HOY ===== */
 var fechaEl=$qs(null,'#fecha'); var faltEl=$qs(null,'#faltantes'); fechaEl.value=today();
 function setTitulo(){ $qs(null,'#tituloDia').textContent = 'RECARGOS '+fmtDM(fechaEl.value); }
-setTitulo();
+setTitulo(); fechaEl.addEventListener('change', setTitulo);
 
-let dayExtras = []; // [{id, nombre?, jerarquia?, pabellon, obsRecargo}]
-const modalExtra=$qs(null,'#backdropExtra');
-$qs(null,'#btnAgregarExtra').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  // reset
-  $qs(null,'#extraNombre').value='';
-  $qs(null,'#extraJerarquia').value='';
-  $qs(null,'#extraObs').value='';
-  $qs(null,'#extraPab').value='';
-  modalExtra.style.display='flex';
-};
-$qs(null,'#extraCancel').onclick=function(){ modalExtra.style.display='none'; };
-$qs(null,'#extraOk').onclick=function(){
-  if(!isAdmin()) return;
-  snapshot('agregar extra');
-  const ex={
-    id:'extra_'+uid(),
-    nombre:($qs(null,'#extraNombre').value||'').trim(),
-    jerarquia:($qs(null,'#extraJerarquia').value||'').trim(),
-    obsRecargo:($qs(null,'#extraObs').value||'').trim(),
-    pabellon:$qs(null,'#extraPab').value||''
-  };
-  dayExtras.push(ex);
-  modalExtra.style.display='none';
-  renderHoy();
+$qs(null,'#btnReiniciar').onclick=function(){
+  if(!isAdmin()) return alert('Solo admin/superadmin');
+  if(confirm('¿Seguro? Esto reinicia la rotación tomando el orden del listado general.')){
+    var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;}); var base=Date.now();
+    ordered.forEach(function(p,i){ p.rorder=base+i; });
+    prioridadHoy={}; db.generalHead=0; save(); renderHoy();
+  }
 };
 
-function generalList(){ return [].concat(db.personas).sort((a,b)=>a.order-b.order); }
-function elegibles(){ return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.rorder||0)); }
+$qs(null,'#btnActualizar').onclick=function(){ renderHoy(); };
 
-function getFranco(){ var f=$qs(null,'#francoPasivos'); return f? parseInt(f.value||'1',10):1; }
-function setFranco(v){ var f=$qs(null,'#francoPasivos'); if(f){ f.value=String(v||1); } }
+function generalList(){ return [].concat(db.personas).sort(function(a,b){return a.order-b.order;}); }
+function elegibles(){ return [].concat(db.personas).sort(function(a,b){return (a.rorder||0)-(b.rorder||0);}); }
 
-function buildEstadoCell(p, fecha){
-  // arma el HTML con pills y toggles
-  var parts=[];
-  var prio = prioridadHoy[p.id];
-
-  // Presentes
-  if(prio==='ART13') parts.push("<span class='pill toggle' data-tipo='ART13' title='Quitar presente ART 13'>PRESENTE ART 13</span>");
-  if(prio==='ART26') parts.push("<span class='pill toggle' data-tipo='ART26' title='Quitar presente ART 26'>PRESENTE ART 26</span>");
-  if(prio==='ART04') parts.push("<span class='pill toggle' data-tipo='ART04' title='Quitar presente 04'>PRESENTE 04</span>");
-
-  // ART fijos (si no están en presente)
-  if(p.obs && p.obs.art==='13' && prio!=='ART13') parts.push("<span class='pill warn toggle' data-tipo='ART13' title='Marcar PRESENTE ART 13'>ART 13</span>");
-  if(p.obs && p.obs.art==='26' && prio!=='ART26') parts.push("<span class='pill warn toggle' data-tipo='ART26' title='Marcar PRESENTE ART 26'>ART 26</span>");
-
-  // Toggle directo 04 (si no presente)
-  if(prio!=='ART04') parts.push("<span class='pill toggle' data-tipo='ART04' title='Marcar PRESENTE 04'>04</span>");
-
-  // Otros estados
-  if(inLicencia(p,fecha)) parts.push("<span class='pill err'>LIC "+p.obs.licencia.desde+"→"+p.obs.licencia.hasta+"</span>");
-  if(p.obs && p.obs.autorizado) parts.push("<span class='pill ok'>AUTORIZADO</span>");
-  if(p.salteado) parts.push("<span class='pill'>SALTEADO</span>");
-  if((p.debeLista||0)>0) parts.push("<span class='pill'>debe "+p.debeLista+"</span>");
-
-  if(!parts.length) parts.push("<span class='muted'>—</span>");
-  return parts.join(' ');
-}
-
-/* Prioridad y plan */
+/* Prioridad visual/selección y pills de Estado */
 function getPlan(){
   var falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var fecha=fechaEl.value;
   var base=elegibles();
 
   var prioIds=Object.keys(prioridadHoy);
-  var pART = base.filter(p=> prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26');
-  var p04  = base.filter(p=> prioridadHoy[p.id]==='ART04');
-  var resto= base.filter(p=> prioIds.indexOf(p.id)===-1);
+  var pART = base.filter(function(p){ return prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26'; });
+  var p04  = base.filter(function(p){ return prioridadHoy[p.id]==='ART04'; });
+  var resto= base.filter(function(p){ return prioIds.indexOf(p.id)===-1; });
 
   resto.sort(function(a,b){
     var da=(a.debeLista||0), dbb=(b.debeLista||0);
@@ -612,18 +557,15 @@ function getPlan(){
   });
 
   var mostrados=[], numerados=[];
-  // Extras cuentan para asignación (no numeramos en copia final)
-  dayExtras.forEach(function(ex){ mostrados.push({extra:true, data:ex}); numerados.push(ex); });
-
   function pushPersona(p, forzarContar){
     var saltPorFlag = p.salteado===true;
     var saltar = !forzarContar && (p.obs.art || p.obs.autorizado || inLicencia(p,fecha) || saltPorFlag);
     mostrados.push({p:p, saltar:saltar, saltPorFlag:saltPorFlag});
     if(!saltar) numerados.push(p);
   }
-  pART.forEach(p=>pushPersona(p,true));
-  p04.forEach(p=>pushPersona(p,true));
-  resto.forEach(p=>pushPersona(p,false));
+  pART.forEach(function(p){ pushPersona(p,true); });
+  p04.forEach(function(p){ pushPersona(p,true); });
+  resto.forEach(function(p){ pushPersona(p,false); });
 
   var asignados = numerados.slice(0,falt);
   var idxUlt=falt-1;
@@ -632,9 +574,9 @@ function getPlan(){
   return {mostrados:mostrados, asignados:asignados, pasivos:pasivos};
 }
 
-/* Modal persona */
+/* Modal */
 function openModal(id){
-  if(!isAdmin()) return alert('Solo Admin');
+  if(!isAdmin()) return alert('Solo admin/superadmin');
   modalId=id; var p=getById(id);
   $qs(null,'#modalNombre').textContent = p? p.nombre : '';
   var L=p && p.obs? p.obs.licencia : null;
@@ -643,100 +585,66 @@ function openModal(id){
   $qs(null,'#backdrop').style.display='flex';
 }
 function closeModal(){ $qs(null,'#backdrop').style.display='none'; modalId=null; }
-function modalSetArt(val){
-  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin'); var p=getById(modalId); if(!p) return;
-  snapshot('set ART '+val); p.obs.art = (val==='clear')? null : val; save(); renderHoy(); renderGeneral();
-}
-function modalSetLic(){
-  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
-  var d=$qs(null,'#licDesde').value; var h=$qs(null,'#licHasta').value; if(!d||!h) return alert('Completá desde y hasta');
-  snapshot('set licencia'); var p=getById(modalId); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy(); renderGeneral(); alert('Licencia guardada');
-}
-function modalTogglePresente04(){
-  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
-  snapshot('toggle presente 04');
-  var id=modalId; if(prioridadHoy[id]==='ART04') delete prioridadHoy[id]; else prioridadHoy[id]='ART04'; renderHoy();
-}
-function modalClearLic(){
-  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
-  snapshot('clear licencia');
-  var p=getById(modalId); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy(); renderGeneral(); alert('Licencia quitada');
-}
-function modalToggleAutorizado(){
-  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
-  snapshot('toggle autorizado');
-  var p=getById(modalId); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy(); renderGeneral();
-}
-function modalToggleSalteado(){
-  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
-  snapshot('toggle salteado');
-  var p=getById(modalId); p.salteado=!p.salteado; save(); renderHoy(); renderGeneral();
-}
+function modalSetArt(val){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); if(!p) return; p.obs.art = (val==='clear')? null : val; save(); renderHoy(); renderGeneral(); }
+function modalSetLic(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var d=$qs(null,'#licDesde').value; var h=$qs(null,'#licHasta').value; if(!d||!h) return alert('Completá desde y hasta'); var p=getById(modalId); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy(); renderGeneral(); alert('Licencia guardada'); }
+function modalTogglePresente04(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var id=modalId; if(prioridadHoy[id]==='ART04') delete prioridadHoy[id]; else prioridadHoy[id]='ART04'; renderHoy(); }
+function modalClearLic(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy(); renderGeneral(); alert('Licencia quitada'); }
+function modalToggleAutorizado(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy(); renderGeneral(); }
+function modalToggleSalteado(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.salteado=!p.salteado; save(); renderHoy(); renderGeneral(); }
 
-/* Render del día */
+/* Render del día (incluye pills Estado con toggles) */
 function renderHoy(){
   setTitulo();
   var fecha=fechaEl.value;
   var prev={};
   // conservar selecciones previas
-  $all('#tablaDia tbody tr').forEach(function(r){
+  $all('#tablaDia tbody tr[data-id]').forEach(function(r){
     var id=r.getAttribute('data-id');
     var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
-    if(!id) return;
     prev[id]={pab: sel?sel.value:'', obs: inp?inp.value:''};
   });
 
   var tb=$qs(null,'#tablaDia tbody'); tb.innerHTML=''; var n=0;
-  db.personas.forEach(function(p){
-    if(p && p.obs && p.obs.licencia && isDayAfter(p.obs.licencia.hasta, fecha)){
-      if(!prioridadHoy[p.id]) prioridadHoy[p.id]='ART04';
-    }
-  });
 
   var plan=getPlan();
   plan.mostrados.forEach(function(item){
-    if(item.extra){
-      var ex=item.data;
-      var tr=document.createElement('tr'); tr.setAttribute('data-id', ex.id);
-      var numCell=document.createElement('td'); numCell.textContent = (++n);
-
-      var estadoCell=document.createElement('td');
-      estadoCell.innerHTML = "<span class='pill'>EXTRA</span>";
-
-      var pabSel=document.createElement('select');
-      ['', 'Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Portón'].forEach(function(x){
-        var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
-      });
-      pabSel.value = ex.pabellon || (prev[ex.id] && prev[ex.id].pab) || '';
-      if(!isAdmin()){ pabSel.disabled=true; pabSel.classList.add('lock'); }
-      var obsRecInput=document.createElement('input'); obsRecInput.type='text';
-      obsRecInput.placeholder='(observación)'; obsRecInput.value = (prev[ex.id]?.obs)||ex.obsRecargo||'';
-      if(!isAdmin()){ obsRecInput.disabled=true; obsRecInput.classList.add('lock'); }
-      var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
-      actions.innerHTML = isAdmin()? "<button class='btn icon-btn' title='Quitar extra' onclick=\"quitarExtra('"+ex.id+"')\">✕</button>":"";
-      actCell.appendChild(actions);
-
-      tr.appendChild(numCell);
-      tr.insertAdjacentHTML('beforeend', "<td>"+(ex.nombre||'<i>Extra</i>')+"</td><td>"+(ex.jerarquia||'—')+"</td>");
-      tr.appendChild(estadoCell);
-      var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
-      var obsCell=document.createElement('td'); obsCell.appendChild(obsRecInput);
-      tr.appendChild(pabCell); tr.appendChild(obsCell); tr.appendChild(actCell);
-      tb.appendChild(tr);
-      return;
-    }
-
-    // Personas
     var p=item.p, saltar=item.saltar, saltPorFlag=item.saltPorFlag;
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
 
+    // === Estado (pills + toggles)
+    var pills=[];
+    // ART 13/26 pill toggle → alterna presente
+    if(p.obs && (p.obs.art==='13' || p.obs.art==='26')){
+      var type = (p.obs.art==='13') ? 'ART13' : 'ART26';
+      var isPres = (prioridadHoy[p.id]===type);
+      var label = isPres ? ('PRESENTE '+(type==='ART13'?'ART 13':'ART 26')) : (type==='ART13'?'ART 13':'ART 26');
+      pills.push("<span class='pill "+(isPres?'act ':'')+"toggle' data-pid='"+p.id+"' data-toggle='"+type+"'>"+label+"</span>");
+    }
+
+    // LIC con fechas
+    if(p.obs && p.obs.licencia && p.obs.licencia.desde && p.obs.licencia.hasta){
+      var estaEnLic = inLicencia(p, fecha);
+      var esDiaDesp = isDayAfter(p.obs.licencia.hasta, fecha);
+      pills.push("<span class='pill err'>LIC "+p.obs.licencia.desde+"→"+p.obs.licencia.hasta+"</span>");
+
+      // 04 solo visible si hay LIC vigente o día posterior
+      var show04 = estaEnLic || esDiaDesp;
+      if(show04){
+        // Día posterior al “hasta” → por defecto en PRESENTE 04 (auto)
+        if(esDiaDesp && prioridadHoy[p.id]!=='ART04'){ prioridadHoy[p.id]='ART04'; }
+        var isP04 = (prioridadHoy[p.id]==='ART04');
+        var lbl04 = isP04 ? 'PRESENTE 04' : '04';
+        pills.push("<span class='pill "+(isP04?'act ':'')+"toggle' data-pid='"+p.id+"' data-toggle='ART04'>"+lbl04+"</span>");
+      }
+    }
+
+    // Otros flags
+    if(p.obs && p.obs.autorizado) pills.push("<span class='pill ok'>AUTORIZADO</span>");
+    if(saltPorFlag) pills.push("<span class='pill'>SALTEADO</span>");
+    if((p.debeLista||0)>0) pills.push("<span class='pill'>debe "+p.debeLista+"</span>");
+
     var numCell=document.createElement('td'); numCell.textContent = saltar? '-' : (++n);
 
-    // ESTADO con toggles
-    var estadoCell=document.createElement('td');
-    estadoCell.innerHTML = buildEstadoCell(p, fecha);
-
-    // Pabellón
     var pabSel=document.createElement('select');
     ['', 'Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Portón'].forEach(function(x){
       var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
@@ -745,191 +653,131 @@ function renderHoy(){
     if(saltar || !isAdmin()) { pabSel.disabled=true; pabSel.classList.add('lock'); }
     var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
 
-    // Obs
     var obsRecInput=document.createElement('input'); obsRecInput.type='text'; obsRecInput.placeholder='(ej. cubre Ibarra)';
     if(prev[p.id] && prev[p.id].obs) obsRecInput.value=prev[p.id].obs;
     if(!isAdmin()){ obsRecInput.disabled=true; obsRecInput.classList.add('lock'); }
     var obsRecCell=document.createElement('td'); obsRecCell.appendChild(obsRecInput);
 
-    // Acciones (solo ⚙️)
     var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
-    actions.innerHTML = "<button class='btn icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo Admin'":"")+">⚙️</button>";
+    actions.innerHTML = "<button class='btn btn-acciones icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo admin/superadmin'":"")+">⚙️</button>";
     actCell.appendChild(actions);
 
     tr.appendChild(numCell);
-    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>");
-    tr.appendChild(estadoCell);
+    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td><td>"+(pills.join(' ')||'<span class=\"muted\">—</span>')+"</td>");
     tr.appendChild(pabCell); tr.appendChild(obsRecCell); tr.appendChild(actCell);
     tb.appendChild(tr);
-
-    // Listeners de toggles en ESTADO
-    $all('.pill.toggle', estadoCell).forEach(function(el){
-      el.addEventListener('click', function(){
-        if(!isAdmin()) return;
-        var tipo=this.getAttribute('data-tipo'); // ART13 | ART26 | ART04
-        snapshot('toggle '+tipo+' (estado cell)');
-        if(prioridadHoy[p.id]===tipo) delete prioridadHoy[p.id]; else prioridadHoy[p.id]=tipo;
-        renderHoy();
-      });
-    });
   });
+
+  // Delegación de clicks en pills toggle
+  tb.onclick = function(ev){
+    var el = ev.target.closest('.pill.toggle');
+    if(!el) return;
+    if(!isAdmin()) { alert('Solo admin/superadmin'); return; }
+    var pid = el.getAttribute('data-pid');
+    var t   = el.getAttribute('data-toggle'); // ART13 | ART26 | ART04
+    if(prioridadHoy[pid]===t) delete prioridadHoy[pid]; else prioridadHoy[pid]=t;
+    renderHoy();
+  };
 
   // Pasivos
   var tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML='';
   plan.pasivos.forEach(function(p,i){
-    if(!p.id) return;
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
     tr.innerHTML="<td>"+(i+1)+"</td><td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>";
     tpas.appendChild(tr);
   });
 }
 
-function quitarExtra(id){
-  if(!isAdmin()) return;
-  snapshot('quitar extra');
-  dayExtras = dayExtras.filter(x=>x.id!==id);
+function togglePresente(id,tipo){
+  if(!isAdmin()) return alert('Solo admin/superadmin');
+  if(prioridadHoy[id]===tipo) delete prioridadHoy[id]; else prioridadHoy[id]=tipo;
   renderHoy();
 }
 
-/* Copiados, confirmar, undo, etc. — (igual que antes, sin mover fecha) */
+/* Copiar orden del día (sin pasivos) */
+$qs(null,'#btnCopiarListado').onclick=function(){
+  var fecha=fechaEl.value;
+  var plan=getPlan();
+  var lines=['RECARGOS '+fmtDM(fecha),''];
+  var n=0;
+  plan.mostrados.forEach(function(item){
+    var p=item.p, saltar=item.saltar, saltPorFlag=item.saltPorFlag;
+    var prio=prioridadHoy[p.id], tags=[];
+    if(prio){ tags.push(prio==='ART13'?'(presente ART 13)': prio==='ART26'?'(presente ART 26)':'(presente 04)'); }
+    if(p.obs && p.obs.art && !prio) tags.push('(ART '+p.obs.art+')');
+    if(p.obs && p.obs.autorizado) tags.push('(autorizado)');
+    if(saltPorFlag) tags.push('(salteado)');
+    if(inLicencia(p,fecha)) tags.push('(licencia '+p.obs.licencia.desde+'→'+p.obs.licencia.hasta+')');
+    if((p.debeLista||0)>0) tags.push('(debe '+p.debeLista+')');
+
+    if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')); }
+    else{ lines.push((++n)+') '+p.nombre+' '+tags.join(' ')); }
+  });
+  copyText(lines.join('\n'));
+};
+
 function copyText(txt){
   (navigator.clipboard && navigator.clipboard.writeText)
-    ? navigator.clipboard.writeText(txt).then(()=>alert('Texto copiado'))
-    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))+'</pre>'); w.document.close(); w.focus(); })();
+    ? navigator.clipboard.writeText(txt).then(function(){ alert('Texto copiado'); })
+    : (function(){
+        var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,function(m){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[m];})+'</pre>'); w.document.close(); w.focus();
+      })();
 }
-$qs(null,'#btnCopiarListado').addEventListener('click', function(){
-  var fecha=fechaEl.value, plan=getPlan();
-  var lines=['RECARGOS '+fmtDM(fecha),'']; var n=0;
-  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
-  var tbRows=$all('#tablaDia tbody tr[data-id]'); var byId={};
-  tbRows.forEach(function(r){ var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]'); byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''}; });
-  plan.mostrados.forEach(function(item){
-    if(item.extra){
-      var ex=item.data, row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs?(' ('+row.obs+')'):'';
-      var nombreOut = (ex.nombre || ex.obsRecargo || '—').trim();
-      lines.push('- '+ nombreOut + (pabTxt?('  '+pabTxt):'') + (obs||''));
-      return;
-    }
-    var p=item.p, saltar=item.saltar, prio=prioridadHoy[p.id], per=getById(p.id)||{};
-    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
-    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
-    if(per.salteado) tags.push('(salteado)');
-    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia)');
-    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-    var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
-    if(!saltar){ lines.push((++n)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):'')); }
-    else{ lines.push('- '+p.nombre+' '+tags.join(' ')); }
-  });
-  copyText(lines.join('\n'));
-});
 
-$qs(null,'#btnCopiarResultado').onclick=function(){
-  var fecha=fechaEl.value, plan=getPlan(), falt=Math.max(0, parseInt(faltEl.value||'0',10));
-  var lines=['RECARGOS '+fmtDM(fecha),''];
-  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
-  var tbRows=$all('#tablaDia tbody tr[data-id]'); var byId={};
-  tbRows.forEach(function(r){ var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]'); byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''}; });
-  var conteo=0;
-  plan.mostrados.forEach(function(item){
-    if(item.extra){
-      var ex=item.data, row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab); var obs=row.obs?(' ('+row.obs+')'):'';
-      var nombreOut = (ex.nombre || ex.obsRecargo || '—').trim();
-      lines.push('- '+ nombreOut + (pabTxt?('  '+pabTxt):'') + (obs||''));
-      return;
-    }
-    var p=item.p, saltar=item.saltar;
-    var prio=prioridadHoy[p.id], per=getById(p.id)||{};
-    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
-    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
-    if(per.salteado) tags.push('(salteado)');
-    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia)');
-    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-    var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
-    if(!saltar && conteo<falt){ lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):'')); }
-    else if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')); }
-  });
-  // Pasivos (Franco)
-  var franco=getFranco();
-  if(franco===1){ lines.push('','Pasivos',''); }
-  else{
-    var manana = fmtDM(addDays(fecha,1));
-    lines.push('','Pasivos ('+manana+')','');
-  }
-  plan.pasivos.forEach(function(p,i){
-    if(!p.id) return;
-    lines.push((i+1)+') '+p.nombre);
-  });
-  copyText(lines.join('\n'));
-};
-
-$qs(null,'#btnReiniciar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  if(confirm('¿Seguro? Esto reinicia la rotación tomando el orden del listado general.')){
-    snapshot('reiniciar rotación');
-    var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); var base=Date.now();
-    ordered.forEach(function(p,i){ p.rorder=base+i; });
-    prioridadHoy={}; db.generalHead=0; save(); renderHoy();
-  }
-};
-
-$qs(null,'#btnActualizar').onclick=function(){ renderHoy(); };
-$qs(null,'#btnUndo').onclick=function(){ if(!isAdmin()) return alert('Solo Admin'); if(!undoStack.length) return alert('No hay cambios para deshacer'); if(!restoreLast()) alert('No se pudo deshacer'); };
-
-/* Confirmar (NO mueve fecha) */
+/* Confirmar guardia */
 $qs(null,'#btnConfirmar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  snapshot('confirmar guardia (pre)');
-
+  if(!isAdmin()) return alert('Solo admin/superadmin');
   var plan=getPlan();
-  var idsAsignados={}; plan.asignados.forEach(function(p){ if(p.id) idsAsignados[p.id]=true; });
+  var idsAsignados={}; plan.asignados.forEach(function(p){ idsAsignados[p.id]=true; });
 
-  var rows=$all('#tablaDia tbody tr');
-  var recargos=[]; var extrasForHist=[];
+  var rows=$all('#tablaDia tbody tr[data-id]');
+  var recargos=[];
   rows.forEach(function(r){
-    var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
-    var pab= sel?sel.value:''; var obsRec=inp?inp.value.trim():'';
-    if(id && id.indexOf('extra_')===0){
-      var ex=dayExtras.find(x=>x.id===id)||{};
-      extrasForHist.push({id:id, nombre:ex.nombre||'', jerarquia:ex.jerarquia||'', pabellon:pab, obsRecargo:obsRec});
-      return;
-    }
-    if(!id || !idsAsignados[id]) return;
+    var id=r.getAttribute('data-id'); if(!idsAsignados[id]) return;
+    var sel=r.querySelector('select'); var pab= sel?sel.value:'';
+    var inp=r.querySelector('input[type="text"]'); var obsRec=inp?inp.value.trim():''; 
     var per=getById(id); recargos.push({id:id,nombre:per?per.nombre:'',pabellon:pab,obsRecargo:obsRec});
   });
 
-  var pasivos=plan.pasivos.filter(x=>x.id);
-  var fecha=fechaEl.value, falt=Math.max(0, parseInt(faltEl.value||'0',10));
+  var pasivos=plan.pasivos;
+  var fecha=fechaEl.value;
+  var falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var glist=generalList(); if(glist.length===0){ alert('No hay personal'); return; }
   if(db.generalHead>=glist.length) db.generalHead=0;
 
-  // Ventana
+  // Ventana según lista general
   var ventanaIdx=[], idx=db.generalHead;
   for(var k=0;k<falt && k<glist.length;k++){ ventanaIdx.push(idx); idx=(idx+1)%glist.length; }
-  var ventanaIds=ventanaIdx.map(i=>glist[i].id);
+  var ventanaIds=ventanaIdx.map(function(i){return glist[i].id;});
 
   // Asignados reales
-  var asignadosIds={}; recargos.forEach(r=>asignadosIds[r.id]=true);
+  var asignadosIds={}; recargos.forEach(function(r){ asignadosIds[r.id]=true; });
 
-  // Reglas DEBE
+  // Reglas DEBE (cap 1)
   ventanaIds.forEach(function(id){
     var p=getById(id); if(!p) return;
-    var prio=prioridadHoy[id]; var lic=inLicencia(p,fecha);
+    var prio=prioridadHoy[id];
+    var lic=inLicencia(p,fecha);
     var quedoPorLista = !!asignadosIds[id] && !(prio==='ART13' || prio==='ART26' || prio==='ART04');
-    if(quedoPorLista){ if((p.debeLista||0)>0) p.debeLista=0; }
-    else{ if(lic) return; if(p.obs.art || p.obs.autorizado || prio){ if((p.debeLista||0)<1) p.debeLista=1; } }
+    if(quedoPorLista){
+      if((p.debeLista||0)>0) p.debeLista=0;
+    }else{
+      if(lic) return;
+      if(p.obs.art || p.obs.autorizado || prio){
+        if((p.debeLista||0)<1) p.debeLista=1;
+      }
+    }
   });
 
   // Avanzar puntero general
   db.generalHead = (db.generalHead + falt) % glist.length;
 
-  // Reubicar rorder
+  // Reubicar rorder de asignados
   var baseOrder=Date.now();
-  db.personas.forEach(p=>{ if(p.rorder==null) p.rorder=baseOrder; });
+  db.personas.forEach(function(p){ if(p.rorder==null) p.rorder=baseOrder; });
   recargos.forEach(function(r,i){ var p=getById(r.id); if(p) p.rorder = baseOrder + i + 1; });
 
-  // Limpiar ART si se presentaron
+  // Limpiar ART 13/26 si se presentaron
   for(var pid in prioridadHoy){
     var why=prioridadHoy[pid];
     if(why==='ART13'||why==='ART26'){ var per=getById(pid); if(per){ per.obs.art=null; } }
@@ -942,25 +790,19 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Limpiar banderas del día
   db.personas.forEach(function(p){ p.obs.autorizado=false; p.salteado=false; });
 
-  // Layout para historial
+  // Layout inline para historial (incluye no numerados en su sitio)
   var conteo=0, layout=[];
-  var tbRows=$all('#tablaDia tbody tr');
   plan.mostrados.forEach(function(item){
-    if(item.extra){
-      var r = Array.prototype.find.call(tbRows, x=>x.getAttribute('data-id')===item.data.id);
-      var sel=r? r.querySelector('select'):null; var pab=sel?sel.value:'';
-      var inp=r? r.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
-      layout.push({id:item.data.id,nombre:(item.data.nombre||'Extra'),counted:false,tags:['(extra)'],pabellon:pab,obsRecargo:obsRec});
-      return;
-    }
     var p=item.p, saltar=item.saltar;
     var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
-    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
+    var tags=[];
+    if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
     if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
     if(per.salteado) tags.push('(salteado)');
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia)');
+    if(inLicencia(per, fecha)) tags.push('(licencia '+per.obs.licencia.desde+'→'+per.obs.licencia.hasta+')');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
+
     if(!saltar && conteo<falt){
       var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
       var sel=tr?tr.querySelector('select'):null; var pab=sel?sel.value:'';
@@ -976,226 +818,161 @@ $qs(null,'#btnConfirmar').onclick=function(){
   db.historial.push({
     fecha:fmtDM(fecha),
     recargos:recargos,
-    pasivos:plan.pasivos.filter(x=>x.id).map(x=>({id:x.id,nombre:x.nombre})),
+    pasivos:pasivos.map(function(x){return {id:x.id,nombre:x.nombre};}),
     llamados:[],
     layout:layout,
-    personasBefore: JSON.parse(JSON.stringify(undoStack[undoStack.length-1]?.personas || db.personas)),
-    generalHeadBefore: undoStack[undoStack.length-1]?.generalHead ?? db.generalHead,
-    franco:getFranco(),
-    extras:extrasForHist
+    personasBefore: JSON.parse(JSON.stringify(db.personas)),
+    generalHeadBefore: (db.generalHead - falt + glist.length)%glist.length
   });
   save();
-  prioridadHoy={}; dayExtras=[];
+  prioridadHoy={};
+
+  // (sin avanzar días automáticamente)
   renderAll();
   alert('Guardia guardada. Los llamados se marcan en la guardia siguiente (Historial).');
 };
 
-/* ===== Historial (subtabs) ===== */
-const subRec=$qs(null,'.subtab[data-sub="rec"]');
-const subChg=$qs(null,'.subtab[data-sub="chg"]');
-subRec.addEventListener('click', ()=>{
-  subRec.classList.add('active'); subChg.classList.remove('active');
-  $qs(null,'#histRec').style.display='block';
-  $qs(null,'#histChg').style.display='none';
-  $qs(null,'#toolbarRec').style.display='flex';
-  $qs(null,'#toolbarChg').style.display='none';
-});
-subChg.addEventListener('click', ()=>{
-  subChg.classList.add('active'); subRec.classList.remove('active');
-  $qs(null,'#histRec').style.display='none';
-  $qs(null,'#histChg').style.display='block';
-  $qs(null,'#toolbarRec').style.display='none';
-  $qs(null,'#toolbarChg').style.display='flex';
-});
+/* Deshacer última (reversible) */
+$qs(null,'#btnDeshacer').onclick=function(){
+  if(!isAdmin()) return alert('Solo admin/superadmin');
+  if(!db.historial.length) return alert('No hay guardias para deshacer');
+  var h=db.historial.pop(); // deshacer la última
+  if(h && h.personasBefore){ db.personas = JSON.parse(JSON.stringify(h.personasBefore)); }
+  if(typeof h.generalHeadBefore==='number') db.generalHead = h.generalHeadBefore;
+  save(); renderAll(); alert('Se revirtió la última confirmación.');
+};
 
-function renderHistorialRec(){
-  const cont=$qs(null,'#histRec'); cont.innerHTML='';
-  for(let idx=db.historial.length-1; idx>=0; idx--){
-    const h=db.historial[idx];
-    const esUltimo=(idx===db.historial.length-1);
-    const cantRec = (h.layout||[]).filter(x=>x.counted).length || (h.recargos||[]).length;
-    const cantLlam = (h.llamados||[]).length;
+/* Copiar resultado final (recargos + pasivos) */
+$qs(null,'#btnCopiarResultado').onclick=function(){
+  var fecha=fechaEl.value;
+  var plan=getPlan();
+  var falt=Math.max(0, parseInt(faltEl.value||'0',10));
+  var lines=['RECARGOS '+fmtDM(fecha),''];
 
-    const row=document.createElement('div'); row.className='history-row';
-    row.innerHTML =
-      "<div class='history-row-head'>"+
-        "<div><b>"+(h.fecha||'')+"</b> · <span class='history-meta'>Recargos: "+cantRec+" · Pasivos llamados: "+cantLlam+"</span></div>"+
-        "<div>"+
-          "<button class='btn' data-copy='1'>Copiar</button> "+
-          (isSuper()? "<button class='danger' data-del='1'>Borrar</button>": "")+
-          " <button class='btn' data-toggle='1'>Ver</button>"+
-        "</div>"+
-      "</div>"+
-      "<div class='history-row-body'></div>";
+  var conteo=0;
+  plan.mostrados.forEach(function(item){
+    var p=item.p, saltar=item.saltar;
+    var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
+    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
+    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
+    if(per.salteado) tags.push('(salteado)');
+    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
+    if(inLicencia(per, fecha)) tags.push('(licencia '+per.obs.licencia.desde+'→'+per.obs.licencia.hasta+')');
+    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
 
-    const body=row.querySelector('.history-row-body');
-    // Construir cuerpo
-    const recListHtml = (h.layout && h.layout.length)
-      ? h.layout.map(function(x){
-          if(x.counted){
-            const m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-            const pabTxt=m[x.pabellon||'']||x.pabellon||'';
-            const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-            const obs=x.obsRecargo?(' — Obs: '+x.obsRecargo):'';
-            const pab=pabTxt?(' — Pab: '+pabTxt):'';
-            return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>';
-          }else{
-            const tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-            return '<li>- '+x.nombre+tags2+'</li>';
-          }
-        }).join('')
-      : ((h.recargos||[]).map(function(x,i){
-           return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
-        }).join('') || '<li>—</li>');
+    if(!saltar && conteo<falt){
+      var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
+      var sel=tr?tr.querySelector('select'):null; var pab=sel?sel.value:'';
+      var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
+      var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
+      var pabTxt=m[pab||'']||pab||''; var obs = obsRec? (' ('+obsRec+')') : '';
+      lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
+    }else if(saltar){
+      lines.push('- '+p.nombre+' '+tags.join(' '));
+    }
+  });
 
-    const pasHtml = (h.pasivos||[]).map(function(x,i){
-      const checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
-      const disabled = esUltimo? '' : 'disabled';
-      return '<li>'+(i+1)+') '+(getById(x.id)?.nombre||x.nombre)+' &nbsp; <input type="checkbox" '+checked+' '+disabled+' data-id="'+x.id+'"></li>';
-    }).join('') || '<li>—</li>';
+  lines.push('','Pasivos','');
+  plan.pasivos.forEach(function(p,i){
+    var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
+    var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
+    var obs = obsRec? (' ('+obsRec+')') : '';
+    lines.push((i+1)+') '+p.nombre+obs);
+  });
 
-    body.innerHTML =
-      "<div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0'>"+recListHtml+"</ul></div>"+
-      "<div style='margin-top:6px'><b>Pasivos</b><ul style='padding-left:18px;margin:6px 0'>"+pasHtml+"</ul></div>";
+  copyText(lines.join('\n'));
+};
 
-    // Botones por fila (usar let/const para cerrar sobre el row correcto)
-    const btnToggle = row.querySelector('[data-toggle]');
-    const btnCopy   = row.querySelector('[data-copy]');
-    const btnDel    = row.querySelector('[data-del]');
+/* ===== Historial ===== */
+function renderHistorial(){
+  var tb=$qs(null,'#tablaHistorial tbody'); tb.innerHTML='';
+  for(var idx=db.historial.length-1; idx>=0; idx--){
+    var h=db.historial[idx];
+    var esUltimo=(idx===db.historial.length-1);
 
-    btnToggle.addEventListener('click', function(){
-      row.classList.toggle('open');
-      this.textContent = row.classList.contains('open')? 'Ocultar' : 'Ver';
-    });
-    btnCopy.addEventListener('click', function(){
-      copyText(buildCopyFromHistory(h));
-    });
-    btnDel?.addEventListener('click', function(){
-      borrarHistRec(idx);
-    });
-
-    // Guardar llamados sobre el ÚLTIMO: se leerán desde el toolbar global
-    cont.appendChild(row);
-  }
-
-  function buildCopyFromHistory(H){
-    var fechaTxt = H.fecha || '';
-    var lines=['RECARGOS '+fechaTxt,''];
-    if(H.layout && H.layout.length){
-      H.layout.forEach(function(x){
+    var recListHtml='';
+    if(h.layout && h.layout.length){
+      recListHtml = h.layout.map(function(x){
         if(x.counted){
           var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-          var pabTxt=m[x.pabellon||'']||x.pabellon||''; var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):'';
-          lines.push(x.n+') '+x.nombre+tags+obs+(pabTxt?('  '+pabTxt):''));
+          var pabTxt=m[x.pabellon||'']||x.pabellon||'';
+          var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+          var obs=x.obsRecargo?(' — Obs: '+x.obsRecargo):'';
+          var pab=pabTxt?(' — Pab: '+pabTxt):'';
+          return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>';
         }else{
           var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          lines.push('- '+x.nombre+tags2);
+          return '<li>- '+x.nombre+tags2+'</li>';
         }
-      });
+      }).join('');
     }else{
-      (H.recargos||[]).forEach(function(x,i){
-        lines.push((i+1)+') '+x.nombre+(x.obsRecargo?(' ('+x.obsRecargo+')'):'')+(x.pabellon?('  '+x.pabellon):''));
-      });
+      recListHtml = (h.recargos||[]).map(function(x,i){
+        return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
+      }).join('') || '<li>—</li>';
     }
-    var pasHeader='Pasivos';
-    if(H.franco===2){
-      // (+1 día)
-      try{
-        var [dd,mm]=String(H.fecha||'').split('/');
-        var y=(new Date()).getFullYear(); var d0=new Date(y,parseInt(mm)-1,parseInt(dd)); var d1=new Date(d0.getTime()+86400000);
-        var ddn=('0'+d1.getDate()).slice(-2)+'/'+('0'+(d1.getMonth()+1)).slice(-2);
-        pasHeader='Pasivos ('+ddn+')';
-      }catch(_){}
-    }
-    lines.push('',pasHeader,'');
-    (H.pasivos||[]).forEach(function(x,i){
+
+    // Pasivos con checkbox inline + título
+    var pasEncabezado = "<div class='muted' style='font-size:12px;margin-bottom:4px'>Fue llamado</div>";
+    var pasList = (h.pasivos||[]).map(function(x,i){
       var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
-      lines.push((i+1)+') '+nombre);
-    });
-    return lines.join('\n');
+      var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
+      var dis = esUltimo ? '' : 'disabled';
+      return "<li style='display:flex;align-items:center;gap:10px'>"
+           + "<span>"+(i+1)+") "+nombre+"</span>"
+           + "<label style='display:inline-flex;align-items:center;gap:6px'>"
+           + "<input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+dis+" "+checked+">"
+           + "<span class='muted'>Fue llamado</span>"
+           + "</label>"
+           + "</li>";
+    }).join('') || '<li>—</li>';
+
+    var delBtn = isSuper()? "<button class='danger' onclick='borrarHist("+idx+")'>Borrar</button>" : "";
+    var tr=document.createElement('tr');
+    tr.innerHTML=
+      "<td>"+h.fecha+"</td>"
+    + "<td><ul style='padding-left:18px;margin:0'>"+recListHtml+"</ul></td>"
+    + "<td>"+ pasEncabezado +"<ul style='padding-left:18px;margin:0'>"+pasList+"</ul></td>"
+    + "<td><div class='row' style='justify-content:flex-end;gap:12px'>"+delBtn+"</div></td>";
+    tb.appendChild(tr);
   }
 }
 
-/* Historial de cambios */
-function renderHistorialChg(){
-  const cont=$qs(null,'#histChg'); cont.innerHTML='';
-  // Agrupar por fecha
-  const byDate={};
-  db.cambios.forEach(function(c){
-    const d=c.fechaISO||today();
-    (byDate[d]=byDate[d]||[]).push(c);
-  });
-  const fechas=Object.keys(byDate).sort().reverse();
-  fechas.forEach(function(f){
-    const items=byDate[f];
-    const row=document.createElement('div'); row.className='history-row';
-    row.innerHTML =
-      "<div class='history-row-head'>"+
-        "<div><b>"+f+"</b> · <span class='history-meta'>"+items.length+" cambio(s)</span></div>"+
-        "<div><button class='btn' data-toggle='1'>Ver</button></div>"+
-      "</div>"+
-      "<div class='history-row-body' style='display:none'>"+ items.map(function(c){
-        if(c.tipo==='add') return "<div>➕ Agregado: <b>"+(c.detalle.nombre||c.detalle.id)+"</b></div>";
-        if(c.tipo==='del') return "<div>✖️ Eliminado: <b>"+(c.detalle.nombre||c.detalle.id)+"</b></div>";
-        if(c.tipo==='move') return "<div>↕️ Movido: <b>"+(c.detalle.nombre||c.detalle.id)+"</b> de "+c.detalle.from+" a "+c.detalle.to+"</div>";
-        if(c.tipo==='bulk-reorder') return "<div>🧮 Reordenación masiva ("+c.detalle.motivo+")</div>";
-        return "<div>• "+c.tipo+"</div>";
-      }).join('') +"</div>";
-    const btn=row.querySelector('[data-toggle]');
-    const body=row.querySelector('.history-row-body');
-    btn.addEventListener('click', function(){
-      const open = body.style.display==='block';
-      body.style.display = open ? 'none' : 'block';
-      this.textContent = open ? 'Ver' : 'Ocultar';
-    });
-    cont.appendChild(row);
-  });
+function borrarHist(idx){
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Borrar registro del historial?')) return;
+  db.historial.splice(idx,1); save(); renderHistorial();
 }
 
-/* Borrar historiales y guardar llamados */
-function borrarHistRec(idx){
-  if(!isSuper()) return alert('Solo superadmin');
-  if(!confirm('¿Borrar registro del historial de recargos?')) return;
-  db.historial.splice(idx,1); save(); renderHistorialRec();
-}
-$qs(null,'#btnBorrarHistRec').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
-  if(!confirm('¿Borrar TODO el historial de recargos?')) return;
-  db.historial=[]; save(); renderHistorialRec(); alert('Historial de recargos borrado.');
-};
-$qs(null,'#btnBorrarHistChg').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
-  if(!confirm('¿Borrar TODO el historial de cambios?')) return;
-  db.cambios=[]; save(); renderHistorialChg(); alert('Historial de cambios borrado.');
-};
-$qs(null,'#btnGuardarLlamados').addEventListener('click', function(){
-  if(!isAdmin()) return alert('Solo Admin');
+$qs(null,'#btnGuardarLlamados').onclick=function(){
+  if(!isAdmin()) return alert('Solo admin/superadmin');
   if(!db.historial.length) return;
   var idx=db.historial.length-1; var h=db.historial[idx];
-  var checks=$all('#histRec .history-row:first-child input[type="checkbox"]'); // la última guardia está renderizada primero
-  h.llamados = checks.filter(c=>c.checked).map(c=>c.getAttribute('data-id'));
+  var checks=$all("input[type='checkbox'][data-h='"+idx+"']");
+  h.llamados = checks.filter(function(c){return c.checked;}).map(function(c){return c.getAttribute('data-id');});
 
-  // Reordenar próxima guardia
+  // Reordenar próxima guardia: DEBE > pasivos NO llamados > resto > llamados
   var current=elegibles();
-  var debeIds=current.filter(p=>(p.debeLista||0)>0).map(p=>p.id);
-  var notCalled=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)<0).map(x=>x.id);
-  var called=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)>=0).map(x=>x.id);
-  var restIds=current.map(p=>p.id).filter(id=> notCalled.indexOf(id)<0 && called.indexOf(id)<0);
+  var debeIds=current.filter(function(p){return (p.debeLista||0)>0;}).map(function(p){return p.id;});
+  var notCalled=(h.pasivos||[]).filter(function(x){return (h.llamados||[]).indexOf(x.id)<0;}).map(function(x){return x.id;});
+  var called=(h.pasivos||[]).filter(function(x){return (h.llamados||[]).indexOf(x.id)>=0;}).map(function(x){return x.id;});
+  var restIds=current.map(function(p){return p.id;}).filter(function(id){ return notCalled.indexOf(id)<0 && called.indexOf(id)<0; });
+
   var seq=[].concat(debeIds, notCalled, restIds, called);
   var seen={}; var base=Date.now(), i=0;
   seq.forEach(function(id){ if(seen[id]) return; seen[id]=true; var p=getById(id); if(p) p.rorder=base+(i++); });
 
-  save(); renderAll(); alert('Llamados guardados.');
-});
+  save(); renderAll(); alert('Llamados actualizados.');
+};
 
 /* ===== Render maestro ===== */
 function renderAll(){
-  renderGeneral(); renderHoy(); renderHistorialRec(); renderHistorialChg();
+  renderGeneral(); renderHoy(); renderHistorial();
+  var bh=$qs(null,'#btnBorrarHistorial');
+  if(bh) bh.style.display = isSuper()? 'inline-block' : 'none';
   if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display = isSuper()? 'inline-block' : 'none';
 }
 
-/* ===== Seed ===== */
+/* ===== Seed si está vacío ===== */
 function seedIfEmpty(){
   if(db.personas && db.personas.length) return;
   var base=Date.now();
@@ -1217,27 +994,136 @@ function seedIfEmpty(){
     localStorage.removeItem(KEY_TEST);
   }catch(e){ console.warn('Autotest falló', e); }
 })();
+
 seedIfEmpty();
 renderAll();
 
-/* ====== PWA ====== */
+/* ===== PWA: SW + instalar + updates ===== */
 (function () {
+  // Registrar Service Worker
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
       .catch(err => console.error('SW fail', err));
+
+    // Recargar cuando se active un SW nuevo
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (refreshing) return; refreshing = true; window.location.reload();
+      if (refreshing) return;
+      refreshing = true;
+      window.location.reload();
     });
   }
+
+  // Botón de instalar
   let deferredPrompt = null;
   const btnInstall = document.getElementById('btnInstall');
-  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (btnInstall) btnInstall.style.display = 'inline-block'; });
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (btnInstall) btnInstall.style.display = 'inline-block';
+  });
+
   if (btnInstall) {
     btnInstall.addEventListener('click', async () => {
-      if (!deferredPrompt) return; await deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; btnInstall.style.display = 'none';
+      if (!deferredPrompt) return;
+      await deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      btnInstall.style.display = 'none';
     });
   }
+
+  // Panel "Más": versión + buscar / aplicar updates + notas externas
+  (function setupAboutPanel(){
+    const backdrop = document.getElementById('aboutPanelBackdrop');
+    const panel   = document.getElementById('aboutPanel');
+    const btnOpen = document.getElementById('btnOpenAbout');
+    const btnClose= document.getElementById('btnCloseAbout');
+    const verSpot = document.getElementById('aboutVersion');
+    const status  = document.getElementById('updateStatus');
+    const btnChk  = document.getElementById('btnCheckUpdates');
+    const btnAppl = document.getElementById('btnApplyUpdate');
+    const notesBox= document.getElementById('releaseNotes');
+
+    function setOpen(v){
+      panel.classList.toggle('open', v);
+      backdrop.style.display = v ? 'block' : 'none';
+      panel.setAttribute('aria-hidden', v ? 'false' : 'true');
+    }
+    btnOpen?.addEventListener('click', ()=> setOpen(true));
+    btnClose?.addEventListener('click', ()=> setOpen(false));
+    backdrop?.addEventListener('click', ()=> setOpen(false));
+
+    // Mostrar versión real
+    (async function syncAboutVersion(){
+      try{
+        const res = await fetch('/RecargApp/manifest.json?t='+Date.now(), {cache:'no-store'});
+        const m = await res.json();
+        const v = (m.version ? 'V'+m.version : (m.name?.match(/V\d+(\.\d+)*/i)?.[0] || '—'));
+        verSpot.textContent = v;
+      }catch(_){ verSpot.textContent='—'; }
+    })();
+
+    // Cargar notas desde archivo externo JSON
+    (async function loadReleaseNotes(){
+      try{
+        const res = await fetch('/RecargApp/release-notes.json?t='+Date.now(), {cache:'no-store'});
+        if(!res.ok) throw new Error('HTTP '+res.status);
+        const arr = await res.json(); // [{version,date,notes}, ...]
+        if(!Array.isArray(arr) || !arr.length){ notesBox.innerHTML = "<div class='muted'>Sin notas.</div>"; return; }
+        // más reciente primero (por si no viene ordenado)
+        arr.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
+        notesBox.innerHTML = arr.map(n=>(
+          "<div class='noteItem'>"
+          +"<h4>Versión "+(n.version||'?')+" <span class='muted' style='font-weight:400'>"+(n.date||'')+"</span></h4>"
+          +"<p>"+( (n.notes||'').replace(/&/g,'&amp;').replace(/</g,'&lt;') )+"</p>"
+          +"</div>"
+        )).join('');
+      }catch(e){
+        console.warn('No pude cargar release-notes.json', e);
+        notesBox.innerHTML = "<div class='muted'>No se pudo cargar <code>release-notes.json</code>.</div>";
+      }
+    })();
+
+    // Buscar actualización
+    btnChk?.addEventListener('click', async ()=>{
+      status.textContent = 'Buscando...';
+      try{
+        const reg = await navigator.serviceWorker?.getRegistration();
+        if(!reg){ status.textContent='Sin Service Worker'; return; }
+        await reg.update();
+        const maybeShow = ()=>{
+          if(reg.waiting && navigator.serviceWorker.controller){
+            status.textContent = 'Nueva versión disponible';
+            btnAppl.style.display = 'inline-block';
+          }else{
+            status.textContent = 'Estás actualizado ✔️';
+            btnAppl.style.display = 'none';
+          }
+        };
+        maybeShow();
+        reg.addEventListener('updatefound', ()=>{
+          const sw = reg.installing;
+          sw?.addEventListener('statechange', ()=> {
+            if(sw.state==='installed' && navigator.serviceWorker.controller){
+              status.textContent='Nueva versión disponible';
+              btnAppl.style.display='inline-block';
+            }
+          });
+        });
+      }catch(e){ console.error(e); status.textContent='Error al buscar'; }
+    });
+
+    // Aplicar actualización
+    btnAppl?.addEventListener('click', async ()=>{
+      try{
+        const reg = await navigator.serviceWorker?.getRegistration();
+        reg?.waiting?.postMessage({type:'SKIP_WAITING'});
+        status.textContent='Actualizando...';
+      }catch(e){ console.error(e); }
+    });
+  })();
 })();
 </script>
 
@@ -1249,11 +1135,19 @@ renderAll();
 (async function updateVisibleVersion() {
   const el = document.getElementById('appVersion');
   if (!el) return;
-  const candidates = ['/RecargApp/manifest.json','/RecargApp/manifest.webmanifest'];
-  let manifest = null, lastErr = null;
+  const candidates = [
+    '/RecargApp/manifest.json',
+    '/RecargApp/manifest.webmanifest'
+  ];
+  let manifest = null;
+  let lastErr = null;
   for (const url of candidates) {
-    try { const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' }); if (!res.ok) throw new Error('HTTP ' + res.status); manifest = await res.json(); break; }
-    catch (e) { lastErr = e; }
+    try {
+      const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status + ' on ' + url);
+      manifest = await res.json();
+      break;
+    } catch (e) { lastErr = e; }
   }
   if (!manifest) { console.error('No pude leer manifest:', lastErr); el.textContent = 'V?'; return; }
   const fromField = (manifest.version && String(manifest.version).trim()) || '';
