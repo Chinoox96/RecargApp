@@ -21,46 +21,28 @@
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
 
-    /* ===== Header nuevo ===== */
-    header{
-      padding:10px 12px;border-bottom:1px solid var(--border);background:#0b1223;position:sticky;top:0;z-index:5
-    }
-    .appbar{
-      display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;max-width:1150px;margin:0 auto;
-    }
-    .brand{
-      display:flex;align-items:center;gap:10px;justify-content:flex-start;
-    }
+    /* ===== Header ===== */
+    header{padding:10px 12px;border-bottom:1px solid var(--border);background:#0b1223;position:sticky;top:0;z-index:5}
+    .appbar{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;max-width:1150px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:10px;justify-content:flex-start}
     .brand img{width:32px;height:32px;border-radius:8px;display:block}
-    .brand-title{
-      text-align:center;font-weight:800;font-size:22px;letter-spacing:.5px
-    }
-    @media (min-width:700px){
-      .brand-title{font-size:26px}
-    }
-
+    .brand-title{justify-self:center;text-align:center;font-weight:800;font-size:22px;letter-spacing:.5px}
+    @media (min-width:700px){.brand-title{font-size:26px}}
     .actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
     .btn{background:#0b1223;border:1px solid var(--border);color:#d1d5db;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer}
-    .btn.primary{background:linear-gradient(180deg,var(--blue2),var(--blue3));color:#fff;border:0}
-    .btn.warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
-    .btn.danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
+    .btn-login .label{display:none}.btn-login .ico{display:inline}
+    @media (min-width:700px){.btn-login .label{display:inline}.btn-login .ico{display:none}}
+    /* Colores de botones (restaurados) */
+    .btn.primary,.primary{background:linear-gradient(180deg,var(--blue2),var(--blue3));color:#fff;border:0}
+    .btn.warn,.warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff;border:0}
+    .btn.danger,.danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border:0}
     .icon-btn{padding:6px 8px;min-width:0;line-height:1}
     .muted{color:var(--muted)}
     .lock{opacity:.6}
 
-    /* Botón iniciar sesión: texto en desktop, icono en móvil */
-    .btn-login .label{display:none}
-    .btn-login .ico{display:inline}
-    @media (min-width:700px){
-      .btn-login .label{display:inline}
-      .btn-login .ico{display:none}
-    }
-
-    /* Tabs debajo del header */
+    /* Tabs principales */
     .tabs-wrap{border-top:1px solid var(--border);margin-top:10px}
-    .tabs{
-      display:flex;gap:6px;justify-content:center;padding:8px 6px;flex-wrap:wrap;max-width:1150px;margin:0 auto
-    }
+    .tabs{display:flex;gap:6px;justify-content:center;padding:8px 6px;flex-wrap:wrap;max-width:1150px;margin:0 auto}
     .tab{background:#0b1223;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
     .tab.active{color:#fff;border-color:var(--blue);background:linear-gradient(180deg,var(--blue2),var(--blue3))}
 
@@ -73,7 +55,7 @@
     th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
 
-    /* Listado del día */
+    /* Listado del día (Estado visible 4ª col) */
     #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:40px}
     #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:220px}
     #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
@@ -87,16 +69,15 @@
     #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:auto}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
 
-    /* Lista general (sin flechitas) + más compacto */
+    /* Lista general (sin columna Acciones, más compacto) */
     #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:56px}
-    #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:220px}
+    #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:260px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
     #tablaGeneral th:nth-child(4),#tablaGeneral td:nth-child(4){width:120px}
     #tablaGeneral th:nth-child(5),#tablaGeneral td:nth-child(5){width:140px}
     #tablaGeneral th:nth-child(6),#tablaGeneral td:nth-child(6){width:80px}
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
     #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:auto}
-    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:130px}
 
     input,select,textarea{background:#0b1223;border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
@@ -115,19 +96,21 @@
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
     .modal{background:#0b1223;border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
 
-    /* Botonera inferior recargos */
-    .actions-line{
-      display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap
-    }
-    .left-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-    .right-actions{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    /* Botonera recargos */
+    .actions-line{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
+    .left-actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+    .right-actions{margin-left:auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
 
-    /* Historial responsive */
-    .history-card{border:1px solid var(--border);border-radius:10px;padding:10px;margin:10px 0;background:#0b1223}
-    .history-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
-    .history-body{margin-top:6px}
+    /* Historial con subtabs */
+    .subtabs{display:flex;gap:6px;margin:6px 0 10px;flex-wrap:wrap}
+    .subtab{padding:6px 10px;border:1px solid var(--border);border-radius:10px;background:#0b1223;color:var(--muted);cursor:pointer}
+    .subtab.active{color:#fff;background:linear-gradient(180deg,var(--blue2),var(--blue3));border:0}
+    .history-toolbar{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin:6px 0}
+    .history-row{border:1px solid var(--border);border-radius:10px;padding:8px;margin:8px 0;background:#0b1223}
+    .history-row-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .history-row-body{display:none;margin-top:8px}
+    .history-row.open .history-row-body{display:block}
     .history-meta{color:var(--muted);font-size:12px}
-    .history-buttons{display:flex;gap:8px;align-items:center}
 
     @media (max-width:600px){
       html,body{font-size:13px}
@@ -135,7 +118,7 @@
       .section{padding:10px}
       .row{gap:6px}
       button{padding:7px 9px}
-      table{min-width:0} /* evita scroll lateral feo */
+      table{min-width:0}
       .brand img{width:28px;height:28px}
     }
   </style>
@@ -181,7 +164,8 @@
         <label>Faltantes</label>
         <input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
         <button class="btn" id="btnActualizar" title="Refrescar lista">🔄 Actualizar</button>
-        <button class="btn" id="btnAgregarExtra" title="Agregar extra (observación)">➕ Agregar extra</button>
+        <button class="btn" id="btnCopiarListado" title="Copiar sólo el orden (sin pasivos)">Copiar orden</button>
+        <button class="btn" id="btnAgregarExtra" title="Agregar extra">➕ Agregar extra</button>
         <button class="danger" id="btnReiniciar" style="margin-left:auto">⚠️ Reiniciar rotación</button>
       </div>
 
@@ -250,7 +234,7 @@
       <div class="tableWrap">
         <table id="tablaGeneral" style="margin-top:6px">
           <thead><tr>
-            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th><th>Acciones</th>
+            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -264,11 +248,26 @@
 
     <!-- TAB: HISTORIAL -->
     <section class="section" data-panel="historial" style="display:none">
-      <h2>Historial de guardias</h2>
-      <div id="histCards"></div>
-      <div class="row" style="margin:6px 0 8px;justify-content:flex-end">
-        <button class="danger" id="btnBorrarHistorial" style="display:none">Borrar todo el historial</button>
+      <h2>Historial</h2>
+
+      <!-- Subtabs -->
+      <div class="subtabs">
+        <div class="subtab active" data-sub="rec">Recargos</div>
+        <div class="subtab" data-sub="chg">Cambios</div>
       </div>
+
+      <!-- Toolbars -->
+      <div id="toolbarRec" class="history-toolbar">
+        <button class="btn" id="btnGuardarLlamados">Guardar llamados (último)</button>
+        <button class="danger" id="btnBorrarHistRec">Borrar historial de recargos</button>
+      </div>
+      <div id="toolbarChg" class="history-toolbar" style="display:none">
+        <button class="danger" id="btnBorrarHistChg">Borrar historial de cambios</button>
+      </div>
+
+      <!-- Contenedores -->
+      <div id="histRec"></div>
+      <div id="histChg" style="display:none"></div>
     </section>
   </main>
 
@@ -277,10 +276,10 @@
     <div class="modal">
       <h3 style="margin:0 0 8px;font-size:15px">Acciones para <span id="modalNombre"></span></h3>
       <div class="row">
-        <button class="btn btn-art13 icon-btn" onclick="modalSetArt('13')">13</button>
-        <button class="btn btn-art26 icon-btn" onclick="modalSetArt('26')">26</button>
-        <button class="btn btn-secondary icon-btn" onclick="modalSetArt('clear')" title="Quitar ART">✕</button>
-        <button class="btn btn-pres04" onclick="modalTogglePresente04()">Presente 04</button>
+        <button class="btn danger icon-btn" onclick="modalSetArt('13')">13</button>
+        <button class="btn warn icon-btn" onclick="modalSetArt('26')">26</button>
+        <button class="btn icon-btn" onclick="modalSetArt('clear')" title="Quitar ART">✕</button>
+        <button class="btn primary" onclick="modalTogglePresente04()">Presente 04</button>
       </div>
       <hr style="border-color:#1f2937; margin:10px 0">
       <div class="row">
@@ -293,42 +292,42 @@
       </div>
       <hr style="border-color:#1f2937; margin:10px 0">
       <div class="row">
-        <button class="btn btn-autorizado" onclick="modalToggleAutorizado()">AUTORIZADO</button>
-        <button class="btn btn-saltear" onclick="modalToggleSalteado()">SALTEAR</button>
+        <button class="btn" onclick="modalToggleAutorizado()">AUTORIZADO</button>
+        <button class="btn" onclick="modalToggleSalteado()">SALTEAR</button>
       </div>
-      <div class="row justify-end" style="margin-top:6px;justify-content:flex-end">
+      <div class="row" style="margin-top:6px;justify-content:flex-end">
         <button class="primary" onclick="closeModal()">Listo</button>
       </div>
     </div>
   </div>
 
 <script>
-/* ===== util compat ===== */
+/* ===== utils ===== */
 function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
 function $qs(root, sel){ return (root||document).querySelector(sel); }
-
-/* Mostrar errores en Android antiguos */
-window.addEventListener('error', function(e){ try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
+window.addEventListener('error', e=>{ try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
 
 /* ===== Modelo =====
 Persona: {id, nombre, dni, legajo, jerarquia, antiguedad, obs:{art:null|"13"|"26", licencia:{desde:null,hasta:null}, autorizado:boolean}, order, rorder, debeLista:number, salteado:boolean}
-Historial: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore, franco:1|2, extras:[{pabellon,obsRecargo}]}
+Historial recargos: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore, franco:1|2, extras:[{...}]}
+Historial cambios: {ts, fechaISO, tipo:'add'|'del'|'move', detalle:{...}}
 */
 const KEY='recargapp.v1';
 let ADMIN_PIN = localStorage.getItem('recargapp.admin.pin') || '1111';
 const SUPERADMIN_PIN='9999';
-function setAdminPin(newPin){ ADMIN_PIN=String(newPin); localStorage.setItem('recargapp.admin.pin', ADMIN_PIN); }
 
+function setAdminPin(newPin){ ADMIN_PIN=String(newPin); localStorage.setItem('recargapp.admin.pin', ADMIN_PIN); }
 function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
 function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function today(){ return new Date().toISOString().slice(0,10); }
 function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
-function addDays(iso, n){ var d=new Date(iso); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
+function addDays(iso,n){ var d=new Date(iso); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
 function inLicencia(p, fecha){ var L=p.obs.licencia; if(!L||!L.desde||!L.hasta) return false; return (fecha>=L.desde && fecha<=L.hasta); }
 function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var d=new Date(dateStr), b=new Date(baseStr); var next = new Date(d.getTime()+86400000); return next.toISOString().slice(0,10)===b.toISOString().slice(0,10); }
 
-let db = load() || { personas: [], historial: [], generalHead: 0 };
+let db = load() || { personas: [], historial: [], generalHead: 0, cambios: [] };
+if(!db.cambios) db.cambios=[];
 if(db.personas){ var base=Date.now(); db.personas.forEach(function(p,i){ if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); } if(typeof p.debeLista!=='number'){ p.debeLista=0; } if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; } }); }
 
 let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
@@ -336,9 +335,7 @@ let modalId=null;
 let role='viewer';
 let manualDateChanged=false;
 
-/* ===== Pila de deshacer =====
-  Guardamos snapshots mínimos antes de cada cambio (personas, prioridadHoy, generalHead, extras, francoPasivos)
-*/
+/* ===== Undo (Ctrl+Z lógico) ===== */
 const undoStack=[];
 function snapshot(label){
   undoStack.push({
@@ -349,24 +346,27 @@ function snapshot(label){
     extras: JSON.parse(JSON.stringify(dayExtras)),
     franco: getFranco()
   });
-  if(undoStack.length>50) undoStack.shift();
+  if(undoStack.length>80) undoStack.shift();
 }
 function restoreLast(){
   var last=undoStack.pop(); if(!last) return false;
-  db.personas = last.personas;
-  db.generalHead = last.generalHead;
-  prioridadHoy = last.prioridadHoy;
-  dayExtras = last.extras||[];
+  db.personas = last.personas; db.generalHead = last.generalHead;
+  prioridadHoy = last.prioridadHoy; dayExtras = last.extras||[];
   setFranco(last.franco||1);
-  save(); renderAll();
-  return true;
+  save(); renderAll(); return true;
+}
+
+/* ===== Logging de cambios del listado general ===== */
+function logCambio(tipo, detalle){
+  db.cambios.push({ts:Date.now(), fechaISO:today(), tipo:tipo, detalle:detalle});
+  if(db.cambios.length>2000) db.cambios.shift();
+  save();
 }
 
 /* ===== Accesos ===== */
 var lockState=$qs(null,'#lockState');
 var btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 var btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
-
 function isAdmin(){ return role==='admin' || role==='superadmin'; }
 function isSuper(){ return role==='superadmin'; }
 
@@ -389,7 +389,6 @@ if(btnCambiarPinAdmin){
     setAdminPin(np); showBanner('Contraseña de ADMIN actualizada ✅');
   };
 }
-
 btnToggleAdmin.onclick=function(){
   if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.title='Ingresar PIN'; btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
   var code=prompt('Ingresá PIN (Admin o Superadmin)');
@@ -399,37 +398,38 @@ btnToggleAdmin.onclick=function(){
 };
 
 /* ===== Tabs ===== */
-var tabs = $all('.tab');
-var panels = $all('[data-panel]');
+var tabs = $all('.tab'); var panels = $all('[data-panel]');
 tabs.forEach(function(t){
   t.addEventListener('click', function(){
-    tabs.forEach(function(x){ x.classList.remove('active'); }); t.classList.add('active');
+    tabs.forEach(x=>x.classList.remove('active')); t.classList.add('active');
     var name=t.getAttribute('data-tab');
-    panels.forEach(function(p){ p.style.display = (p.getAttribute('data-panel')===name)?'block':'none'; });
+    panels.forEach(p=>p.style.display = (p.getAttribute('data-panel')===name)?'block':'none');
     renderAll();
   });
 });
 
 /* ===== General ===== */
-var snapshotOrden=null;
-var editGeneral=false;
+var snapshotOrden=null, editGeneral=false;
 var nombreEl=$qs(null,'#nombre'), dniEl=$qs(null,'#dni'), legajoEl=$qs(null,'#legajo'), jerarquiaEl=$qs(null,'#jerarquia'), antigEl=$qs(null,'#antiguedad');
 
 $qs(null,'#btnAgregar').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
   if(!nombreEl.value.trim()) return alert('Nombre requerido');
   snapshot('agregar persona');
-  db.personas.push({ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false });
+  var p={ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false };
+  db.personas.push(p);
+  logCambio('add', {id:p.id, nombre:p.nombre});
   save(); nombreEl.value=''; dniEl.value=''; legajoEl.value=''; antigEl.value=''; renderGeneral(); renderHoy();
 };
 
 $qs(null,'#btnOrdenarCriterios').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
   snapshot('ordenar por jerarquía/antigüedad');
-  snapshotOrden = db.personas.map(function(p){return p.id;});
+  snapshotOrden = db.personas.map(p=>p.id);
   var rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1° (CG)':3,'AYTE 2° (CG)':4,'AYTE 3° (CG)':5,'AYTE 4° (CG)':6,'AYTE 5° (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9};
-  db.personas.sort(function(a,b){ if(rank[a.jerarquia]!==rank[b.jerarquia]) return rank[a.jerarquia]-rank[b.jerarquia]; return (b.antiguedad||0)-(a.antiguedad||0); });
-  var base=Date.now(); db.personas.forEach(function(p,i){ p.order=base+i; });
+  db.personas.sort((a,b)=> (rank[a.jerarquia]-rank[b.jerarquia]) || ((b.antiguedad||0)-(a.antiguedad||0)));
+  var base=Date.now(); db.personas.forEach((p,i)=>{ p.order=base+i; });
+  logCambio('bulk-reorder',{motivo:'jerarquia-antiguedad'});
   save(); renderGeneral(); renderHoy();
 };
 
@@ -438,6 +438,7 @@ $qs(null,'#btnDeshacerOrden').onclick=function(){
   if(!snapshotOrden) return alert('No hay orden anterior guardado');
   snapshot('deshacer orden criterios');
   var base=Date.now(); snapshotOrden.forEach(function(id,i){ var p=getById(id); if(p){ p.order=base+i; } });
+  logCambio('bulk-reorder',{motivo:'deshacer-criterios'});
   save(); renderGeneral(); renderHoy();
 };
 
@@ -450,7 +451,7 @@ $qs(null,'#btnEditarGeneral').onclick=function(){
 
 function renderGeneral(){
   var tbody=$qs(null,'#tablaGeneral tbody'); tbody.innerHTML='';
-  var list=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
+  var list=[].concat(db.personas).sort((a,b)=>a.order-b.order);
   list.forEach(function(p,i){
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
 
@@ -464,19 +465,23 @@ function renderGeneral(){
         ev.preventDefault(); tr.style.outline='';
         var fromId=ev.dataTransfer.getData('text/plain'); if(!fromId||fromId===p.id) return;
         snapshot('drag reorder general');
-        var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
-        var fromIdx=-1, toIdx=-1;
-        for(var z=0;z<ordered.length;z++){ if(ordered[z].id===fromId) fromIdx=z; if(ordered[z].id===p.id) toIdx=z; }
+        var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order);
+        var fromIdx=ordered.findIndex(x=>x.id===fromId);
+        var toIdx=ordered.findIndex(x=>x.id===p.id);
         if(fromIdx<0||toIdx<0) return;
         var moved=ordered.splice(fromIdx,1)[0]; ordered.splice(toIdx,0,moved);
-        var base=Date.now(); ordered.forEach(function(x,idx){ x.order=base+idx; });
+        var base=Date.now(); ordered.forEach((x,idx)=>{ x.order=base+idx; });
+        logCambio('move',{id:moved.id,nombre:moved.nombre,from:fromIdx+1,to:toIdx+1});
         save(); renderGeneral(); renderHoy();
       };
     }
 
     function cell(txt){ return '<td>'+txt+'</td>'; }
+    var delBtn = editGeneral ? " <button class='danger icon-btn' title='Eliminar' onclick=\"eliminar('"+p.id+"')\">✕</button>" : "";
     var cOrden = cell(i+1);
-    var cNombre = cell(p.nombre);
+    var cNombre = editGeneral
+      ? '<td>'+p.nombre+delBtn+'</td>'
+      : '<td>'+p.nombre+'</td>';
     var cDNI = editGeneral ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
     var cLegajo = editGeneral ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
     var jerOpts = ['AYTE MY (CG)','AYTE PR (CG)','AYTE 1° (CG)','AYTE 2° (CG)','AYTE 3° (CG)','AYTE 4° (CG)','AYTE 5° (CG)','SUBAYTE (CG)','- vacio -'].map(function(j){ return '<option '+(p.jerarquia===j?'selected':'')+'>'+j+'</option>'; }).join('');
@@ -489,11 +494,7 @@ function renderGeneral(){
     if(p.obs.autorizado) obsParts.push('AUTORIZADO'); if(p.salteado) obsParts.push('SALTEADO');
     var cObs = cell(obsParts.join(' · ')||'<span class="muted">—</span>');
 
-    var cAcc = editGeneral
-      ? "<td><button class='danger' onclick=\"eliminar('"+p.id+"')\">Eliminar</button></td>"
-      : "<td><span class='muted'>(Solo Admin)</span></td>";
-
-    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cAcc;
+    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs;
     if(!isAdmin()){
       $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo Admin'; });
     }
@@ -511,9 +512,10 @@ function eliminar(id){
   var p=getById(id); if(!p) return;
   if(!confirm('¿Eliminar a "'+p.nombre+'" de la lista general?')) return;
   snapshot('eliminar persona');
-  db.personas=db.personas.filter(function(x){return x.id!==id;}); save(); renderGeneral(); renderHoy();
+  db.personas=db.personas.filter(x=>x.id!==id);
+  logCambio('del',{id:id,nombre:p.nombre});
+  save(); renderGeneral(); renderHoy();
 }
-
 function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id===id) return db.personas[i]; return null; }
 
 /* ===== HOY ===== */
@@ -522,19 +524,20 @@ function setTitulo(){ $qs(null,'#tituloDia').textContent = 'RECARGOS '+fmtDM(fec
 setTitulo();
 fechaEl.addEventListener('change', function(){ setTitulo(); manualDateChanged=true; });
 
-/* Extras (ajenos a la lista, solo observación+pabellón, cuentan al inicio) */
-let dayExtras = []; // [{id, pabellon, obsRecargo}]
+/* Extras (ajenos a la lista; nombre/jerarquía opcionales; en copiado van con "-") */
+let dayExtras = []; // [{id, nombre?, jerarquia?, pabellon, obsRecargo}]
 $qs(null,'#btnAgregarExtra').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
-  var obs = prompt('Observación del extra (ej: Administrativo turno X)');
-  if(obs==null) return;
+  var nombre = prompt('Nombre del extra (opcional):') || '';
+  var jer = prompt('Jerarquía del extra (opcional):') || '';
+  var obs = prompt('Observación (opcional):') || '';
   snapshot('agregar extra');
-  dayExtras.push({ id:'extra_'+uid(), pabellon:'', obsRecargo: (obs||'').trim() });
+  dayExtras.push({ id:'extra_'+uid(), nombre:nombre.trim(), jerarquia:jer.trim(), pabellon:'', obsRecargo: obs.trim() });
   renderHoy();
 };
 
-function generalList(){ return [].concat(db.personas).sort(function(a,b){return a.order-b.order;}); }
-function elegibles(){ return [].concat(db.personas).sort(function(a,b){return (a.rorder||0)-(b.rorder||0);}); }
+function generalList(){ return [].concat(db.personas).sort((a,b)=>a.order-b.order); }
+function elegibles(){ return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.rorder||0)); }
 
 function getFranco(){ var f=$qs(null,'#francoPasivos'); return f? parseInt(f.value||'1',10):1; }
 function setFranco(v){ var f=$qs(null,'#francoPasivos'); if(f){ f.value=String(v||1); } }
@@ -546,9 +549,9 @@ function getPlan(){
   var base=elegibles();
 
   var prioIds=Object.keys(prioridadHoy);
-  var pART = base.filter(function(p){ return prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26'; });
-  var p04  = base.filter(function(p){ return prioridadHoy[p.id]==='ART04'; });
-  var resto= base.filter(function(p){ return prioIds.indexOf(p.id)===-1; });
+  var pART = base.filter(p=> prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26');
+  var p04  = base.filter(p=> prioridadHoy[p.id]==='ART04');
+  var resto= base.filter(p=> prioIds.indexOf(p.id)===-1);
 
   resto.sort(function(a,b){
     var da=(a.debeLista||0), dbb=(b.debeLista||0);
@@ -558,7 +561,7 @@ function getPlan(){
 
   var mostrados=[], numerados=[];
 
-  /* Extras al inicio (cuentan) */
+  /* Extras al inicio (cuentan en la asignación, pero en copiado van con "-") */
   dayExtras.forEach(function(ex){
     mostrados.push({extra:true, data:ex});
     numerados.push(ex);
@@ -570,9 +573,9 @@ function getPlan(){
     mostrados.push({p:p, saltar:saltar, saltPorFlag:saltPorFlag});
     if(!saltar) numerados.push(p);
   }
-  pART.forEach(function(p){ pushPersona(p,true); });
-  p04.forEach(function(p){ pushPersona(p,true); });
-  resto.forEach(function(p){ pushPersona(p,false); });
+  pART.forEach(p=>pushPersona(p,true));
+  p04.forEach(p=>pushPersona(p,true));
+  resto.forEach(p=>pushPersona(p,false));
 
   var asignados = numerados.slice(0,falt);
   var idxUlt=falt-1;
@@ -644,11 +647,11 @@ function renderHoy(){
 
   var plan=getPlan();
   plan.mostrados.forEach(function(item){
-    // Extras
     if(item.extra){
       var ex=item.data;
       var tr=document.createElement('tr'); tr.setAttribute('data-id', ex.id);
       var numCell=document.createElement('td'); numCell.textContent = (++n);
+
       var pabSel=document.createElement('select');
       ['', 'Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Portón'].forEach(function(x){
         var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
@@ -663,7 +666,7 @@ function renderHoy(){
       actCell.appendChild(actions);
 
       tr.appendChild(numCell);
-      tr.insertAdjacentHTML('beforeend', "<td><i>Extra</i></td><td>—</td><td><span class='pill'>EXTRA</span></td>");
+      tr.insertAdjacentHTML('beforeend', "<td>"+(ex.nombre||'<i>Extra</i>')+"</td><td>"+(ex.jerarquia||'—')+"</td><td><span class='pill'>EXTRA</span></td>");
       var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
       var obsCell=document.createElement('td'); obsCell.appendChild(obsRecInput);
       tr.appendChild(pabCell); tr.appendChild(obsCell); tr.appendChild(actCell);
@@ -701,8 +704,8 @@ function renderHoy(){
 
     var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
     actions.innerHTML = "<button class='btn icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo Admin'":"")+">⚙️</button>";
-    if(p.obs && p.obs.art==='13') actions.innerHTML += "<button class='btn icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART13')\">13</button>";
-    if(p.obs && p.obs.art==='26') actions.innerHTML += "<button class='btn icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART26')\">26</button>";
+    if(p.obs && p.obs.art==='13') actions.innerHTML += "<button class='btn danger icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART13')\">13</button>";
+    if(p.obs && p.obs.art==='26') actions.innerHTML += "<button class='btn warn icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART26')\">26</button>";
     actCell.appendChild(actions);
 
     tr.appendChild(numCell);
@@ -714,7 +717,7 @@ function renderHoy(){
   // Pasivos
   var tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML='';
   plan.pasivos.forEach(function(p,i){
-    if(!p.id){ return; } // si vino un extra en pasivos por error, ignorar
+    if(!p.id){ return; }
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
     tr.innerHTML="<td>"+(i+1)+"</td><td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>";
     tpas.appendChild(tr);
@@ -724,7 +727,7 @@ function renderHoy(){
 function quitarExtra(id){
   if(!isAdmin()) return;
   snapshot('quitar extra');
-  dayExtras = dayExtras.filter(function(x){return x.id!==id;});
+  dayExtras = dayExtras.filter(x=>x.id!==id);
   renderHoy();
 }
 
@@ -735,14 +738,11 @@ function togglePresente(id,tipo){
   renderHoy();
 }
 
-/* Copiar orden del día (sin pasivos) */
-$qs(null,'#btnCopiarListado')?.addEventListener('click', function(){
-  var fecha=fechaEl.value;
-  var plan=getPlan();
-  var lines=['RECARGOS '+fmtDM(fecha),''];
-  var n=0;
+/* Copiar ORDEN (sin pasivos) */
+$qs(null,'#btnCopiarListado').addEventListener('click', function(){
+  var fecha=fechaEl.value, plan=getPlan();
+  var lines=['RECARGOS '+fmtDM(fecha),'']; var n=0;
 
-  // Map pabellones a texto corto
   function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
 
   var tbRows=$all('#tablaDia tbody tr[data-id]');
@@ -754,9 +754,9 @@ $qs(null,'#btnCopiarListado')?.addEventListener('click', function(){
 
   plan.mostrados.forEach(function(item){
     if(item.extra){
-      var ex=item.data; var row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab);
-      var obs = row.obs?(' ('+row.obs+')'):'';
-      lines.push((++n)+') '+ 'Extra '+ obs + (pabTxt?('  '+pabTxt):''));
+      var ex=item.data, row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs?(' ('+row.obs+')'):'';
+      var nombreOut = (ex.nombre || ex.obsRecargo || '—').trim();
+      lines.push('- '+ nombreOut + (pabTxt?('  '+pabTxt):'') + (obs||''));
       return;
     }
     var p=item.p, saltar=item.saltar, prio=prioridadHoy[p.id], per=getById(p.id)||{};
@@ -768,87 +768,128 @@ $qs(null,'#btnCopiarListado')?.addEventListener('click', function(){
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
 
     var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
-
-    if(!saltar){
-      lines.push((++n)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
-    }else{
-      lines.push('- '+p.nombre+' '+tags.join(' '));
-    }
+    if(!saltar){ lines.push((++n)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):'')); }
+    else{ lines.push('- '+p.nombre+' '+tags.join(' ')); }
   });
 
   copyText(lines.join('\n'));
 });
 
+/* Copiar resultado final (recargos + pasivos) */
+$qs(null,'#btnCopiarResultado').onclick=function(){
+  var fecha=fechaEl.value, plan=getPlan(), falt=Math.max(0, parseInt(faltEl.value||'0',10));
+  var lines=['RECARGOS '+fmtDM(fecha),''];
+  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
+
+  var tbRows=$all('#tablaDia tbody tr[data-id]'); var byId={};
+  tbRows.forEach(function(r){ var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]'); byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''}; });
+
+  var conteo=0;
+  plan.mostrados.forEach(function(item){
+    if(item.extra){
+      var ex=item.data, row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab); var obs=row.obs?(' ('+row.obs+')'):'';
+      var nombreOut = (ex.nombre || ex.obsRecargo || '—').trim();
+      // NO enumera extras
+      lines.push('- '+ nombreOut + (pabTxt?('  '+pabTxt):'') + (obs||''));
+      return;
+    }
+    var p=item.p, saltar=item.saltar;
+    var prio=prioridadHoy[p.id], per=getById(p.id)||{};
+    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
+    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
+    if(per.salteado) tags.push('(salteado)');
+    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
+    if(inLicencia(per, fecha)) tags.push('(licencia)');
+    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
+
+    var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
+
+    if(!saltar && conteo<falt){
+      lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
+    }else if(saltar){
+      lines.push('- '+p.nombre+' '+tags.join(' '));
+    }
+  });
+
+  // Pasivos (Franco 1° o 2°)
+  var franco=getFranco();
+  if(franco===1){ lines.push('','Pasivos',''); }
+  else{
+    var manana = fmtDM(addDays(fecha,1));
+    lines.push('','Pasivos ('+manana+')','');
+  }
+  plan.pasivos.forEach(function(p,i){
+    if(!p.id) return;
+    var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
+    var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
+    var obs = obsRec? (' ('+obsRec+')') : '';
+    lines.push((i+1)+') '+p.nombre+obs);
+  });
+
+  copyText(lines.join('\n'));
+};
+
 function copyText(txt){
   (navigator.clipboard && navigator.clipboard.writeText)
-    ? navigator.clipboard.writeText(txt).then(function(){ alert('Texto copiado'); })
-    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,function(m){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[m];})+'</pre>'); w.document.close(); w.focus(); })();
+    ? navigator.clipboard.writeText(txt).then(()=>alert('Texto copiado'))
+    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))+'</pre>'); w.document.close(); w.focus(); })();
 }
 
 /* Confirmar guardia */
 $qs(null,'#btnConfirmar').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
-  snapshot('confirmar guardia (pre)'); // para deshacer a estado anterior sin borrar historial
+  snapshot('confirmar guardia (pre)');
 
   var plan=getPlan();
   var idsAsignados={}; plan.asignados.forEach(function(p){ if(p.id) idsAsignados[p.id]=true; });
 
-  // Leer filas para obtener pab/obs tanto de personas como de extras
+  // Leer filas para obtener pab/obs (personas + extras)
   var rows=$all('#tablaDia tbody tr');
   var recargos=[]; var extrasForHist=[];
   rows.forEach(function(r){
     var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
     var pab= sel?sel.value:''; var obsRec=inp?inp.value.trim():'';
 
-    // Extras
     if(id && id.indexOf('extra_')===0){
-      extrasForHist.push({id:id, pabellon:pab, obsRecargo:obsRec});
+      var ex=dayExtras.find(x=>x.id===id)||{};
+      extrasForHist.push({id:id, nombre:ex.nombre||'', jerarquia:ex.jerarquia||'', pabellon:pab, obsRecargo:obsRec});
       return;
     }
-
     if(!id || !idsAsignados[id]) return;
     var per=getById(id); recargos.push({id:id,nombre:per?per.nombre:'',pabellon:pab,obsRecargo:obsRec});
   });
 
-  var pasivos=plan.pasivos.filter(function(x){return x.id;}); // sólo personas reales
-  var fecha=fechaEl.value;
-  var falt=Math.max(0, parseInt(faltEl.value||'0',10));
+  var pasivos=plan.pasivos.filter(x=>x.id);
+  var fecha=fechaEl.value, falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var glist=generalList(); if(glist.length===0){ alert('No hay personal'); return; }
   if(db.generalHead>=glist.length) db.generalHead=0;
 
   // Ventana según lista general
   var ventanaIdx=[], idx=db.generalHead;
   for(var k=0;k<falt && k<glist.length;k++){ ventanaIdx.push(idx); idx=(idx+1)%glist.length; }
-  var ventanaIds=ventanaIdx.map(function(i){return glist[i].id;});
+  var ventanaIds=ventanaIdx.map(i=>glist[i].id);
 
   // Asignados reales
-  var asignadosIds={}; recargos.forEach(function(r){ asignadosIds[r.id]=true; });
+  var asignadosIds={}; recargos.forEach(r=>asignadosIds[r.id]=true);
 
   // Reglas DEBE (cap 1)
   ventanaIds.forEach(function(id){
     var p=getById(id); if(!p) return;
-    var prio=prioridadHoy[id];
-    var lic=inLicencia(p,fecha);
+    var prio=prioridadHoy[id]; var lic=inLicencia(p,fecha);
     var quedoPorLista = !!asignadosIds[id] && !(prio==='ART13' || prio==='ART26' || prio==='ART04');
-    if(quedoPorLista){
-      if((p.debeLista||0)>0) p.debeLista=0;
-    }else{
-      if(lic) return;
-      if(p.obs.art || p.obs.autorizado || prio){
-        if((p.debeLista||0)<1) p.debeLista=1;
-      }
-    }
+    if(quedoPorLista){ if((p.debeLista||0)>0) p.debeLista=0; }
+    else{ if(lic) return; if(p.obs.art || p.obs.autorizado || prio){ if((p.debeLista||0)<1) p.debeLista=1; } }
   });
 
   // Avanzar puntero general
   db.generalHead = (db.generalHead + falt) % glist.length;
 
-  // Reubicar rorder de asignados (solo personas, no extras)
+  // Reubicar rorder de asignados (solo personas)
   var baseOrder=Date.now();
-  db.personas.forEach(function(p){ if(p.rorder==null) p.rorder=baseOrder; });
+  db.personas.forEach(p=>{ if(p.rorder==null) p.rorder=baseOrder; });
   recargos.forEach(function(r,i){ var p=getById(r.id); if(p) p.rorder = baseOrder + i + 1; });
 
-  // Limpiar ART 13/26 si se presentaron
+  // Limpiar ART si se presentaron
   for(var pid in prioridadHoy){
     var why=prioridadHoy[pid];
     if(why==='ART13'||why==='ART26'){ var per=getById(pid); if(per){ per.obs.art=null; } }
@@ -861,27 +902,22 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Limpiar banderas del día
   db.personas.forEach(function(p){ p.obs.autorizado=false; p.salteado=false; });
 
-  // Layout inline para historial (incluye extras y no numerados en su sitio)
+  // Layout inline para historial (incluye extras y no numerados)
   var conteo=0, layout=[];
-  var tbRows=$all('#tablaDia tbody tr');
   function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
+  var tbRows=$all('#tablaDia tbody tr');
 
   plan.mostrados.forEach(function(item){
     if(item.extra){
-      // extras contados SI están dentro de los primeros "falt"
-      if(conteo<falt){
-        var r = tbRows.find? tbRows.find(x=>x.getAttribute('data-id')===item.data.id) : null;
-        var sel=r? r.querySelector('select'):null; var pab=sel?sel.value:'';
-        var inp=r? r.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
-        layout.push({id:item.data.id,nombre:'Extra',counted:true,n:conteo+1,pabellon:pab,obsRecargo:obsRec,tags:['(extra)']});
-        conteo++;
-      }
+      var r = tbRows.find? tbRows.find(x=>x.getAttribute('data-id')===item.data.id) : null;
+      var sel=r? r.querySelector('select'):null; var pab=sel?sel.value:'';
+      var inp=r? r.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
+      layout.push({id:item.data.id,nombre:(item.data.nombre||'Extra'),counted:false,tags:['(extra)'],pabellon:pab,obsRecargo:obsRec});
       return;
     }
     var p=item.p, saltar=item.saltar;
     var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
-    var tags=[];
-    if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
+    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
     if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
     if(per.salteado) tags.push('(salteado)');
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
@@ -903,21 +939,20 @@ $qs(null,'#btnConfirmar').onclick=function(){
   db.historial.push({
     fecha:fmtDM(fecha),
     recargos:recargos,
-    pasivos:pasivos.map(function(x){return {id:x.id,nombre:x.nombre};}),
+    pasivos:pasivos.map(x=>({id:x.id,nombre:x.nombre})),
     llamados:[],
     layout:layout,
-    personasBefore: JSON.parse(JSON.stringify(undoStack[undoStack.length-1]?.personas || db.personas)), // snapshot previo
+    personasBefore: JSON.parse(JSON.stringify(undoStack[undoStack.length-1]?.personas || db.personas)),
     generalHeadBefore: undoStack[undoStack.length-1]?.generalHead ?? db.generalHead,
     franco:getFranco(),
     extras:extrasForHist
   });
   save();
-  prioridadHoy={};
-  dayExtras=[];
+  prioridadHoy={}; dayExtras=[];
 
-  // Avanzar 2 días solo si NO cambiaste la fecha manualmente
+  // Avanzar 3 días solo si NO cambiaste la fecha manualmente
   if(!manualDateChanged){
-    fechaEl.value = addDays(fechaEl.value, 2);
+    fechaEl.value = addDays(fechaEl.value, 3);
     setTitulo();
   }
   manualDateChanged=false;
@@ -926,246 +961,225 @@ $qs(null,'#btnConfirmar').onclick=function(){
   alert('Guardia guardada. Los llamados se marcan en la guardia siguiente (Historial).');
 };
 
-/* Deshacer mínimo (Ctrl+Z) */
+/* Deshacer mínimo */
 $qs(null,'#btnUndo').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
   if(!undoStack.length) return alert('No hay cambios para deshacer');
-  var ok=restoreLast();
-  if(!ok) alert('No se pudo deshacer');
+  if(!restoreLast()) alert('No se pudo deshacer');
 };
 
-/* ===== Copiar resultado final (recargos + pasivos) ===== */
-$qs(null,'#btnCopiarResultado').onclick=function(){
-  var fecha=fechaEl.value;
-  var plan=getPlan();
-  var falt=Math.max(0, parseInt(faltEl.value||'0',10));
-  var lines=['RECARGOS '+fmtDM(fecha),''];
+/* ===== Historial (subtabs) ===== */
+const subRec=$qs(null,'.subtab[data-sub="rec"]');
+const subChg=$qs(null,'.subtab[data-sub="chg"]');
+subRec.addEventListener('click', ()=>{
+  subRec.classList.add('active'); subChg.classList.remove('active');
+  $qs(null,'#histRec').style.display='block';
+  $qs(null,'#histChg').style.display='none';
+  $qs(null,'#toolbarRec').style.display='flex';
+  $qs(null,'#toolbarChg').style.display='none';
+});
+subChg.addEventListener('click', ()=>{
+  subChg.classList.add('active'); subRec.classList.remove('active');
+  $qs(null,'#histRec').style.display='none';
+  $qs(null,'#histChg').style.display='block';
+  $qs(null,'#toolbarRec').style.display='none';
+  $qs(null,'#toolbarChg').style.display='flex';
+});
 
-  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
-
-  var tbRows=$all('#tablaDia tbody tr[data-id]');
-  var byId={}; tbRows.forEach(function(r){
-    var id=r.getAttribute('data-id');
-    var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
-    byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''};
-  });
-
-  // recorrer mostrados contando solo los primeros "falt"
-  var conteo=0;
-  plan.mostrados.forEach(function(item){
-    if(conteo>=falt && !(item.p && (item.saltar))) return;
-
-    if(item.extra){
-      if(conteo<falt){
-        var row=byId[item.data.id]||{}; var pabTxt=mapPab(row.pab); var obs=row.obs?(' ('+row.obs+')'):'';
-        lines.push((++conteo)+') '+'Extra'+obs+(pabTxt?('  '+pabTxt):''));
-      }
-      return;
-    }
-
-    var p=item.p, saltar=item.saltar;
-    var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
-    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
-    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
-    if(per.salteado) tags.push('(salteado)');
-    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia)');
-    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-
-    var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
-
-    if(!saltar && conteo<falt){
-      lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
-    }else if(saltar){
-      lines.push('- '+p.nombre+' '+tags.join(' '));
-    }
-  });
-
-  // Pasivos (considerar Franco 1° o 2°)
-  var franco=getFranco();
-  if(franco===1){
-    lines.push('','Pasivos','');
-  }else{
-    var manana = fmtDM(addDays(fecha,1));
-    lines.push('','Pasivos ('+manana+')','');
-  }
-  plan.pasivos.forEach(function(p,i){
-    if(!p.id){ return; } // ignorar extras
-    var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]'); // puede no existir
-    var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
-    var obs = obsRec? (' ('+obsRec+')') : '';
-    lines.push((i+1)+') '+p.nombre+obs);
-  });
-
-  copyText(lines.join('\n'));
-};
-
-/* ===== Historial ===== */
-/* Hacemos "cards" responsive; checkboxes solo, sin repetir nombres; botón Copiar por guardia */
-function renderHistorial(){
-  var cont=$qs(null,'#histCards'); cont.innerHTML='';
+function renderHistorialRec(){
+  var cont=$qs(null,'#histRec'); cont.innerHTML='';
   for(var idx=db.historial.length-1; idx>=0; idx--){
     var h=db.historial[idx];
     var esUltimo=(idx===db.historial.length-1);
 
     // Resumen cantidades
     var cantRec = (h.layout||[]).filter(x=>x.counted).length || (h.recargos||[]).length;
-    var cantPas = (h.pasivos||[]).length;
     var cantLlam = (h.llamados||[]).length;
 
-    // Lista recargos render
-    var recListHtml='';
-    if(h.layout && h.layout.length){
-      recListHtml = h.layout.map(function(x){
-        if(x.counted){
-          var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-          var pabTxt=m[x.pabellon||'']||x.pabellon||'';
-          var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          var obs=x.obsRecargo?(' — Obs: '+x.obsRecargo):'';
-          var pab=pabTxt?(' — Pab: '+pabTxt):'';
-          return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>';
-        }else{
-          var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          return '<li>- '+x.nombre+tags2+'</li>';
-        }
-      }).join('');
-    }else{
-      recListHtml = (h.recargos||[]).map(function(x,i){
-        return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
-      }).join('') || '<li>—</li>';
-    }
+    // Head (línea única)
+    var row=document.createElement('div'); row.className='history-row';
+    row.innerHTML =
+      "<div class='history-row-head'>"+
+        "<div><b>"+(h.fecha||'')+"</b> · <span class='history-meta'>Recargos: "+cantRec+" · Pasivos llamados: "+cantLlam+"</span></div>"+
+        "<div>"+
+          "<button class='btn' data-copy='"+idx+"'>Copiar</button> "+
+          (isSuper()? "<button class='danger' data-del='"+idx+"'>Borrar</button>": "")+
+          " <button class='btn' data-toggle='"+idx+"'>Ver</button>"+
+        "</div>"+
+      "</div>"+
+      "<div class='history-row-body' id='body-"+idx+"'></div>";
 
-    var pasList = (h.pasivos||[]).map(function(x,i){
-      var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
-      return '<li>'+(i+1)+') '+nombre+'</li>';
-    }).join('') || '<li>—</li>';
-
-    // Checkboxes de llamados (sin repetir nombres)
-    var llam = (h.pasivos||[]).map(function(x){
-      var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
-      return "<input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+(esUltimo?'':'disabled')+" "+checked+" title='Pasivo "+(x.id||'')+"'>";
-    }).join(' ');
-
-    // Botón copiar del historial (usa el snapshot de ese día)
-    function buildCopyFromHistory(H){
-      var fechaTxt = H.fecha || '';
-      var lines=['RECARGOS '+fechaTxt,''];
-      // recargos desde layout si existe
-      if(H.layout && H.layout.length){
-        H.layout.forEach(function(x){
+    // Body (tarjeta)
+    (function buildBody(){
+      var body=row.querySelector('#body-'+idx);
+      // Recargos
+      var recListHtml='';
+      if(h.layout && h.layout.length){
+        recListHtml = h.layout.map(function(x){
           if(x.counted){
             var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
             var pabTxt=m[x.pabellon||'']||x.pabellon||'';
             var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-            var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):'';
-            lines.push(x.n+') '+x.nombre+tags+obs+(pabTxt?('  '+pabTxt):''));
+            var obs=x.obsRecargo?(' — Obs: '+x.obsRecargo):'';
+            var pab=pabTxt?(' — Pab: '+pabTxt):'';
+            return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>';
           }else{
             var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-            lines.push('- '+x.nombre+tags2);
+            return '<li>- '+x.nombre+tags2+'</li>';
           }
-        });
+        }).join('');
       }else{
-        (H.recargos||[]).forEach(function(x,i){
-          lines.push((i+1)+') '+x.nombre+(x.obsRecargo?(' ('+x.obsRecargo+')'):'')+(x.pabellon?('  '+x.pabellon):''));
-        });
+        recListHtml = (h.recargos||[]).map(function(x,i){
+          return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
+        }).join('') || '<li>—</li>';
       }
 
-      // Pasivos con franco
-      var pasHeader='Pasivos';
-      if(H.franco===2){
-        // H.fecha es dd/mm, pasar a próximo día rápido
-        var parts = (H.fecha||'').split('/');
-        if(parts.length===2){
-          var y = new Date().getFullYear(); // referencia
-          var d0 = new Date(y, parseInt(parts[1],10)-1, parseInt(parts[0],10));
-          var d1 = new Date(d0.getTime()+86400000);
-          var dd=('0'+d1.getDate()).slice(-2)+'/'+('0'+(d1.getMonth()+1)).slice(-2);
-          pasHeader = 'Pasivos ('+dd+')';
-        }
-      }
-      lines.push('',pasHeader,'');
-      (H.pasivos||[]).forEach(function(x,i){
-        var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
-        lines.push((i+1)+') '+nombre);
-      });
+      // Pasivos con checkbox al lado del nombre
+      var pasHtml = (h.pasivos||[]).map(function(x,i){
+        var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
+        var disabled = esUltimo? '' : 'disabled';
+        return '<li>'+(i+1)+') '+(getById(x.id)?.nombre||x.nombre)+' &nbsp; <input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+checked+' '+disabled+'></li>';
+      }).join('') || '<li>—</li>';
 
-      return lines.join('\n');
-    }
-
-    var card=document.createElement('div'); card.className='history-card';
-    card.innerHTML =
-      "<div class='history-head'>"+
-        "<div><b>"+(h.fecha||'')+"</b> · <span class='history-meta'>Recargos: "+cantRec+" · Pasivos: "+cantPas+" · Llamados: "+cantLlam+"</span></div>"+
-        "<div class='history-buttons'>"+
-          "<button class='btn' data-copy='"+idx+"'>Copiar</button>"+
-          (isSuper()? "<button class='danger' data-del='"+idx+"'>Borrar</button>": "")+
-        "</div>"+
-      "</div>"+
-      "<div class='history-body'>"+
+      body.innerHTML =
         "<div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0'>"+recListHtml+"</ul></div>"+
-        "<div style='margin-top:6px'><b>Pasivos</b><ul style='padding-left:18px;margin:6px 0'>"+pasList+"</ul></div>"+
-        "<div style='margin-top:6px'><b>Marcar llamados (último):</b> "+(llam||'—')+"</div>"+
-      "</div>";
+        "<div style='margin-top:6px'><b>Pasivos</b><ul style='padding-left:18px;margin:6px 0'>"+pasHtml+"</ul></div>";
+    })();
 
     // acciones
-    card.querySelector('[data-copy]')?.addEventListener('click', function(){
-      copyText(buildCopyFromHistory(h));
+    row.querySelector('[data-toggle]').addEventListener('click', function(){
+      row.classList.toggle('open');
+      this.textContent = row.classList.contains('open')? 'Ocultar' : 'Ver';
     });
-    card.querySelector('[data-del]')?.addEventListener('click', function(){
+    row.querySelector('[data-copy]').addEventListener('click', function(){
+      copyText(buildCopyFromHistory(db.historial[idx]));
+    });
+    row.querySelector('[data-del]')?.addEventListener('click', function(){
       var idxDel=parseInt(this.getAttribute('data-del'),10);
-      borrarHist(idxDel);
+      borrarHistRec(idxDel);
     });
 
-    cont.appendChild(card);
+    cont.appendChild(row);
+  }
+
+  function buildCopyFromHistory(H){
+    var fechaTxt = H.fecha || '';
+    var lines=['RECARGOS '+fechaTxt,''];
+    if(H.layout && H.layout.length){
+      H.layout.forEach(function(x){
+        if(x.counted){
+          var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
+          var pabTxt=m[x.pabellon||'']||x.pabellon||'';
+          var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+          var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):'';
+          lines.push(x.n+') '+x.nombre+tags+obs+(pabTxt?('  '+pabTxt):''));
+        }else{
+          var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+          lines.push('- '+x.nombre+tags2);
+        }
+      });
+    }else{
+      (H.recargos||[]).forEach(function(x,i){
+        lines.push((i+1)+') '+x.nombre+(x.obsRecargo?(' ('+x.obsRecargo+')'):'')+(x.pabellon?('  '+x.pabellon):''));
+      });
+    }
+    // Pasivos (con franco)
+    var pasHeader='Pasivos';
+    if(H.franco===2){
+      var parts = (H.fecha||'').split('/');
+      if(parts.length===2){
+        var y = new Date().getFullYear();
+        var d0 = new Date(y, parseInt(parts[1],10)-1, parseInt(parts[0],10));
+        var d1 = new Date(d0.getTime()+86400000);
+        var dd=('0'+d1.getDate()).slice(-2)+'/'+('0'+(d1.getMonth()+1)).slice(-2);
+        pasHeader = 'Pasivos ('+dd+')';
+      }
+    }
+    lines.push('',pasHeader,'');
+    (H.pasivos||[]).forEach(function(x,i){
+      var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
+      lines.push((i+1)+') '+nombre);
+    });
+    return lines.join('\n');
   }
 }
 
-function borrarHist(idx){
-  if(!isSuper()) return alert('Solo superadmin');
-  if(!confirm('¿Borrar registro del historial?')) return;
-  db.historial.splice(idx,1); save(); renderHistorial();
+/* Historial de cambios */
+function renderHistorialChg(){
+  var cont=$qs(null,'#histChg'); cont.innerHTML='';
+  // Agrupar por fecha
+  var byDate={};
+  db.cambios.forEach(function(c){
+    var d=c.fechaISO||today();
+    (byDate[d]=byDate[d]||[]).push(c);
+  });
+  var fechas=Object.keys(byDate).sort().reverse();
+  fechas.forEach(function(f){
+    var items=byDate[f];
+    var row=document.createElement('div'); row.className='history-row';
+    row.innerHTML =
+      "<div class='history-row-head'>"+
+        "<div><b>"+f+"</b> · <span class='history-meta'>"+items.length+" cambio(s)</span></div>"+
+        "<div><button class='btn' data-toggle='chg-"+f+"'>Ver</button></div>"+
+      "</div>"+
+      "<div class='history-row-body' id='chg-"+f+"'>"+ items.map(function(c){
+        if(c.tipo==='add') return "<div>➕ Agregado: <b>"+(c.detalle.nombre||c.detalle.id)+"</b></div>";
+        if(c.tipo==='del') return "<div>✖️ Eliminado: <b>"+(c.detalle.nombre||c.detalle.id)+"</b></div>";
+        if(c.tipo==='move') return "<div>↕️ Movido: <b>"+(c.detalle.nombre||c.detalle.id)+"</b> de "+c.detalle.from+" a "+c.detalle.to+"</div>";
+        if(c.tipo==='bulk-reorder') return "<div>🧮 Reordenación masiva ("+c.detalle.motivo+")</div>";
+        return "<div>• "+c.tipo+"</div>";
+      }).join('') +"</div>";
+    row.querySelector('[data-toggle]').addEventListener('click', function(){
+      var id=this.getAttribute('data-toggle'); var body=$qs(null,'#'+id);
+      var opened=body.style.display==='block'; body.style.display=opened?'none':'block';
+      this.textContent = opened? 'Ver' : 'Ocultar';
+    });
+    cont.appendChild(row);
+  });
 }
 
+/* Borrar historiales */
+function borrarHistRec(idx){
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Borrar registro del historial de recargos?')) return;
+  db.historial.splice(idx,1); save(); renderHistorialRec();
+}
+$qs(null,'#btnBorrarHistRec').onclick=function(){
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Borrar TODO el historial de recargos?')) return;
+  db.historial=[]; save(); renderHistorialRec(); alert('Historial de recargos borrado.');
+};
+$qs(null,'#btnBorrarHistChg').onclick=function(){
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Borrar TODO el historial de cambios?')) return;
+  db.cambios=[]; save(); renderHistorialChg(); alert('Historial de cambios borrado.');
+};
+
 /* Guardar llamados del último */
-$qs(null,'#btnGuardarLlamados')?.addEventListener('click', function(){
+$qs(null,'#btnGuardarLlamados').addEventListener('click', function(){
   if(!isAdmin()) return alert('Solo Admin');
   if(!db.historial.length) return;
   var idx=db.historial.length-1; var h=db.historial[idx];
   var checks=$all("input[type='checkbox'][data-h='"+idx+"']");
-  h.llamados = checks.filter(function(c){return c.checked;}).map(function(c){return c.getAttribute('data-id');});
+  h.llamados = checks.filter(c=>c.checked).map(c=>c.getAttribute('data-id'));
 
   // Reordenar próxima guardia: DEBE > pasivos NO llamados > resto > llamados
   var current=elegibles();
-  var debeIds=current.filter(function(p){return (p.debeLista||0)>0;}).map(function(p){return p.id;});
-  var notCalled=(h.pasivos||[]).filter(function(x){return (h.llamados||[]).indexOf(x.id)<0;}).map(function(x){return x.id;});
-  var called=(h.pasivos||[]).filter(function(x){return (h.llamados||[]).indexOf(x.id)>=0;}).map(function(x){return x.id;});
-  var restIds=current.map(function(p){return p.id;}).filter(function(id){ return notCalled.indexOf(id)<0 && called.indexOf(id)<0; });
+  var debeIds=current.filter(p=>(p.debeLista||0)>0).map(p=>p.id);
+  var notCalled=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)<0).map(x=>x.id);
+  var called=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)>=0).map(x=>x.id);
+  var restIds=current.map(p=>p.id).filter(id=> notCalled.indexOf(id)<0 && called.indexOf(id)<0);
 
   var seq=[].concat(debeIds, notCalled, restIds, called);
   var seen={}; var base=Date.now(), i=0;
   seq.forEach(function(id){ if(seen[id]) return; seen[id]=true; var p=getById(id); if(p) p.rorder=base+(i++); });
 
-  save(); renderAll(); alert('Llamados actualizados.');
+  save(); renderAll(); alert('Llamados guardados.');
 });
-
-/* Borrar TODO historial: botón visible solo superadmin */
-var btnBorrarHistorial=$qs(null,'#btnBorrarHistorial');
-if(btnBorrarHistorial){
-  btnBorrarHistorial.onclick=function(){
-    if(!isSuper()) return alert('Solo superadmin');
-    var pin=prompt('PIN Superadmin para borrar TODO el historial:');
-    if(pin!==SUPERADMIN_PIN){ if(pin!==null) alert('PIN incorrecto'); return; }
-    if(!confirm('¿Seguro que desea borrar TODO el historial? Esta acción no se puede deshacer.')) return;
-    db.historial=[]; save(); renderHistorial(); alert('Historial borrado.');
-  };
-}
 
 /* ===== Render maestro ===== */
 function renderAll(){
-  renderGeneral(); renderHoy(); renderHistorial();
-  // Mostrar botón borrar historial solo si superadmin
-  var bh=$qs(null,'#btnBorrarHistorial');
-  if(bh) bh.style.display = isSuper()? 'inline-block' : 'none';
+  renderGeneral(); renderHoy(); renderHistorialRec(); renderHistorialChg();
   // Mostrar cambiar PIN admin solo superadmin
   if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display = isSuper()? 'inline-block' : 'none';
 }
@@ -1192,63 +1206,27 @@ function seedIfEmpty(){
     localStorage.removeItem(KEY_TEST);
   }catch(e){ console.warn('Autotest falló', e); }
 })();
-
 seedIfEmpty();
 renderAll();
 
-/* ====== PWA: SW, instalar, updates ====== */
+/* ====== PWA ====== */
 (function () {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
       .catch(err => console.error('SW fail', err));
-
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (refreshing) return;
-      refreshing = true;
-      window.location.reload();
+      if (refreshing) return; refreshing = true; window.location.reload();
     });
   }
-
-  // Botón de instalar
   let deferredPrompt = null;
   const btnInstall = document.getElementById('btnInstall');
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (btnInstall) btnInstall.style.display = 'inline-block';
-  });
-
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (btnInstall) btnInstall.style.display = 'inline-block'; });
   if (btnInstall) {
     btnInstall.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      await deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      btnInstall.style.display = 'none';
+      if (!deferredPrompt) return; await deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; btnInstall.style.display = 'none';
     });
   }
-
-  // Aviso de actualización disponible
-  navigator.serviceWorker?.getRegistration().then((reg) => {
-    if (!reg) return;
-    function askToUpdate() {
-      if (confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?')) {
-        reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
-      }
-    }
-    if (reg.waiting) askToUpdate();
-    reg.addEventListener('updatefound', () => {
-      const newSW = reg.installing;
-      if (!newSW) return;
-      newSW.addEventListener('statechange', () => {
-        if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
-          askToUpdate();
-        }
-      });
-    });
-  });
 })();
 </script>
 
@@ -1257,34 +1235,16 @@ renderAll();
 </footer>
 
 <script>
-/* Mostrar versión desde el manifest */
 (async function updateVisibleVersion() {
   const el = document.getElementById('appVersion');
   if (!el) return;
-
-  const candidates = [
-    '/RecargApp/manifest.json',
-    '/RecargApp/manifest.webmanifest'
-  ];
-
-  let manifest = null;
-  let lastErr = null;
-
+  const candidates = ['/RecargApp/manifest.json','/RecargApp/manifest.webmanifest'];
+  let manifest = null, lastErr = null;
   for (const url of candidates) {
-    try {
-      const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status + ' on ' + url);
-      manifest = await res.json();
-      break;
-    } catch (e) { lastErr = e; }
+    try { const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' }); if (!res.ok) throw new Error('HTTP ' + res.status); manifest = await res.json(); break; }
+    catch (e) { lastErr = e; }
   }
-
-  if (!manifest) {
-    console.error('No pude leer manifest:', lastErr);
-    el.textContent = 'V?';
-    return;
-  }
-
+  if (!manifest) { console.error('No pude leer manifest:', lastErr); el.textContent = 'V?'; return; }
   const fromField = (manifest.version && String(manifest.version).trim()) || '';
   const fromName = (manifest.name && (manifest.name.match(/V\d+(\.\d+)*/i)?.[0] || '').trim()) || '';
   const v = fromField ? ('V' + fromField) : fromName;
