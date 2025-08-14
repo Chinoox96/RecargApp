@@ -30,9 +30,6 @@
     @media (min-width:700px){.brand-title{font-size:26px}}
     .actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
     .btn{background:#0b1223;border:1px solid var(--border);color:#d1d5db;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer}
-    .btn-login .label{display:none}.btn-login .ico{display:inline}
-    @media (min-width:700px){.btn-login .label{display:inline}.btn-login .ico{display:none}}
-    /* Colores de botones (restaurados) */
     .btn.primary,.primary{background:linear-gradient(180deg,var(--blue2),var(--blue3));color:#fff;border:0}
     .btn.warn,.warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff;border:0}
     .btn.danger,.danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff;border:0}
@@ -55,21 +52,21 @@
     th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
 
-    /* Listado del día (Estado visible 4ª col) */
+    /* Listado del día */
     #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:40px}
     #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:220px}
     #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
-    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:auto}
+    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:auto}   /* ESTADO */
     #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:130px}
     #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:220px}
-    #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:96px}
+    #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:70px}   /* ⚙️ */
 
-    /* Pasivos compactos */
+    /* Pasivos */
     #tablaPasivos th:nth-child(1),#tablaPasivos td:nth-child(1){width:42px}
     #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:auto}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
 
-    /* Lista general (sin columna Acciones, más compacto) */
+    /* Lista general (última col para eliminar en modo editar) */
     #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:56px}
     #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:260px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
@@ -78,6 +75,7 @@
     #tablaGeneral th:nth-child(6),#tablaGeneral td:nth-child(6){width:80px}
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
     #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:auto}
+    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:60px;text-align:center}
 
     input,select,textarea{background:#0b1223;border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
@@ -85,7 +83,8 @@
     .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
     /* Pills */
-    .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap}
+    .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap;cursor:default}
+    .pill.toggle{cursor:pointer}
     .pill.warn{background:#2a1b05;color:#fbbf24}
     .pill.err{background:#3b0a0a;color:#fca5a5}
     .pill.ok{background:#052e1a;color:#86efac}
@@ -95,6 +94,7 @@
 
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
     .modal{background:#0b1223;border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
+    .modal .row{margin:6px 0}
 
     /* Botonera recargos */
     .actions-line{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap}
@@ -134,9 +134,7 @@
       <div class="brand-title">RecargApp</div>
       <div class="actions">
         <span id="lockState" class="muted lock" style="align-self:center">Modo lectura</span>
-        <button class="btn btn-login" id="btnToggleAdmin" title="Ingresar PIN">
-          <span class="ico">🔒</span><span class="label">Iniciar sesión</span>
-        </button>
+        <button class="btn" id="btnToggleAdmin" title="Ingresar PIN">Iniciar sesión</button>
         <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN del Admin">🔑</button>
         <button class="btn" id="btnInstall" style="display:none" title="Instalar app">Instalar</button>
       </div>
@@ -202,7 +200,6 @@
         </div>
       </div>
 
-      <!-- Botonera separada y con copiar/imp derecha -->
       <div class="actions-line">
         <div class="left-actions">
           <button class="primary" id="btnConfirmar">Confirmar guardia</button>
@@ -234,7 +231,7 @@
       <div class="tableWrap">
         <table id="tablaGeneral" style="margin-top:6px">
           <thead><tr>
-            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th>
+            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th><th></th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -271,8 +268,8 @@
     </section>
   </main>
 
-  <!-- Modal de acciones -->
-  <div id="backdrop">
+  <!-- Modal de acciones por persona -->
+  <div id="backdrop" style="display:none">
     <div class="modal">
       <h3 style="margin:0 0 8px;font-size:15px">Acciones para <span id="modalNombre"></span></h3>
       <div class="row">
@@ -301,17 +298,35 @@
     </div>
   </div>
 
+  <!-- Modal Agregar Extra -->
+  <div id="backdropExtra" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);align-items:center;justify-content:center;z-index:21">
+    <div class="modal">
+      <h3 style="margin:0 0 8px;font-size:15px">Agregar extra</h3>
+      <div class="row"><input id="extraNombre" placeholder="Nombre (opcional)"></div>
+      <div class="row"><input id="extraJerarquia" placeholder="Jerarquía (opcional)"></div>
+      <div class="row"><input id="extraObs" placeholder="Observación (opcional)"></div>
+      <div class="row">
+        <select id="extraPab">
+          <option value="">Pabellón (opcional)</option>
+          <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option>
+          <option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option>
+          <option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Portón</option>
+        </select>
+      </div>
+      <div class="row" style="justify-content:flex-end;margin-top:8px">
+        <button class="btn" id="extraCancel">Cancelar</button>
+        <button class="primary" id="extraOk">Agregar</button>
+      </div>
+    </div>
+  </div>
+
 <script>
 /* ===== utils ===== */
 function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
 function $qs(root, sel){ return (root||document).querySelector(sel); }
 window.addEventListener('error', e=>{ try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
 
-/* ===== Modelo =====
-Persona: {id, nombre, dni, legajo, jerarquia, antiguedad, obs:{art:null|"13"|"26", licencia:{desde:null,hasta:null}, autorizado:boolean}, order, rorder, debeLista:number, salteado:boolean}
-Historial recargos: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore, franco:1|2, extras:[{...}]}
-Historial cambios: {ts, fechaISO, tipo:'add'|'del'|'move', detalle:{...}}
-*/
+/* ===== Modelo ===== */
 const KEY='recargapp.v1';
 let ADMIN_PIN = localStorage.getItem('recargapp.admin.pin') || '1111';
 const SUPERADMIN_PIN='9999';
@@ -328,14 +343,20 @@ function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var 
 
 let db = load() || { personas: [], historial: [], generalHead: 0, cambios: [] };
 if(!db.cambios) db.cambios=[];
-if(db.personas){ var base=Date.now(); db.personas.forEach(function(p,i){ if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); } if(typeof p.debeLista!=='number'){ p.debeLista=0; } if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; } }); }
+if(db.personas){
+  var base=Date.now();
+  db.personas.forEach(function(p,i){
+    if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); }
+    if(typeof p.debeLista!=='number'){ p.debeLista=0; }
+    if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; }
+  });
+}
 
 let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
 let modalId=null;
 let role='viewer';
-let manualDateChanged=false;
 
-/* ===== Undo (Ctrl+Z lógico) ===== */
+/* ===== Undo ===== */
 const undoStack=[];
 function snapshot(label){
   undoStack.push({
@@ -356,39 +377,20 @@ function restoreLast(){
   save(); renderAll(); return true;
 }
 
-/* ===== Logging de cambios del listado general ===== */
+/* ===== Logging cambios ===== */
 function logCambio(tipo, detalle){
   db.cambios.push({ts:Date.now(), fechaISO:today(), tipo:tipo, detalle:detalle});
   if(db.cambios.length>2000) db.cambios.shift();
   save();
 }
 
-/* ===== Accesos ===== */
+/* ===== Login ===== */
 var lockState=$qs(null,'#lockState');
 var btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 var btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
 function isAdmin(){ return role==='admin' || role==='superadmin'; }
 function isSuper(){ return role==='superadmin'; }
 
-/* ===== Banner helper ===== */
-function showBanner(msg, opts){
-  opts = opts || {};
-  var b=$qs(null,'#banner'); if(!b) return;
-  if(opts.html){ b.innerHTML = msg; } else { b.textContent = msg; }
-  b.style.display='block';
-  if(showBanner._t){ clearTimeout(showBanner._t); showBanner._t=null; }
-  if(!opts.sticky){ showBanner._t=setTimeout(function(){ b.style.display='none'; }, opts.timeout || 3200); }
-}
-
-/* ===== Login / roles ===== */
-if(btnCambiarPinAdmin){
-  btnCambiarPinAdmin.onclick=function(){
-    if(!isSuper()) return alert('Solo superadmin');
-    var np=prompt('Nueva contraseña de ADMIN (4-8 dígitos):'); if(np==null) return;
-    np=np.trim(); if(!/^\d{4,8}$/.test(np)) return alert('Debe ser de 4 a 8 dígitos.');
-    setAdminPin(np); showBanner('Contraseña de ADMIN actualizada ✅');
-  };
-}
 btnToggleAdmin.onclick=function(){
   if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.title='Ingresar PIN'; btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
   var code=prompt('Ingresá PIN (Admin o Superadmin)');
@@ -396,6 +398,14 @@ btnToggleAdmin.onclick=function(){
   else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.title='Cerrar sesión'; btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
   else if(code!==null){ alert('PIN incorrecto'); }
 };
+if(btnCambiarPinAdmin){
+  btnCambiarPinAdmin.onclick=function(){
+    if(!isSuper()) return alert('Solo superadmin');
+    var np=prompt('Nueva contraseña de ADMIN (4-8 dígitos):'); if(np==null) return;
+    np=np.trim(); if(!/^\d{4,8}$/.test(np)) return alert('Debe ser de 4 a 8 dígitos.');
+    setAdminPin(np); alert('Contraseña de ADMIN actualizada');
+  };
+}
 
 /* ===== Tabs ===== */
 var tabs = $all('.tab'); var panels = $all('[data-panel]');
@@ -453,7 +463,7 @@ function renderGeneral(){
   var tbody=$qs(null,'#tablaGeneral tbody'); tbody.innerHTML='';
   var list=[].concat(db.personas).sort((a,b)=>a.order-b.order);
   list.forEach(function(p,i){
-    var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
+    const tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
 
     if(editGeneral){
       tr.setAttribute('draggable','true');
@@ -477,10 +487,9 @@ function renderGeneral(){
     }
 
     function cell(txt){ return '<td>'+txt+'</td>'; }
-    var delBtn = editGeneral ? " <button class='danger icon-btn' title='Eliminar' onclick=\"eliminar('"+p.id+"')\">✕</button>" : "";
     var cOrden = cell(i+1);
     var cNombre = editGeneral
-      ? '<td>'+p.nombre+delBtn+'</td>'
+      ? '<td>'+p.nombre+'</td>'
       : '<td>'+p.nombre+'</td>';
     var cDNI = editGeneral ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
     var cLegajo = editGeneral ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
@@ -494,7 +503,9 @@ function renderGeneral(){
     if(p.obs.autorizado) obsParts.push('AUTORIZADO'); if(p.salteado) obsParts.push('SALTEADO');
     var cObs = cell(obsParts.join(' · ')||'<span class="muted">—</span>');
 
-    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs;
+    var cDel = editGeneral ? "<td style='text-align:center'><button class='danger icon-btn' title='Eliminar' onclick=\"eliminar('"+p.id+"')\">✕</button></td>" : "<td></td>";
+
+    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cDel;
     if(!isAdmin()){
       $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo Admin'; });
     }
@@ -522,17 +533,31 @@ function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id
 var fechaEl=$qs(null,'#fecha'); var faltEl=$qs(null,'#faltantes'); fechaEl.value=today();
 function setTitulo(){ $qs(null,'#tituloDia').textContent = 'RECARGOS '+fmtDM(fechaEl.value); }
 setTitulo();
-fechaEl.addEventListener('change', function(){ setTitulo(); manualDateChanged=true; });
 
-/* Extras (ajenos a la lista; nombre/jerarquía opcionales; en copiado van con "-") */
 let dayExtras = []; // [{id, nombre?, jerarquia?, pabellon, obsRecargo}]
+const modalExtra=$qs(null,'#backdropExtra');
 $qs(null,'#btnAgregarExtra').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
-  var nombre = prompt('Nombre del extra (opcional):') || '';
-  var jer = prompt('Jerarquía del extra (opcional):') || '';
-  var obs = prompt('Observación (opcional):') || '';
+  // reset
+  $qs(null,'#extraNombre').value='';
+  $qs(null,'#extraJerarquia').value='';
+  $qs(null,'#extraObs').value='';
+  $qs(null,'#extraPab').value='';
+  modalExtra.style.display='flex';
+};
+$qs(null,'#extraCancel').onclick=function(){ modalExtra.style.display='none'; };
+$qs(null,'#extraOk').onclick=function(){
+  if(!isAdmin()) return;
   snapshot('agregar extra');
-  dayExtras.push({ id:'extra_'+uid(), nombre:nombre.trim(), jerarquia:jer.trim(), pabellon:'', obsRecargo: obs.trim() });
+  const ex={
+    id:'extra_'+uid(),
+    nombre:($qs(null,'#extraNombre').value||'').trim(),
+    jerarquia:($qs(null,'#extraJerarquia').value||'').trim(),
+    obsRecargo:($qs(null,'#extraObs').value||'').trim(),
+    pabellon:$qs(null,'#extraPab').value||''
+  };
+  dayExtras.push(ex);
+  modalExtra.style.display='none';
   renderHoy();
 };
 
@@ -542,7 +567,34 @@ function elegibles(){ return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b
 function getFranco(){ var f=$qs(null,'#francoPasivos'); return f? parseInt(f.value||'1',10):1; }
 function setFranco(v){ var f=$qs(null,'#francoPasivos'); if(f){ f.value=String(v||1); } }
 
-/* Prioridad visual/selección */
+function buildEstadoCell(p, fecha){
+  // arma el HTML con pills y toggles
+  var parts=[];
+  var prio = prioridadHoy[p.id];
+
+  // Presentes
+  if(prio==='ART13') parts.push("<span class='pill toggle' data-tipo='ART13' title='Quitar presente ART 13'>PRESENTE ART 13</span>");
+  if(prio==='ART26') parts.push("<span class='pill toggle' data-tipo='ART26' title='Quitar presente ART 26'>PRESENTE ART 26</span>");
+  if(prio==='ART04') parts.push("<span class='pill toggle' data-tipo='ART04' title='Quitar presente 04'>PRESENTE 04</span>");
+
+  // ART fijos (si no están en presente)
+  if(p.obs && p.obs.art==='13' && prio!=='ART13') parts.push("<span class='pill warn toggle' data-tipo='ART13' title='Marcar PRESENTE ART 13'>ART 13</span>");
+  if(p.obs && p.obs.art==='26' && prio!=='ART26') parts.push("<span class='pill warn toggle' data-tipo='ART26' title='Marcar PRESENTE ART 26'>ART 26</span>");
+
+  // Toggle directo 04 (si no presente)
+  if(prio!=='ART04') parts.push("<span class='pill toggle' data-tipo='ART04' title='Marcar PRESENTE 04'>04</span>");
+
+  // Otros estados
+  if(inLicencia(p,fecha)) parts.push("<span class='pill err'>LIC "+p.obs.licencia.desde+"→"+p.obs.licencia.hasta+"</span>");
+  if(p.obs && p.obs.autorizado) parts.push("<span class='pill ok'>AUTORIZADO</span>");
+  if(p.salteado) parts.push("<span class='pill'>SALTEADO</span>");
+  if((p.debeLista||0)>0) parts.push("<span class='pill'>debe "+p.debeLista+"</span>");
+
+  if(!parts.length) parts.push("<span class='muted'>—</span>");
+  return parts.join(' ');
+}
+
+/* Prioridad y plan */
 function getPlan(){
   var falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var fecha=fechaEl.value;
@@ -560,12 +612,8 @@ function getPlan(){
   });
 
   var mostrados=[], numerados=[];
-
-  /* Extras al inicio (cuentan en la asignación, pero en copiado van con "-") */
-  dayExtras.forEach(function(ex){
-    mostrados.push({extra:true, data:ex});
-    numerados.push(ex);
-  });
+  // Extras cuentan para asignación (no numeramos en copia final)
+  dayExtras.forEach(function(ex){ mostrados.push({extra:true, data:ex}); numerados.push(ex); });
 
   function pushPersona(p, forzarContar){
     var saltPorFlag = p.salteado===true;
@@ -584,7 +632,7 @@ function getPlan(){
   return {mostrados:mostrados, asignados:asignados, pasivos:pasivos};
 }
 
-/* Modal */
+/* Modal persona */
 function openModal(id){
   if(!isAdmin()) return alert('Solo Admin');
   modalId=id; var p=getById(id);
@@ -630,7 +678,7 @@ function renderHoy(){
   setTitulo();
   var fecha=fechaEl.value;
   var prev={};
-  // conservar selecciones previas (pab/obs recargo, incl. extras)
+  // conservar selecciones previas
   $all('#tablaDia tbody tr').forEach(function(r){
     var id=r.getAttribute('data-id');
     var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
@@ -652,21 +700,25 @@ function renderHoy(){
       var tr=document.createElement('tr'); tr.setAttribute('data-id', ex.id);
       var numCell=document.createElement('td'); numCell.textContent = (++n);
 
+      var estadoCell=document.createElement('td');
+      estadoCell.innerHTML = "<span class='pill'>EXTRA</span>";
+
       var pabSel=document.createElement('select');
       ['', 'Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Portón'].forEach(function(x){
         var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
       });
-      if(prev[ex.id] && prev[ex.id].pab) pabSel.value=prev[ex.id].pab;
+      pabSel.value = ex.pabellon || (prev[ex.id] && prev[ex.id].pab) || '';
       if(!isAdmin()){ pabSel.disabled=true; pabSel.classList.add('lock'); }
       var obsRecInput=document.createElement('input'); obsRecInput.type='text';
-      obsRecInput.placeholder='(observación)'; obsRecInput.value = (prev[ex.id] && prev[ex.id].obs) ? prev[ex.id].obs : (ex.obsRecargo||'');
+      obsRecInput.placeholder='(observación)'; obsRecInput.value = (prev[ex.id]?.obs)||ex.obsRecargo||'';
       if(!isAdmin()){ obsRecInput.disabled=true; obsRecInput.classList.add('lock'); }
       var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
       actions.innerHTML = isAdmin()? "<button class='btn icon-btn' title='Quitar extra' onclick=\"quitarExtra('"+ex.id+"')\">✕</button>":"";
       actCell.appendChild(actions);
 
       tr.appendChild(numCell);
-      tr.insertAdjacentHTML('beforeend', "<td>"+(ex.nombre||'<i>Extra</i>')+"</td><td>"+(ex.jerarquia||'—')+"</td><td><span class='pill'>EXTRA</span></td>");
+      tr.insertAdjacentHTML('beforeend', "<td>"+(ex.nombre||'<i>Extra</i>')+"</td><td>"+(ex.jerarquia||'—')+"</td>");
+      tr.appendChild(estadoCell);
       var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
       var obsCell=document.createElement('td'); obsCell.appendChild(obsRecInput);
       tr.appendChild(pabCell); tr.appendChild(obsCell); tr.appendChild(actCell);
@@ -678,17 +730,13 @@ function renderHoy(){
     var p=item.p, saltar=item.saltar, saltPorFlag=item.saltPorFlag;
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
 
-    var obsParts=[];
-    if(p.obs && p.obs.art) obsParts.push("<span class='pill warn'>ART "+p.obs.art+"</span>");
-    if(inLicencia(p,fecha)) obsParts.push("<span class='pill err'>LIC "+p.obs.licencia.desde+"→"+p.obs.licencia.hasta+"</span>");
-    if(p.obs && p.obs.autorizado) obsParts.push("<span class='pill ok'>AUTORIZADO</span>");
-    if(saltPorFlag) obsParts.push("<span class='pill'>SALTEADO</span>");
-    if((p.debeLista||0)>0) obsParts.push("<span class='pill'>debe "+p.debeLista+"</span>");
-    var prio = prioridadHoy[p.id];
-    if(prio){ var label = prio==='ART13'?'PRESENTE ART 13' : (prio==='ART26'?'PRESENTE ART 26':'PRESENTE 04'); obsParts.unshift("<span class='pill'>"+label+"</span>"); }
-
     var numCell=document.createElement('td'); numCell.textContent = saltar? '-' : (++n);
 
+    // ESTADO con toggles
+    var estadoCell=document.createElement('td');
+    estadoCell.innerHTML = buildEstadoCell(p, fecha);
+
+    // Pabellón
     var pabSel=document.createElement('select');
     ['', 'Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Portón'].forEach(function(x){
       var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
@@ -697,27 +745,39 @@ function renderHoy(){
     if(saltar || !isAdmin()) { pabSel.disabled=true; pabSel.classList.add('lock'); }
     var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
 
+    // Obs
     var obsRecInput=document.createElement('input'); obsRecInput.type='text'; obsRecInput.placeholder='(ej. cubre Ibarra)';
     if(prev[p.id] && prev[p.id].obs) obsRecInput.value=prev[p.id].obs;
     if(!isAdmin()){ obsRecInput.disabled=true; obsRecInput.classList.add('lock'); }
     var obsRecCell=document.createElement('td'); obsRecCell.appendChild(obsRecInput);
 
+    // Acciones (solo ⚙️)
     var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
     actions.innerHTML = "<button class='btn icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo Admin'":"")+">⚙️</button>";
-    if(p.obs && p.obs.art==='13') actions.innerHTML += "<button class='btn danger icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART13')\">13</button>";
-    if(p.obs && p.obs.art==='26') actions.innerHTML += "<button class='btn warn icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART26')\">26</button>";
     actCell.appendChild(actions);
 
     tr.appendChild(numCell);
-    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td><td>"+(obsParts.join(' ')||'<span class=\"muted\">—</span>')+"</td>");
+    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>");
+    tr.appendChild(estadoCell);
     tr.appendChild(pabCell); tr.appendChild(obsRecCell); tr.appendChild(actCell);
     tb.appendChild(tr);
+
+    // Listeners de toggles en ESTADO
+    $all('.pill.toggle', estadoCell).forEach(function(el){
+      el.addEventListener('click', function(){
+        if(!isAdmin()) return;
+        var tipo=this.getAttribute('data-tipo'); // ART13 | ART26 | ART04
+        snapshot('toggle '+tipo+' (estado cell)');
+        if(prioridadHoy[p.id]===tipo) delete prioridadHoy[p.id]; else prioridadHoy[p.id]=tipo;
+        renderHoy();
+      });
+    });
   });
 
   // Pasivos
   var tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML='';
   plan.pasivos.forEach(function(p,i){
-    if(!p.id){ return; }
+    if(!p.id) return;
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
     tr.innerHTML="<td>"+(i+1)+"</td><td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>";
     tpas.appendChild(tr);
@@ -731,27 +791,18 @@ function quitarExtra(id){
   renderHoy();
 }
 
-function togglePresente(id,tipo){
-  if(!isAdmin()) return alert('Solo Admin');
-  snapshot('toggle presente '+tipo);
-  if(prioridadHoy[id]===tipo) delete prioridadHoy[id]; else prioridadHoy[id]=tipo;
-  renderHoy();
+/* Copiados, confirmar, undo, etc. — (igual que antes, sin mover fecha) */
+function copyText(txt){
+  (navigator.clipboard && navigator.clipboard.writeText)
+    ? navigator.clipboard.writeText(txt).then(()=>alert('Texto copiado'))
+    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))+'</pre>'); w.document.close(); w.focus(); })();
 }
-
-/* Copiar ORDEN (sin pasivos) */
 $qs(null,'#btnCopiarListado').addEventListener('click', function(){
   var fecha=fechaEl.value, plan=getPlan();
   var lines=['RECARGOS '+fmtDM(fecha),'']; var n=0;
-
   function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
-
-  var tbRows=$all('#tablaDia tbody tr[data-id]');
-  var byId={}; tbRows.forEach(function(r){
-    var id=r.getAttribute('data-id');
-    var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
-    byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''};
-  });
-
+  var tbRows=$all('#tablaDia tbody tr[data-id]'); var byId={};
+  tbRows.forEach(function(r){ var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]'); byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''}; });
   plan.mostrados.forEach(function(item){
     if(item.extra){
       var ex=item.data, row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs?(' ('+row.obs+')'):'';
@@ -766,30 +817,24 @@ $qs(null,'#btnCopiarListado').addEventListener('click', function(){
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
     if(inLicencia(per, fecha)) tags.push('(licencia)');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-
     var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
     if(!saltar){ lines.push((++n)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):'')); }
     else{ lines.push('- '+p.nombre+' '+tags.join(' ')); }
   });
-
   copyText(lines.join('\n'));
 });
 
-/* Copiar resultado final (recargos + pasivos) */
 $qs(null,'#btnCopiarResultado').onclick=function(){
   var fecha=fechaEl.value, plan=getPlan(), falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var lines=['RECARGOS '+fmtDM(fecha),''];
   function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
-
   var tbRows=$all('#tablaDia tbody tr[data-id]'); var byId={};
   tbRows.forEach(function(r){ var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]'); byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''}; });
-
   var conteo=0;
   plan.mostrados.forEach(function(item){
     if(item.extra){
       var ex=item.data, row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab); var obs=row.obs?(' ('+row.obs+')'):'';
       var nombreOut = (ex.nombre || ex.obsRecargo || '—').trim();
-      // NO enumera extras
       lines.push('- '+ nombreOut + (pabTxt?('  '+pabTxt):'') + (obs||''));
       return;
     }
@@ -801,17 +846,11 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
     if(inLicencia(per, fecha)) tags.push('(licencia)');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-
     var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
-
-    if(!saltar && conteo<falt){
-      lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
-    }else if(saltar){
-      lines.push('- '+p.nombre+' '+tags.join(' '));
-    }
+    if(!saltar && conteo<falt){ lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):'')); }
+    else if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')); }
   });
-
-  // Pasivos (Franco 1° o 2°)
+  // Pasivos (Franco)
   var franco=getFranco();
   if(franco===1){ lines.push('','Pasivos',''); }
   else{
@@ -820,22 +859,25 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
   }
   plan.pasivos.forEach(function(p,i){
     if(!p.id) return;
-    var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
-    var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
-    var obs = obsRec? (' ('+obsRec+')') : '';
-    lines.push((i+1)+') '+p.nombre+obs);
+    lines.push((i+1)+') '+p.nombre);
   });
-
   copyText(lines.join('\n'));
 };
 
-function copyText(txt){
-  (navigator.clipboard && navigator.clipboard.writeText)
-    ? navigator.clipboard.writeText(txt).then(()=>alert('Texto copiado'))
-    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))+'</pre>'); w.document.close(); w.focus(); })();
-}
+$qs(null,'#btnReiniciar').onclick=function(){
+  if(!isAdmin()) return alert('Solo Admin');
+  if(confirm('¿Seguro? Esto reinicia la rotación tomando el orden del listado general.')){
+    snapshot('reiniciar rotación');
+    var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); var base=Date.now();
+    ordered.forEach(function(p,i){ p.rorder=base+i; });
+    prioridadHoy={}; db.generalHead=0; save(); renderHoy();
+  }
+};
 
-/* Confirmar guardia */
+$qs(null,'#btnActualizar').onclick=function(){ renderHoy(); };
+$qs(null,'#btnUndo').onclick=function(){ if(!isAdmin()) return alert('Solo Admin'); if(!undoStack.length) return alert('No hay cambios para deshacer'); if(!restoreLast()) alert('No se pudo deshacer'); };
+
+/* Confirmar (NO mueve fecha) */
 $qs(null,'#btnConfirmar').onclick=function(){
   if(!isAdmin()) return alert('Solo Admin');
   snapshot('confirmar guardia (pre)');
@@ -843,13 +885,11 @@ $qs(null,'#btnConfirmar').onclick=function(){
   var plan=getPlan();
   var idsAsignados={}; plan.asignados.forEach(function(p){ if(p.id) idsAsignados[p.id]=true; });
 
-  // Leer filas para obtener pab/obs (personas + extras)
   var rows=$all('#tablaDia tbody tr');
   var recargos=[]; var extrasForHist=[];
   rows.forEach(function(r){
     var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
     var pab= sel?sel.value:''; var obsRec=inp?inp.value.trim():'';
-
     if(id && id.indexOf('extra_')===0){
       var ex=dayExtras.find(x=>x.id===id)||{};
       extrasForHist.push({id:id, nombre:ex.nombre||'', jerarquia:ex.jerarquia||'', pabellon:pab, obsRecargo:obsRec});
@@ -864,7 +904,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   var glist=generalList(); if(glist.length===0){ alert('No hay personal'); return; }
   if(db.generalHead>=glist.length) db.generalHead=0;
 
-  // Ventana según lista general
+  // Ventana
   var ventanaIdx=[], idx=db.generalHead;
   for(var k=0;k<falt && k<glist.length;k++){ ventanaIdx.push(idx); idx=(idx+1)%glist.length; }
   var ventanaIds=ventanaIdx.map(i=>glist[i].id);
@@ -872,7 +912,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Asignados reales
   var asignadosIds={}; recargos.forEach(r=>asignadosIds[r.id]=true);
 
-  // Reglas DEBE (cap 1)
+  // Reglas DEBE
   ventanaIds.forEach(function(id){
     var p=getById(id); if(!p) return;
     var prio=prioridadHoy[id]; var lic=inLicencia(p,fecha);
@@ -884,7 +924,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Avanzar puntero general
   db.generalHead = (db.generalHead + falt) % glist.length;
 
-  // Reubicar rorder de asignados (solo personas)
+  // Reubicar rorder
   var baseOrder=Date.now();
   db.personas.forEach(p=>{ if(p.rorder==null) p.rorder=baseOrder; });
   recargos.forEach(function(r,i){ var p=getById(r.id); if(p) p.rorder = baseOrder + i + 1; });
@@ -902,14 +942,12 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Limpiar banderas del día
   db.personas.forEach(function(p){ p.obs.autorizado=false; p.salteado=false; });
 
-  // Layout inline para historial (incluye extras y no numerados)
+  // Layout para historial
   var conteo=0, layout=[];
-  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
   var tbRows=$all('#tablaDia tbody tr');
-
   plan.mostrados.forEach(function(item){
     if(item.extra){
-      var r = tbRows.find? tbRows.find(x=>x.getAttribute('data-id')===item.data.id) : null;
+      var r = Array.prototype.find.call(tbRows, x=>x.getAttribute('data-id')===item.data.id);
       var sel=r? r.querySelector('select'):null; var pab=sel?sel.value:'';
       var inp=r? r.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
       layout.push({id:item.data.id,nombre:(item.data.nombre||'Extra'),counted:false,tags:['(extra)'],pabellon:pab,obsRecargo:obsRec});
@@ -923,7 +961,6 @@ $qs(null,'#btnConfirmar').onclick=function(){
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
     if(inLicencia(per, fecha)) tags.push('(licencia)');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-
     if(!saltar && conteo<falt){
       var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
       var sel=tr?tr.querySelector('select'):null; var pab=sel?sel.value:'';
@@ -939,7 +976,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   db.historial.push({
     fecha:fmtDM(fecha),
     recargos:recargos,
-    pasivos:pasivos.map(x=>({id:x.id,nombre:x.nombre})),
+    pasivos:plan.pasivos.filter(x=>x.id).map(x=>({id:x.id,nombre:x.nombre})),
     llamados:[],
     layout:layout,
     personasBefore: JSON.parse(JSON.stringify(undoStack[undoStack.length-1]?.personas || db.personas)),
@@ -949,23 +986,8 @@ $qs(null,'#btnConfirmar').onclick=function(){
   });
   save();
   prioridadHoy={}; dayExtras=[];
-
-  // Avanzar 3 días solo si NO cambiaste la fecha manualmente
-  if(!manualDateChanged){
-    fechaEl.value = addDays(fechaEl.value, 3);
-    setTitulo();
-  }
-  manualDateChanged=false;
-
   renderAll();
   alert('Guardia guardada. Los llamados se marcan en la guardia siguiente (Historial).');
-};
-
-/* Deshacer mínimo */
-$qs(null,'#btnUndo').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  if(!undoStack.length) return alert('No hay cambios para deshacer');
-  if(!restoreLast()) alert('No se pudo deshacer');
 };
 
 /* ===== Historial (subtabs) ===== */
@@ -987,78 +1009,72 @@ subChg.addEventListener('click', ()=>{
 });
 
 function renderHistorialRec(){
-  var cont=$qs(null,'#histRec'); cont.innerHTML='';
-  for(var idx=db.historial.length-1; idx>=0; idx--){
-    var h=db.historial[idx];
-    var esUltimo=(idx===db.historial.length-1);
+  const cont=$qs(null,'#histRec'); cont.innerHTML='';
+  for(let idx=db.historial.length-1; idx>=0; idx--){
+    const h=db.historial[idx];
+    const esUltimo=(idx===db.historial.length-1);
+    const cantRec = (h.layout||[]).filter(x=>x.counted).length || (h.recargos||[]).length;
+    const cantLlam = (h.llamados||[]).length;
 
-    // Resumen cantidades
-    var cantRec = (h.layout||[]).filter(x=>x.counted).length || (h.recargos||[]).length;
-    var cantLlam = (h.llamados||[]).length;
-
-    // Head (línea única)
-    var row=document.createElement('div'); row.className='history-row';
+    const row=document.createElement('div'); row.className='history-row';
     row.innerHTML =
       "<div class='history-row-head'>"+
         "<div><b>"+(h.fecha||'')+"</b> · <span class='history-meta'>Recargos: "+cantRec+" · Pasivos llamados: "+cantLlam+"</span></div>"+
         "<div>"+
-          "<button class='btn' data-copy='"+idx+"'>Copiar</button> "+
-          (isSuper()? "<button class='danger' data-del='"+idx+"'>Borrar</button>": "")+
-          " <button class='btn' data-toggle='"+idx+"'>Ver</button>"+
+          "<button class='btn' data-copy='1'>Copiar</button> "+
+          (isSuper()? "<button class='danger' data-del='1'>Borrar</button>": "")+
+          " <button class='btn' data-toggle='1'>Ver</button>"+
         "</div>"+
       "</div>"+
-      "<div class='history-row-body' id='body-"+idx+"'></div>";
+      "<div class='history-row-body'></div>";
 
-    // Body (tarjeta)
-    (function buildBody(){
-      var body=row.querySelector('#body-'+idx);
-      // Recargos
-      var recListHtml='';
-      if(h.layout && h.layout.length){
-        recListHtml = h.layout.map(function(x){
+    const body=row.querySelector('.history-row-body');
+    // Construir cuerpo
+    const recListHtml = (h.layout && h.layout.length)
+      ? h.layout.map(function(x){
           if(x.counted){
-            var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-            var pabTxt=m[x.pabellon||'']||x.pabellon||'';
-            var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-            var obs=x.obsRecargo?(' — Obs: '+x.obsRecargo):'';
-            var pab=pabTxt?(' — Pab: '+pabTxt):'';
+            const m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
+            const pabTxt=m[x.pabellon||'']||x.pabellon||'';
+            const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+            const obs=x.obsRecargo?(' — Obs: '+x.obsRecargo):'';
+            const pab=pabTxt?(' — Pab: '+pabTxt):'';
             return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>';
           }else{
-            var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+            const tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
             return '<li>- '+x.nombre+tags2+'</li>';
           }
-        }).join('');
-      }else{
-        recListHtml = (h.recargos||[]).map(function(x,i){
-          return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
-        }).join('') || '<li>—</li>';
-      }
+        }).join('')
+      : ((h.recargos||[]).map(function(x,i){
+           return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
+        }).join('') || '<li>—</li>');
 
-      // Pasivos con checkbox al lado del nombre
-      var pasHtml = (h.pasivos||[]).map(function(x,i){
-        var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
-        var disabled = esUltimo? '' : 'disabled';
-        return '<li>'+(i+1)+') '+(getById(x.id)?.nombre||x.nombre)+' &nbsp; <input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+checked+' '+disabled+'></li>';
-      }).join('') || '<li>—</li>';
+    const pasHtml = (h.pasivos||[]).map(function(x,i){
+      const checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
+      const disabled = esUltimo? '' : 'disabled';
+      return '<li>'+(i+1)+') '+(getById(x.id)?.nombre||x.nombre)+' &nbsp; <input type="checkbox" '+checked+' '+disabled+' data-id="'+x.id+'"></li>';
+    }).join('') || '<li>—</li>';
 
-      body.innerHTML =
-        "<div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0'>"+recListHtml+"</ul></div>"+
-        "<div style='margin-top:6px'><b>Pasivos</b><ul style='padding-left:18px;margin:6px 0'>"+pasHtml+"</ul></div>";
-    })();
+    body.innerHTML =
+      "<div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0'>"+recListHtml+"</ul></div>"+
+      "<div style='margin-top:6px'><b>Pasivos</b><ul style='padding-left:18px;margin:6px 0'>"+pasHtml+"</ul></div>";
 
-    // acciones
-    row.querySelector('[data-toggle]').addEventListener('click', function(){
+    // Botones por fila (usar let/const para cerrar sobre el row correcto)
+    const btnToggle = row.querySelector('[data-toggle]');
+    const btnCopy   = row.querySelector('[data-copy]');
+    const btnDel    = row.querySelector('[data-del]');
+
+    btnToggle.addEventListener('click', function(){
       row.classList.toggle('open');
       this.textContent = row.classList.contains('open')? 'Ocultar' : 'Ver';
     });
-    row.querySelector('[data-copy]').addEventListener('click', function(){
-      copyText(buildCopyFromHistory(db.historial[idx]));
+    btnCopy.addEventListener('click', function(){
+      copyText(buildCopyFromHistory(h));
     });
-    row.querySelector('[data-del]')?.addEventListener('click', function(){
-      var idxDel=parseInt(this.getAttribute('data-del'),10);
-      borrarHistRec(idxDel);
+    btnDel?.addEventListener('click', function(){
+      borrarHistRec(idx);
     });
 
+    // Guardar llamados sobre el ÚLTIMO: se leerán desde el toolbar global
     cont.appendChild(row);
   }
 
@@ -1069,8 +1085,7 @@ function renderHistorialRec(){
       H.layout.forEach(function(x){
         if(x.counted){
           var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-          var pabTxt=m[x.pabellon||'']||x.pabellon||'';
-          var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+          var pabTxt=m[x.pabellon||'']||x.pabellon||''; var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
           var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):'';
           lines.push(x.n+') '+x.nombre+tags+obs+(pabTxt?('  '+pabTxt):''));
         }else{
@@ -1083,17 +1098,15 @@ function renderHistorialRec(){
         lines.push((i+1)+') '+x.nombre+(x.obsRecargo?(' ('+x.obsRecargo+')'):'')+(x.pabellon?('  '+x.pabellon):''));
       });
     }
-    // Pasivos (con franco)
     var pasHeader='Pasivos';
     if(H.franco===2){
-      var parts = (H.fecha||'').split('/');
-      if(parts.length===2){
-        var y = new Date().getFullYear();
-        var d0 = new Date(y, parseInt(parts[1],10)-1, parseInt(parts[0],10));
-        var d1 = new Date(d0.getTime()+86400000);
-        var dd=('0'+d1.getDate()).slice(-2)+'/'+('0'+(d1.getMonth()+1)).slice(-2);
-        pasHeader = 'Pasivos ('+dd+')';
-      }
+      // (+1 día)
+      try{
+        var [dd,mm]=String(H.fecha||'').split('/');
+        var y=(new Date()).getFullYear(); var d0=new Date(y,parseInt(mm)-1,parseInt(dd)); var d1=new Date(d0.getTime()+86400000);
+        var ddn=('0'+d1.getDate()).slice(-2)+'/'+('0'+(d1.getMonth()+1)).slice(-2);
+        pasHeader='Pasivos ('+ddn+')';
+      }catch(_){}
     }
     lines.push('',pasHeader,'');
     (H.pasivos||[]).forEach(function(x,i){
@@ -1106,39 +1119,41 @@ function renderHistorialRec(){
 
 /* Historial de cambios */
 function renderHistorialChg(){
-  var cont=$qs(null,'#histChg'); cont.innerHTML='';
+  const cont=$qs(null,'#histChg'); cont.innerHTML='';
   // Agrupar por fecha
-  var byDate={};
+  const byDate={};
   db.cambios.forEach(function(c){
-    var d=c.fechaISO||today();
+    const d=c.fechaISO||today();
     (byDate[d]=byDate[d]||[]).push(c);
   });
-  var fechas=Object.keys(byDate).sort().reverse();
+  const fechas=Object.keys(byDate).sort().reverse();
   fechas.forEach(function(f){
-    var items=byDate[f];
-    var row=document.createElement('div'); row.className='history-row';
+    const items=byDate[f];
+    const row=document.createElement('div'); row.className='history-row';
     row.innerHTML =
       "<div class='history-row-head'>"+
         "<div><b>"+f+"</b> · <span class='history-meta'>"+items.length+" cambio(s)</span></div>"+
-        "<div><button class='btn' data-toggle='chg-"+f+"'>Ver</button></div>"+
+        "<div><button class='btn' data-toggle='1'>Ver</button></div>"+
       "</div>"+
-      "<div class='history-row-body' id='chg-"+f+"'>"+ items.map(function(c){
+      "<div class='history-row-body' style='display:none'>"+ items.map(function(c){
         if(c.tipo==='add') return "<div>➕ Agregado: <b>"+(c.detalle.nombre||c.detalle.id)+"</b></div>";
         if(c.tipo==='del') return "<div>✖️ Eliminado: <b>"+(c.detalle.nombre||c.detalle.id)+"</b></div>";
         if(c.tipo==='move') return "<div>↕️ Movido: <b>"+(c.detalle.nombre||c.detalle.id)+"</b> de "+c.detalle.from+" a "+c.detalle.to+"</div>";
         if(c.tipo==='bulk-reorder') return "<div>🧮 Reordenación masiva ("+c.detalle.motivo+")</div>";
         return "<div>• "+c.tipo+"</div>";
       }).join('') +"</div>";
-    row.querySelector('[data-toggle]').addEventListener('click', function(){
-      var id=this.getAttribute('data-toggle'); var body=$qs(null,'#'+id);
-      var opened=body.style.display==='block'; body.style.display=opened?'none':'block';
-      this.textContent = opened? 'Ver' : 'Ocultar';
+    const btn=row.querySelector('[data-toggle]');
+    const body=row.querySelector('.history-row-body');
+    btn.addEventListener('click', function(){
+      const open = body.style.display==='block';
+      body.style.display = open ? 'none' : 'block';
+      this.textContent = open ? 'Ver' : 'Ocultar';
     });
     cont.appendChild(row);
   });
 }
 
-/* Borrar historiales */
+/* Borrar historiales y guardar llamados */
 function borrarHistRec(idx){
   if(!isSuper()) return alert('Solo superadmin');
   if(!confirm('¿Borrar registro del historial de recargos?')) return;
@@ -1154,22 +1169,19 @@ $qs(null,'#btnBorrarHistChg').onclick=function(){
   if(!confirm('¿Borrar TODO el historial de cambios?')) return;
   db.cambios=[]; save(); renderHistorialChg(); alert('Historial de cambios borrado.');
 };
-
-/* Guardar llamados del último */
 $qs(null,'#btnGuardarLlamados').addEventListener('click', function(){
   if(!isAdmin()) return alert('Solo Admin');
   if(!db.historial.length) return;
   var idx=db.historial.length-1; var h=db.historial[idx];
-  var checks=$all("input[type='checkbox'][data-h='"+idx+"']");
+  var checks=$all('#histRec .history-row:first-child input[type="checkbox"]'); // la última guardia está renderizada primero
   h.llamados = checks.filter(c=>c.checked).map(c=>c.getAttribute('data-id'));
 
-  // Reordenar próxima guardia: DEBE > pasivos NO llamados > resto > llamados
+  // Reordenar próxima guardia
   var current=elegibles();
   var debeIds=current.filter(p=>(p.debeLista||0)>0).map(p=>p.id);
   var notCalled=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)<0).map(x=>x.id);
   var called=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)>=0).map(x=>x.id);
   var restIds=current.map(p=>p.id).filter(id=> notCalled.indexOf(id)<0 && called.indexOf(id)<0);
-
   var seq=[].concat(debeIds, notCalled, restIds, called);
   var seen={}; var base=Date.now(), i=0;
   seq.forEach(function(id){ if(seen[id]) return; seen[id]=true; var p=getById(id); if(p) p.rorder=base+(i++); });
@@ -1180,11 +1192,10 @@ $qs(null,'#btnGuardarLlamados').addEventListener('click', function(){
 /* ===== Render maestro ===== */
 function renderAll(){
   renderGeneral(); renderHoy(); renderHistorialRec(); renderHistorialChg();
-  // Mostrar cambiar PIN admin solo superadmin
   if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display = isSuper()? 'inline-block' : 'none';
 }
 
-/* ===== Seed si está vacío ===== */
+/* ===== Seed ===== */
 function seedIfEmpty(){
   if(db.personas && db.personas.length) return;
   var base=Date.now();
