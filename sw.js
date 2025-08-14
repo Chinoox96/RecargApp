@@ -1,6 +1,6 @@
 // ===============================
 // Service Worker para RecargApp
-// Versión V1.5.3
+// Versión V1.1
 // ===============================
 const CACHE_NAME = 'recargapp-v1.5.3';
 const FILES_TO_CACHE = [
