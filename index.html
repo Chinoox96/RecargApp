@@ -9,30 +9,54 @@
   <link rel="manifest" href="/RecargApp/manifest.json">
   <meta name="theme-color" content="#0b1223" />
 
-  <!-- Opcional iOS -->
+  <!-- iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" href="/RecargApp/icons/icon-192x192.png">
 
   <style>
-    :root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8}
+    :root{
+      --bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;
+      --ink:#e5e7eb;--accent:#38bdf8;--bar:#0b1223;--border:#1f2937
+    }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
-    header{padding:10px 12px;border-bottom:1px solid #1f2937;background:#0b1223;position:sticky;top:0;z-index:5}
-    .header-top{display:flex;align-items:center;justify-content:center;gap:8px}
-    h1{font-size:18px;margin:0;text-align:center}
-    .header-actions{position:absolute;right:8px;top:8px;display:flex;gap:6px}
-    .tabs{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-    .tab{background:#0b1223;border:1px solid #1f2937;color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
+
+    /* ===== Topbar nuevo (logo | título grande | login) ===== */
+    header{padding:10px 12px;border-bottom:1px solid var(--border);background:var(--bar);position:sticky;top:0;z-index:5}
+    .topbar{
+      max-width:1150px;margin:0 auto;
+      display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;
+    }
+    .app-logo{width:36px;height:36px;border-radius:8px;object-fit:cover}
+    .brand{
+      display:flex;align-items:center;justify-content:center;line-height:1
+    }
+    .brand h1{margin:0;font-weight:800;letter-spacing:.2px}
+    /* título más grande en desktop */
+    .brand h1{font-size:28px}
+    /* botón login */
+    .header-actions{display:flex;gap:8px;align-items:center}
+    #btnAuth{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
+    #lockState{color:var(--muted);font-size:12px}
+
+    /* ===== Tabs debajo del header ===== */
+    .tabs-wrap{border-bottom:1px solid var(--border);background:var(--bar)}
+    .tabs{
+      max-width:1150px;margin:0 auto;padding:8px 12px;
+      display:flex;gap:6px;justify-content:center;flex-wrap:wrap
+    }
+    .tab{background:var(--bar);border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:10px;cursor:pointer}
     .tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
+
     main{padding:10px;max-width:1150px;margin:0 auto}
-    .section{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:12px;margin-bottom:12px}
+    .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
     h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
     .grid{display:grid;gap:10px}
     .grid-2{grid-template-columns:1fr 1fr}
-    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+
     .tableWrap{width:100%;overflow-x:auto}
     table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:680px}
-    th,td{padding:6px 8px;border-bottom:1px solid #1f2937;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
     #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:42px}
     #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:200px}
@@ -41,10 +65,12 @@
     #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:120px}
     #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:180px}
     #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:120px}
+
     #tablaPasivos{min-width:0}
     #tablaPasivos th:nth-child(1),#tablaPasivos td:nth-child(1){width:42px}
     #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:220px}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
+
     #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:60px}
     #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:220px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
@@ -54,12 +80,14 @@
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
     #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:220px}
     #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:140px}
-    input,select,textarea{background:#0b1223;border:1px solid #1f2937;color:var(--ink);border-radius:8px;padding:6px;width:100%}
+
+    input,select,textarea{background:var(--bar);border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
     textarea{resize:vertical;min-height:30px;max-height:120px}
     .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+
     button{border:0;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
-    .btn{background:#0b1223;border:1px solid #1f2937;color:#d1d5db}
+    .btn{background:var(--bar);border:1px solid var(--border);color:#d1d5db}
     .icon-btn{padding:6px 8px;min-width:0;line-height:1}
     .btn-acciones{background:#0891b2;border-color:#0e7490;color:#fff}
     .btn-art13{background:#b91c1c;border-color:#7f1d1d;color:#fff}
@@ -71,6 +99,7 @@
     .primary{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0}
     .warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
     .danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
+
     .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap}
     .pill.warn{background:#2a1b05;color:#fbbf24}
     .pill.err{background:#3b0a0a;color:#fca5a5}
@@ -78,11 +107,21 @@
     .muted{color:var(--muted)}
     .note{font-size:12px;color:#9ca3af}
     .lock{opacity:.6}
+
     .banner{background:#065f46;border:1px solid #14532d;color:#d1fae5;border-radius:12px;padding:8px 12px;margin:8px auto;max-width:1150px;display:none}
     .banner strong{letter-spacing:.02em}
+
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
-    .modal{background:#0b1223;border:1px solid #1f2937;border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
+    .modal{background:var(--bar);border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
     .modal .row.justify-end{justify-content:flex-end}
+
+    /* Historial: columna de checkboxes más usable */
+    #tablaHistorial td:last-child{white-space:normal}
+    .calls-wrap{display:flex;flex-wrap:wrap;gap:10px}
+    .calls-wrap label{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--border);border-radius:8px}
+
+    /* ===== Responsive ===== */
+    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
     @media (max-width:600px){
       html,body{font-size:13px}
       main{padding:8px}
@@ -90,8 +129,9 @@
       .row{gap:4px}
       button{padding:7px 9px}
       table{min-width:0}
-      #backdrop{align-items:flex-end}
-      .modal{width:100vw;max-width:none;border-radius:12px 12px 0 0}
+      .topbar{grid-template-columns:1fr;gap:6px}
+      .brand h1{font-size:22px}
+      .header-actions{justify-content:center}
     }
   </style>
 </head>
@@ -99,22 +139,27 @@
   <!-- Botón de instalación (debe estar en el body) -->
   <button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
 
+  <!-- ===== Header nuevo ===== -->
   <header>
-    <div class="header-top">
-      <h1>RecargApp</h1>
+    <div class="topbar">
+      <img class="app-logo" src="/RecargApp/icons/icon-192x192.png" alt="RecargApp">
+      <div class="brand"><h1>RecargApp</h1></div>
       <div class="header-actions">
-        <span id="lockState" class="muted lock" style="align-self:center">Modo lectura</span>
-        <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN del Admin">🔑</button>
-        <button class="btn icon-btn" id="btnDescargar" title="Descargar HTML">⬇️</button>
-        <button class="btn icon-btn" id="btnToggleAdmin" title="Ingresá PIN (Admin)">🔒</button>
+        <span id="lockState" class="muted lock">Modo lectura</span>
+        <button id="btnCambiarPinAdmin" class="btn icon-btn" style="display:none" title="Cambiar PIN del Admin">🔑</button>
+        <button id="btnAuth" title="Iniciar sesión">Iniciar sesión</button>
       </div>
     </div>
+  </header>
+
+  <!-- ===== Tabs debajo del header ===== -->
+  <div class="tabs-wrap">
     <div class="tabs">
       <div class="tab active" data-tab="hoy">Recargos</div>
       <div class="tab" data-tab="general">Lista</div>
       <div class="tab" data-tab="historial">Historial</div>
     </div>
-  </header>
+  </div>
 
   <main>
     <div id="banner" class="banner"></div>
@@ -132,32 +177,33 @@
         <button class="btn" id="btnCopiarListado">Copiar orden</button>
       </div>
 
-      <div class="grid grid-2" style="margin-top:8px">
-        <div>
-          <h2>Listado del día</h2>
-          <div class="tableWrap">
-            <table id="tablaDia">
-              <thead>
-                <tr>
-                  <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
+      <!-- Listado del día -->
+      <div style="margin-top:8px">
+        <h2>Listado del día</h2>
+        <div class="tableWrap">
+          <table id="tablaDia">
+            <thead>
+            <tr>
+              <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
-        <div>
-          <h2>Pasivos</h2>
-          <div class="tableWrap">
-            <table id="tablaPasivos">
-              <thead><tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="row" style="margin-top:6px">
-            <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
-          </div>
+        <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
+      </div>
+
+      <!-- Pasivos ABAJO del listado (siempre a ancho completo) -->
+      <div style="margin-top:12px">
+        <h2>Pasivos</h2>
+        <div class="tableWrap">
+          <table id="tablaPasivos">
+            <thead><tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="row" style="margin-top:6px">
+          <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
         </div>
       </div>
 
@@ -170,7 +216,7 @@
 
     <!-- TAB: GENERAL -->
     <section class="section" data-panel="general" style="display:none">
-      <h2>Listado general (solo Superadmin puede editar)</h2>
+      <h2>Listado general — Admin puede reordenar · Superadmin edita</h2>
       <div class="row">
         <input id="nombre" placeholder="Nombre y Apellido" style="max-width:240px">
         <input id="dni" placeholder="DNI" style="max-width:140px">
@@ -182,7 +228,7 @@
         <button class="primary" id="btnAgregar">Agregar</button>
         <button class="btn" id="btnOrdenarCriterios">Ordenar (Jerarquía → Antigüedad)</button>
         <button class="btn" id="btnDeshacerOrden" title="Volver al orden anterior">Deshacer orden</button>
-        <button class="warn" id="btnEditarGeneral" title="Editar en línea y arrastrar">Editar</button>
+        <button class="warn" id="btnEditarGeneral" title="Arrastrar para reordenar">Editar</button>
       </div>
       <div class="tableWrap">
         <table id="tablaGeneral" style="margin-top:6px">
@@ -196,7 +242,7 @@
         <button class="btn" id="btnExportar">Exportar JSON</button>
         <button class="btn" id="btnImportar">Importar JSON</button>
       </div>
-      <div class="note">ART/LIC/AUT/SALTEAR se gestionan desde la **pestaña Recargos** (día).</div>
+      <div class="note">ART/LIC/AUT/SALTEAR se gestionan desde la pestaña <b>Recargos</b>.</div>
     </section>
 
     <!-- TAB: HISTORIAL -->
@@ -263,7 +309,8 @@ const SUPERADMIN_PIN='9999';
 function setAdminPin(newPin){ ADMIN_PIN=String(newPin); localStorage.setItem('recargapp.admin.pin', ADMIN_PIN); }
 
 function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
-function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; }
+}
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function today(){ return new Date().toISOString().slice(0,10); }
 function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
@@ -271,7 +318,14 @@ function inLicencia(p, fecha){ var L=p.obs.licencia; if(!L||!L.desde||!L.hasta) 
 function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var d=new Date(dateStr), b=new Date(baseStr); var next = new Date(d.getTime()+86400000); return next.toISOString().slice(0,10)===b.toISOString().slice(0,10); }
 
 let db = load() || { personas: [], historial: [], generalHead: 0 };
-if(db.personas){ var base=Date.now(); db.personas.forEach(function(p,i){ if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); } if(typeof p.debeLista!=='number'){ p.debeLista=0; } if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; } }); }
+if(db.personas){
+  var base=Date.now();
+  db.personas.forEach(function(p,i){
+    if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); }
+    if(typeof p.debeLista!=='number'){ p.debeLista=0; }
+    if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; }
+  });
+}
 
 let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
 let modalId=null;
@@ -279,16 +333,10 @@ let role='viewer';
 
 /* ===== Accesos ===== */
 var lockState=$qs(null,'#lockState');
-var btnToggleAdmin=$qs(null,'#btnToggleAdmin');
+var btnAuth=$qs(null,'#btnAuth');
 var btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
-var btnDescargar=$qs(null,'#btnDescargar');
 
-if(btnDescargar){ btnDescargar.onclick=function(){ var blob=new Blob([document.documentElement.outerHTML],{type:'text/html'}); var url=URL.createObjectURL(blob); var a=document.createElement('a'); a.href=url; a.download='recargapp.html'; a.click(); URL.revokeObjectURL(url); }; }
-
-function isAdmin(){ return role==='admin' || role==='superadmin'; }
-function isSuper(){ return role==='superadmin'; }
-
-/* ===== Banner helper (mejorado para updates) ===== */
+/* ===== Banner helper ===== */
 function showBanner(msg, opts){
   opts = opts || {};
   var b=$qs(null,'#banner'); if(!b) return;
@@ -298,6 +346,37 @@ function showBanner(msg, opts){
   if(!opts.sticky){ showBanner._t=setTimeout(function(){ b.style.display='none'; }, opts.timeout || 3200); }
 }
 
+/* ===== Login/roles ===== */
+function isAdmin(){ return role==='admin' || role==='superadmin'; }
+function isSuper(){ return role==='superadmin'; }
+
+function updateAuthUI(){
+  if(role==='viewer'){
+    lockState.textContent='Modo lectura';
+    btnAuth.textContent='Iniciar sesión';
+    btnAuth.title='Ingresá PIN (Admin/Superadmin)';
+    btnCambiarPinAdmin.style.display='none';
+  }else if(role==='admin'){
+    lockState.textContent='Modo ADMIN';
+    btnAuth.textContent='Cerrar sesión';
+    btnAuth.title='Cerrar sesión';
+    btnCambiarPinAdmin.style.display='none';
+  }else{
+    lockState.textContent='👑 SUPERADMIN';
+    btnAuth.textContent='Cerrar sesión';
+    btnAuth.title='Cerrar sesión';
+    btnCambiarPinAdmin.style.display='inline-block';
+  }
+}
+
+btnAuth.onclick=function(){
+  if(role!=='viewer'){ role='viewer'; updateAuthUI(); renderAll(); return; }
+  var code=prompt('Ingresá PIN (Admin/Superadmin)');
+  if(code===ADMIN_PIN){ role='admin'; updateAuthUI(); renderAll(); }
+  else if(code===SUPERADMIN_PIN){ role='superadmin'; updateAuthUI(); renderAll(); }
+  else if(code!==null){ alert('PIN incorrecto'); }
+};
+
 if(btnCambiarPinAdmin){
   btnCambiarPinAdmin.onclick=function(){
     if(!isSuper()) return alert('Solo superadmin');
@@ -306,14 +385,6 @@ if(btnCambiarPinAdmin){
     setAdminPin(np); showBanner('Contraseña de ADMIN actualizada ✅');
   };
 }
-
-btnToggleAdmin.onclick=function(){
-  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.textContent='🔒'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
-  var code=prompt('Ingresá PIN (Admin)');
-  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='Modo ADMIN'; btnToggleAdmin.textContent='🔓'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); }
-  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.textContent='👑'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
-  else if(code!==null){ alert('PIN incorrecto'); }
-};
 
 /* ===== Tabs ===== */
 var tabs = $all('.tab');
@@ -355,20 +426,8 @@ $qs(null,'#btnDeshacerOrden').onclick=function(){
   save(); renderGeneral(); renderHoy();
 };
 
-$qs(null,'#btnExportar').onclick=function(){
-  var blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}); var url=URL.createObjectURL(blob);
-  var a=document.createElement('a'); a.href=url; a.download='recargapp_db.json'; a.click(); URL.revokeObjectURL(url);
-};
-
-$qs(null,'#btnImportar').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
-  var inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json';
-  inp.onchange=function(e){ var f=e.target.files[0]; if(!f) return; var fr=new FileReader(); fr.onload=function(){ try{ db=JSON.parse(fr.result); save(); renderAll(); }catch(err){ alert('Archivo inválido'); } }; fr.readAsText(f); };
-  inp.click();
-};
-
 $qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
+  if(!isAdmin()) return alert('Solo admin/superadmin');
   editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar' : 'Editar'; renderGeneral();
 };
 
@@ -398,12 +457,12 @@ function renderGeneral(){
     function cell(txt){ return '<td>'+txt+'</td>'; }
     var cOrden = cell(i+1);
     var cNombre = cell(p.nombre);
-    var cDNI = editGeneral ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
-    var cLegajo = editGeneral ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
+    var cDNI = (isSuper() && editGeneral) ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
+    var cLegajo = (isSuper() && editGeneral) ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
     var jerOpts = ['AYTE MY (CG)','AYTE PR (CG)','AYTE 1° (CG)','AYTE 2° (CG)','AYTE 3° (CG)','AYTE 4° (CG)','AYTE 5° (CG)','SUBAYTE (CG)','- vacio -'].map(function(j){ return '<option '+(p.jerarquia===j?'selected':'')+'>'+j+'</option>'; }).join('');
-    var cJer = editGeneral ? '<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jerOpts+'</select></td>' : cell(p.jerarquia);
-    var cAnt = editGeneral ? '<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>' : cell(p.antiguedad||0);
-    var cDebe = editGeneral ? '<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>' : cell(p.debeLista||0);
+    var cJer = (isSuper() && editGeneral) ? '<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jerOpts+'</select></td>' : cell(p.jerarquia);
+    var cAnt = (isSuper() && editGeneral) ? '<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>' : cell(p.antiguedad||0);
+    var cDebe = (isSuper() && editGeneral) ? '<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>' : cell(p.debeLista||0);
 
     var obsParts=[]; if(p.obs.art) obsParts.push('ART '+p.obs.art);
     if(p.obs.licencia && p.obs.licencia.desde && p.obs.licencia.hasta) obsParts.push('LIC '+p.obs.licencia.desde+'→'+p.obs.licencia.hasta);
@@ -411,18 +470,17 @@ function renderGeneral(){
     var cObs = cell(obsParts.join(' · ')||'<span class="muted">—</span>');
 
     var cAcc = editGeneral
-      ? "<td><span class='muted'>Arrastrá para reordenar</span> <button class='danger' onclick=\"eliminar('"+p.id+"')\">✕</button></td>"
-      : "<td><button class='btn icon-btn' onclick=\"mover('"+p.id+"',-1)\">↑</button> <button class='btn icon-btn' onclick=\"mover('"+p.id+"',1)\">↓</button> <button class='danger icon-btn' onclick=\"eliminar('"+p.id+"')\">✕</button></td>";
+      ? "<td><span class='muted'>Arrastrá para reordenar</span> "+ (isSuper() ? "<button class='danger' onclick=\"eliminar('"+p.id+"')\">✕</button>" : "") +"</td>"
+      : "<td>"+ (isAdmin() ? ("<button class='btn icon-btn' onclick=\"mover('"+p.id+"',-1)\">↑</button> <button class='btn icon-btn' onclick=\"mover('"+p.id+"',1)\">↓</button>") : "<span class='muted'>—</span>") + (isSuper() ? " <button class='danger icon-btn' onclick=\"eliminar('"+p.id+"')\">✕</button>" : "") +"</td>";
 
     tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cAcc;
-    if(!isSuper()){ $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo superadmin'; }); }
     tbody.appendChild(tr);
   });
 }
 
 window.setField=function(id,key,val){ if(!isSuper()) return alert('Solo superadmin'); var p=getById(id); if(!p) return; p[key]=val; save(); };
 function mover(id,dir){
-  if(!isSuper()) return alert('Solo superadmin');
+  if(!isAdmin()) return alert('Solo admin/superadmin');
   var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
   var idx=-1; for(var i=0;i<ordered.length;i++){ if(ordered[i].id===id){ idx=i; break; } }
   if(idx<0) return; var swap=idx+dir; if(swap<0||swap>=ordered.length) return;
@@ -671,7 +729,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Limpiar banderas del día
   db.personas.forEach(function(p){ p.obs.autorizado=false; p.salteado=false; });
 
-  // Layout inline para historial (incluye no numerados en su sitio)
+  // Layout inline para historial
   var conteo=0, layout=[];
   plan.mostrados.forEach(function(item){
     var p=item.p, saltar=item.saltar;
@@ -721,7 +779,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
 $qs(null,'#btnDeshacer').onclick=function(){
   if(!isAdmin()) return alert('Solo admin/superadmin');
   if(!db.historial.length) return alert('No hay guardias para deshacer');
-  var h=db.historial.pop(); // deshacer la última
+  var h=db.historial.pop();
   if(h && h.personasBefore){ db.personas = JSON.parse(JSON.stringify(h.personasBefore)); }
   if(typeof h.generalHeadBefore==='number') db.generalHead = h.generalHeadBefore;
   save(); renderAll(); alert('Se revirtió la última confirmación.');
@@ -797,22 +855,17 @@ function renderHistorial(){
       }).join('') || '<li>—</li>';
     }
 
-    var pasList = (h.pasivos||[]).map(function(x,i){
-      var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
-      return '<li>'+(i+1)+') '+nombre+'</li>';
-    }).join('') || '<li>—</li>';
-
-    var llam = (h.pasivos||[]).map(function(x){
+    // checkboxes con labels (mejor en móvil)
+    var llam = "<div class='calls-wrap'>" + (h.pasivos||[]).map(function(x){
       var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
       var per=getById(x.id); var nombre= per? per.nombre : x.nombre;
-      return "<input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+(esUltimo?'':'disabled')+" "+checked+" title='"+nombre+"'>";
-    }).join(' ');
+      return "<label><input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+(esUltimo?'':'disabled')+" "+checked+"> <span>"+(nombre||'—')+"</span></label>";
+    }).join('') + "</div>";
 
     var delBtn = isSuper()? "<button class='danger' onclick='borrarHist("+idx+")'>Borrar</button>" : "";
 
     var tr=document.createElement('tr');
-    var actionsHtml = "<div class='row' style=\"justify-content:space-between;gap:12px\"><span>"+(llam||'—')+"</span><span>"+delBtn+"</span></div>";
-    tr.innerHTML="<td>"+h.fecha+"</td><td><ul style='padding-left:18px;margin:0'>"+recListHtml+"</ul></td><td><ul style='padding-left:18px;margin:0'>"+pasList+"</ul></td><td>"+actionsHtml+"</td>";
+    tr.innerHTML="<td>"+h.fecha+"</td><td><ul style='padding-left:18px;margin:0'>"+recListHtml+"</ul></td><td><ul style='padding-left:18px;margin:0'>"+((h.pasivos||[]).map(function(x,i){var per=getById(x.id);var n=per?per.nombre:x.nombre;return '<li>'+(i+1)+') '+n+'</li>';}).join('')||'<li>—</li>')+"</ul></td><td><div class='row' style='justify-content:space-between;gap:12px'>"+llam+delBtn+"</div></td>";
     tb.appendChild(tr);
   }
 }
@@ -844,7 +897,7 @@ $qs(null,'#btnGuardarLlamados').onclick=function(){
   save(); renderAll(); alert('Llamados actualizados.');
 };
 
-/* Borrar TODO el historial: solo visible si superadmin (y además pide PIN) */
+/* Borrar TODO el historial: solo visible si superadmin */
 var btnBorrarHistorial=$qs(null,'#btnBorrarHistorial');
 if(btnBorrarHistorial){
   btnBorrarHistorial.onclick=function(){
@@ -859,12 +912,11 @@ if(btnBorrarHistorial){
 /* ===== Render maestro ===== */
 function renderAll(){
   renderGeneral(); renderHoy(); renderHistorial();
-  // Mostrar botón borrar historial solo si superadmin
   var bh=$qs(null,'#btnBorrarHistorial');
   if(bh) bh.style.display = isSuper()? 'inline-block' : 'none';
-  // Mostrar cambiar PIN admin solo superadmin
   if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display = isSuper()? 'inline-block' : 'none';
 }
+updateAuthUI();
 
 /* ===== Seed si está vacío ===== */
 function seedIfEmpty(){
@@ -892,13 +944,12 @@ function seedIfEmpty(){
 seedIfEmpty();
 renderAll();
 
-  (function () {
-  // Registrar el Service Worker (rutas con prefijo del repo)
+/* ===== PWA: SW + instalar + updates ===== */
+(function () {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
       .catch(err => console.error('SW fail', err));
 
-    // Recargar cuando se active un SW nuevo
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (refreshing) return;
@@ -912,7 +963,6 @@ renderAll();
   const btnInstall = document.getElementById('btnInstall');
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Usamos UI propia → prevenimos el banner automático
     e.preventDefault();
     deferredPrompt = e;
     if (btnInstall) btnInstall.style.display = 'inline-block';
@@ -921,8 +971,8 @@ renderAll();
   if (btnInstall) {
     btnInstall.addEventListener('click', async () => {
       if (!deferredPrompt) return;
-      await deferredPrompt.prompt();                  // <<— aquí mostramos el prompt oficial
-      await deferredPrompt.userChoice;               // opcional: { outcome: 'accepted' | 'dismissed' }
+      await deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
       deferredPrompt = null;
       btnInstall.style.display = 'none';
     });
@@ -944,27 +994,11 @@ renderAll();
         if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
           askToUpdate();
         }
-		async function updateVisibleVersion() {
-  const el = document.getElementById('appVersion');
-  if (!el) return;
-  try {
-    const res = await fetch('/RecargApp/manifest.json?t=' + Date.now(), { cache: 'no-store' });
-    const m = await res.json();
-    // Prioriza el campo "version"; si no, intenta extraer "Vx.y" del name
-    const v = m.version ? 'V' + m.version :
-              (m.name && (m.name.match(/V\d+(\.\d+)*/)?.[0] || ''));
-    el.textContent = v || 'V?';
-  } catch (e) {
-    el.textContent = 'V?';
-  }
-}
-updateVisibleVersion();
       });
     });
   });
 })();
-
- </script>
+</script>
 
 <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
   Versión <span id="appVersion">—</span>
@@ -974,45 +1008,22 @@ updateVisibleVersion();
 (async function updateVisibleVersion() {
   const el = document.getElementById('appVersion');
   if (!el) return;
-
-  // Probar ambas rutas posibles del manifest (json y webmanifest)
-  const candidates = [
-    '/RecargApp/manifest.json',
-    '/RecargApp/manifest.webmanifest'
-  ];
-
-  let manifest = null;
-  let lastErr = null;
-
+  const candidates = ['/RecargApp/manifest.json','/RecargApp/manifest.webmanifest'];
+  let manifest=null;
   for (const url of candidates) {
     try {
       const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status + ' on ' + url);
+      if (!res.ok) continue;
       manifest = await res.json();
-      break; // listo, lo encontramos
-    } catch (e) {
-      lastErr = e;
-    }
+      break;
+    } catch(e){}
   }
-
-  if (!manifest) {
-    console.error('No pude leer manifest:', lastErr);
-    el.textContent = 'V?';
-    return;
-  }
-
-  // 1) Preferir campo "version"
-  // 2) Si no, extraer algo tipo "V1.2" del name
+  if(!manifest){ el.textContent='V?'; return; }
   const fromField = (manifest.version && String(manifest.version).trim()) || '';
   const fromName = (manifest.name && (manifest.name.match(/V\d+(\.\d+)*/i)?.[0] || '').trim()) || '';
   const v = fromField ? ('V' + fromField) : fromName;
-
   el.textContent = v || 'V?';
 })();
 </script>
-
-
-
 </body>
 </html>
-
