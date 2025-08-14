@@ -15,151 +15,158 @@
 
   <style>
     :root{
-      --bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;
-      --ink:#e5e7eb;--accent:#38bdf8;--bar:#0b1223;--border:#1f2937
+      --bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8;
+      --blue:#2563eb;--blue2:#1f6feb;--blue3:#1463d6;--border:#1f2937
     }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
 
-    /* ===== Topbar nuevo (logo | título grande | login) ===== */
-    header{padding:10px 12px;border-bottom:1px solid var(--border);background:var(--bar);position:sticky;top:0;z-index:5}
-    .topbar{
-      max-width:1150px;margin:0 auto;
-      display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;
+    /* ===== Header nuevo ===== */
+    header{
+      padding:10px 12px;border-bottom:1px solid var(--border);background:#0b1223;position:sticky;top:0;z-index:5
     }
-    .app-logo{width:36px;height:36px;border-radius:8px;object-fit:cover}
+    .appbar{
+      display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;max-width:1150px;margin:0 auto;
+    }
     .brand{
-      display:flex;align-items:center;justify-content:center;line-height:1
+      display:flex;align-items:center;gap:10px;justify-content:flex-start;
     }
-    .brand h1{margin:0;font-weight:800;letter-spacing:.2px}
-    /* título más grande en desktop */
-    .brand h1{font-size:28px}
-    /* botón login */
-    .header-actions{display:flex;gap:8px;align-items:center}
-    #btnAuth{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0;border-radius:10px;padding:8px 12px;font-weight:700;cursor:pointer}
-    #lockState{color:var(--muted);font-size:12px}
+    .brand img{width:32px;height:32px;border-radius:8px;display:block}
+    .brand-title{
+      text-align:center;font-weight:800;font-size:22px;letter-spacing:.5px
+    }
+    @media (min-width:700px){
+      .brand-title{font-size:26px}
+    }
 
-    /* ===== Tabs debajo del header ===== */
-    .tabs-wrap{border-bottom:1px solid var(--border);background:var(--bar)}
-    .tabs{
-      max-width:1150px;margin:0 auto;padding:8px 12px;
-      display:flex;gap:6px;justify-content:center;flex-wrap:wrap
+    .actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+    .btn{background:#0b1223;border:1px solid var(--border);color:#d1d5db;border-radius:8px;padding:7px 12px;font-weight:600;cursor:pointer}
+    .btn.primary{background:linear-gradient(180deg,var(--blue2),var(--blue3));color:#fff;border:0}
+    .btn.warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
+    .btn.danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
+    .icon-btn{padding:6px 8px;min-width:0;line-height:1}
+    .muted{color:var(--muted)}
+    .lock{opacity:.6}
+
+    /* Botón iniciar sesión: texto en desktop, icono en móvil */
+    .btn-login .label{display:none}
+    .btn-login .ico{display:inline}
+    @media (min-width:700px){
+      .btn-login .label{display:inline}
+      .btn-login .ico{display:none}
     }
-    .tab{background:var(--bar);border:1px solid var(--border);color:var(--muted);padding:7px 12px;border-radius:10px;cursor:pointer}
-    .tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
+
+    /* Tabs debajo del header */
+    .tabs-wrap{border-top:1px solid var(--border);margin-top:10px}
+    .tabs{
+      display:flex;gap:6px;justify-content:center;padding:8px 6px;flex-wrap:wrap;max-width:1150px;margin:0 auto
+    }
+    .tab{background:#0b1223;border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
+    .tab.active{color:#fff;border-color:var(--blue);background:linear-gradient(180deg,var(--blue2),var(--blue3))}
 
     main{padding:10px;max-width:1150px;margin:0 auto}
-    .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
+    .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin:12px 0}
     h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
-    .grid{display:grid;gap:10px}
-    .grid-2{grid-template-columns:1fr 1fr}
 
     .tableWrap{width:100%;overflow-x:auto}
-    table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:680px}
+    table{width:100%;border-collapse:collapse;table-layout:fixed}
     th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
-    #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:42px}
-    #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:200px}
-    #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
-    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:220px}
-    #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:120px}
-    #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:180px}
-    #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:120px}
 
-    #tablaPasivos{min-width:0}
+    /* Listado del día */
+    #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:40px}
+    #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:220px}
+    #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
+    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:auto}
+    #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:130px}
+    #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:220px}
+    #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:96px}
+
+    /* Pasivos compactos */
     #tablaPasivos th:nth-child(1),#tablaPasivos td:nth-child(1){width:42px}
-    #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:220px}
+    #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:auto}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
 
-    #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:60px}
+    /* Lista general (sin flechitas) + más compacto */
+    #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:56px}
     #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:220px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
     #tablaGeneral th:nth-child(4),#tablaGeneral td:nth-child(4){width:120px}
     #tablaGeneral th:nth-child(5),#tablaGeneral td:nth-child(5){width:140px}
     #tablaGeneral th:nth-child(6),#tablaGeneral td:nth-child(6){width:80px}
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
-    #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:220px}
-    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:140px}
+    #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:auto}
+    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:130px}
 
-    input,select,textarea{background:var(--bar);border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
+    input,select,textarea{background:#0b1223;border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
     textarea{resize:vertical;min-height:30px;max-height:120px}
-    .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 
-    button{border:0;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
-    .btn{background:var(--bar);border:1px solid var(--border);color:#d1d5db}
-    .icon-btn{padding:6px 8px;min-width:0;line-height:1}
-    .btn-acciones{background:#0891b2;border-color:#0e7490;color:#fff}
-    .btn-art13{background:#b91c1c;border-color:#7f1d1d;color:#fff}
-    .btn-art26{background:#d97706;border-color:#a16207;color:#fff}
-    .btn-pres04{background:#15803d;border-color:#166534;color:#fff}
-    .btn-autorizado{background:#1d4ed8;border-color:#1e40af;color:#fff}
-    .btn-saltear{background:#6d28d9;border-color:#5b21b6;color:#fff}
-    .btn-secondary{background:#374151;border-color:#4b5563;color:#e5e7eb}
-    .primary{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0}
-    .warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
-    .danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
-
+    /* Pills */
     .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap}
     .pill.warn{background:#2a1b05;color:#fbbf24}
     .pill.err{background:#3b0a0a;color:#fca5a5}
     .pill.ok{background:#052e1a;color:#86efac}
-    .muted{color:var(--muted)}
-    .note{font-size:12px;color:#9ca3af}
-    .lock{opacity:.6}
 
-    .banner{background:#065f46;border:1px solid #14532d;color:#d1fae5;border-radius:12px;padding:8px 12px;margin:8px auto;max-width:1150px;display:none}
-    .banner strong{letter-spacing:.02em}
+    .banner{background:#065f46;border:1px solid #14532d;color:#d1fae5;border-radius:12px;padding:8px 12px;margin:8px auto;display:none}
+    .note{font-size:12px;color:#9ca3af}
 
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
-    .modal{background:var(--bar);border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
-    .modal .row.justify-end{justify-content:flex-end}
+    .modal{background:#0b1223;border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
 
-    /* Historial: columna de checkboxes más usable */
-    #tablaHistorial td:last-child{white-space:normal}
-    .calls-wrap{display:flex;flex-wrap:wrap;gap:10px}
-    .calls-wrap label{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border:1px solid var(--border);border-radius:8px}
+    /* Botonera inferior recargos */
+    .actions-line{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;margin-top:10px;flex-wrap:wrap
+    }
+    .left-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .right-actions{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
-    /* ===== Responsive ===== */
-    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+    /* Historial responsive */
+    .history-card{border:1px solid var(--border);border-radius:10px;padding:10px;margin:10px 0;background:#0b1223}
+    .history-head{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+    .history-body{margin-top:6px}
+    .history-meta{color:var(--muted);font-size:12px}
+    .history-buttons{display:flex;gap:8px;align-items:center}
+
     @media (max-width:600px){
       html,body{font-size:13px}
       main{padding:8px}
       .section{padding:10px}
-      .row{gap:4px}
+      .row{gap:6px}
       button{padding:7px 9px}
-      table{min-width:0}
-      .topbar{grid-template-columns:1fr;gap:6px}
-      .brand h1{font-size:22px}
-      .header-actions{justify-content:center}
+      table{min-width:0} /* evita scroll lateral feo */
+      .brand img{width:28px;height:28px}
     }
   </style>
 </head>
 <body>
-  <!-- Botón de instalación (debe estar en el body) -->
-  <button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
 
-  <!-- ===== Header nuevo ===== -->
+  <!-- ===== Header ===== -->
   <header>
-    <div class="topbar">
-      <img class="app-logo" src="/RecargApp/icons/icon-192x192.png" alt="RecargApp">
-      <div class="brand"><h1>RecargApp</h1></div>
-      <div class="header-actions">
-        <span id="lockState" class="muted lock">Modo lectura</span>
-        <button id="btnCambiarPinAdmin" class="btn icon-btn" style="display:none" title="Cambiar PIN del Admin">🔑</button>
-        <button id="btnAuth" title="Iniciar sesión">Iniciar sesión</button>
+    <div class="appbar">
+      <div class="brand">
+        <img src="/RecargApp/icons/icon-192x192.png" alt="Logo">
+      </div>
+      <div class="brand-title">RecargApp</div>
+      <div class="actions">
+        <span id="lockState" class="muted lock" style="align-self:center">Modo lectura</span>
+        <button class="btn btn-login" id="btnToggleAdmin" title="Ingresar PIN">
+          <span class="ico">🔒</span><span class="label">Iniciar sesión</span>
+        </button>
+        <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN del Admin">🔑</button>
+        <button class="btn" id="btnInstall" style="display:none" title="Instalar app">Instalar</button>
+      </div>
+    </div>
+
+    <div class="tabs-wrap">
+      <div class="tabs">
+        <div class="tab active" data-tab="hoy">Recargos</div>
+        <div class="tab" data-tab="general">Lista</div>
+        <div class="tab" data-tab="historial">Historial</div>
       </div>
     </div>
   </header>
-
-  <!-- ===== Tabs debajo del header ===== -->
-  <div class="tabs-wrap">
-    <div class="tabs">
-      <div class="tab active" data-tab="hoy">Recargos</div>
-      <div class="tab" data-tab="general">Lista</div>
-      <div class="tab" data-tab="historial">Historial</div>
-    </div>
-  </div>
 
   <main>
     <div id="banner" class="banner"></div>
@@ -167,25 +174,25 @@
     <!-- TAB: HOY -->
     <section class="section" data-panel="hoy">
       <h2 id="tituloDia">RECARGOS DEL DÍA</h2>
+
       <div class="row">
         <label>Fecha</label>
         <input id="fecha" type="date" style="max-width:160px">
         <label>Faltantes</label>
         <input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
-        <button class="danger" id="btnReiniciar" style="margin-left:auto">⚠️ Reiniciar lista</button>
-        <button class="btn" id="btnActualizar">🔄 Actualizar</button>
-        <button class="btn" id="btnCopiarListado">Copiar orden</button>
+        <button class="btn" id="btnActualizar" title="Refrescar lista">🔄 Actualizar</button>
+        <button class="btn" id="btnAgregarExtra" title="Agregar extra (observación)">➕ Agregar extra</button>
+        <button class="danger" id="btnReiniciar" style="margin-left:auto">⚠️ Reiniciar rotación</button>
       </div>
 
-      <!-- Listado del día -->
-      <div style="margin-top:8px">
+      <div>
         <h2>Listado del día</h2>
         <div class="tableWrap">
           <table id="tablaDia">
             <thead>
-            <tr>
-              <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
-            </tr>
+              <tr>
+                <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
+              </tr>
             </thead>
             <tbody></tbody>
           </table>
@@ -193,30 +200,40 @@
         <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
       </div>
 
-      <!-- Pasivos ABAJO del listado (siempre a ancho completo) -->
-      <div style="margin-top:12px">
+      <!-- Pasivos DEBAJO -->
+      <div style="margin-top:14px">
         <h2>Pasivos</h2>
-        <div class="tableWrap">
+        <div class="row">
+          <label>Franco de pasivos</label>
+          <select id="francoPasivos" style="max-width:160px">
+            <option value="1" selected>1° Franco</option>
+            <option value="2">2° Franco</option>
+          </select>
+        </div>
+        <div class="tableWrap" style="margin-top:6px">
           <table id="tablaPasivos">
             <thead><tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr></thead>
             <tbody></tbody>
           </table>
         </div>
-        <div class="row" style="margin-top:6px">
-          <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
-        </div>
       </div>
 
-      <div class="row" style="margin-top:8px">
-        <button class="primary" id="btnConfirmar">Confirmar guardia</button>
-        <button class="warn" id="btnDeshacer">Deshacer última</button>
-        <button class="btn" id="btnCopiarResultado">Copiar recargos+pasivos</button>
+      <!-- Botonera separada y con copiar/imp derecha -->
+      <div class="actions-line">
+        <div class="left-actions">
+          <button class="primary" id="btnConfirmar">Confirmar guardia</button>
+          <button class="btn" id="btnUndo">Deshacer</button>
+        </div>
+        <div class="right-actions">
+          <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
+          <button class="btn" id="btnCopiarResultado">Copiar recargos+pasivos</button>
+        </div>
       </div>
     </section>
 
     <!-- TAB: GENERAL -->
     <section class="section" data-panel="general" style="display:none">
-      <h2>Listado general — Admin puede reordenar · Superadmin edita</h2>
+      <h2>Listado general (Editar requiere <b>Admin</b>)</h2>
       <div class="row">
         <input id="nombre" placeholder="Nombre y Apellido" style="max-width:240px">
         <input id="dni" placeholder="DNI" style="max-width:140px">
@@ -228,7 +245,7 @@
         <button class="primary" id="btnAgregar">Agregar</button>
         <button class="btn" id="btnOrdenarCriterios">Ordenar (Jerarquía → Antigüedad)</button>
         <button class="btn" id="btnDeshacerOrden" title="Volver al orden anterior">Deshacer orden</button>
-        <button class="warn" id="btnEditarGeneral" title="Arrastrar para reordenar">Editar</button>
+        <button class="warn" id="btnEditarGeneral" title="Editar en línea y arrastrar">Editar</button>
       </div>
       <div class="tableWrap">
         <table id="tablaGeneral" style="margin-top:6px">
@@ -248,15 +265,9 @@
     <!-- TAB: HISTORIAL -->
     <section class="section" data-panel="historial" style="display:none">
       <h2>Historial de guardias</h2>
-      <div class="row" style="margin:6px 0 8px;justify-content:space-between">
-        <button class="primary" id="btnGuardarLlamados">Guardar llamados del último</button>
+      <div id="histCards"></div>
+      <div class="row" style="margin:6px 0 8px;justify-content:flex-end">
         <button class="danger" id="btnBorrarHistorial" style="display:none">Borrar todo el historial</button>
-      </div>
-      <div class="tableWrap">
-        <table id="tablaHistorial">
-          <thead><tr><th>Fecha</th><th>Recargos (lista)</th><th>Pasivos (lista)</th><th>Marcar llamados (último)</th></tr></thead>
-          <tbody></tbody>
-        </table>
       </div>
     </section>
   </main>
@@ -285,7 +296,7 @@
         <button class="btn btn-autorizado" onclick="modalToggleAutorizado()">AUTORIZADO</button>
         <button class="btn btn-saltear" onclick="modalToggleSalteado()">SALTEAR</button>
       </div>
-      <div class="row justify-end" style="margin-top:6px">
+      <div class="row justify-end" style="margin-top:6px;justify-content:flex-end">
         <button class="primary" onclick="closeModal()">Listo</button>
       </div>
     </div>
@@ -301,7 +312,7 @@ window.addEventListener('error', function(e){ try{ alert('Error JS: ' + e.messag
 
 /* ===== Modelo =====
 Persona: {id, nombre, dni, legajo, jerarquia, antiguedad, obs:{art:null|"13"|"26", licencia:{desde:null,hasta:null}, autorizado:boolean}, order, rorder, debeLista:number, salteado:boolean}
-Historial: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore}
+Historial: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore, franco:1|2, extras:[{pabellon,obsRecargo}]}
 */
 const KEY='recargapp.v1';
 let ADMIN_PIN = localStorage.getItem('recargapp.admin.pin') || '1111';
@@ -309,32 +320,55 @@ const SUPERADMIN_PIN='9999';
 function setAdminPin(newPin){ ADMIN_PIN=String(newPin); localStorage.setItem('recargapp.admin.pin', ADMIN_PIN); }
 
 function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
-function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; }
-}
+function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function today(){ return new Date().toISOString().slice(0,10); }
 function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
+function addDays(iso, n){ var d=new Date(iso); d.setDate(d.getDate()+n); return d.toISOString().slice(0,10); }
 function inLicencia(p, fecha){ var L=p.obs.licencia; if(!L||!L.desde||!L.hasta) return false; return (fecha>=L.desde && fecha<=L.hasta); }
 function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var d=new Date(dateStr), b=new Date(baseStr); var next = new Date(d.getTime()+86400000); return next.toISOString().slice(0,10)===b.toISOString().slice(0,10); }
 
 let db = load() || { personas: [], historial: [], generalHead: 0 };
-if(db.personas){
-  var base=Date.now();
-  db.personas.forEach(function(p,i){
-    if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); }
-    if(typeof p.debeLista!=='number'){ p.debeLista=0; }
-    if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; }
-  });
-}
+if(db.personas){ var base=Date.now(); db.personas.forEach(function(p,i){ if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); } if(typeof p.debeLista!=='number'){ p.debeLista=0; } if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; } }); }
 
 let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
 let modalId=null;
 let role='viewer';
+let manualDateChanged=false;
+
+/* ===== Pila de deshacer =====
+  Guardamos snapshots mínimos antes de cada cambio (personas, prioridadHoy, generalHead, extras, francoPasivos)
+*/
+const undoStack=[];
+function snapshot(label){
+  undoStack.push({
+    label:label||'',
+    personas: JSON.parse(JSON.stringify(db.personas)),
+    generalHead: db.generalHead,
+    prioridadHoy: JSON.parse(JSON.stringify(prioridadHoy)),
+    extras: JSON.parse(JSON.stringify(dayExtras)),
+    franco: getFranco()
+  });
+  if(undoStack.length>50) undoStack.shift();
+}
+function restoreLast(){
+  var last=undoStack.pop(); if(!last) return false;
+  db.personas = last.personas;
+  db.generalHead = last.generalHead;
+  prioridadHoy = last.prioridadHoy;
+  dayExtras = last.extras||[];
+  setFranco(last.franco||1);
+  save(); renderAll();
+  return true;
+}
 
 /* ===== Accesos ===== */
 var lockState=$qs(null,'#lockState');
-var btnAuth=$qs(null,'#btnAuth');
+var btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 var btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
+
+function isAdmin(){ return role==='admin' || role==='superadmin'; }
+function isSuper(){ return role==='superadmin'; }
 
 /* ===== Banner helper ===== */
 function showBanner(msg, opts){
@@ -346,37 +380,7 @@ function showBanner(msg, opts){
   if(!opts.sticky){ showBanner._t=setTimeout(function(){ b.style.display='none'; }, opts.timeout || 3200); }
 }
 
-/* ===== Login/roles ===== */
-function isAdmin(){ return role==='admin' || role==='superadmin'; }
-function isSuper(){ return role==='superadmin'; }
-
-function updateAuthUI(){
-  if(role==='viewer'){
-    lockState.textContent='Modo lectura';
-    btnAuth.textContent='Iniciar sesión';
-    btnAuth.title='Ingresá PIN (Admin/Superadmin)';
-    btnCambiarPinAdmin.style.display='none';
-  }else if(role==='admin'){
-    lockState.textContent='Modo ADMIN';
-    btnAuth.textContent='Cerrar sesión';
-    btnAuth.title='Cerrar sesión';
-    btnCambiarPinAdmin.style.display='none';
-  }else{
-    lockState.textContent='👑 SUPERADMIN';
-    btnAuth.textContent='Cerrar sesión';
-    btnAuth.title='Cerrar sesión';
-    btnCambiarPinAdmin.style.display='inline-block';
-  }
-}
-
-btnAuth.onclick=function(){
-  if(role!=='viewer'){ role='viewer'; updateAuthUI(); renderAll(); return; }
-  var code=prompt('Ingresá PIN (Admin/Superadmin)');
-  if(code===ADMIN_PIN){ role='admin'; updateAuthUI(); renderAll(); }
-  else if(code===SUPERADMIN_PIN){ role='superadmin'; updateAuthUI(); renderAll(); }
-  else if(code!==null){ alert('PIN incorrecto'); }
-};
-
+/* ===== Login / roles ===== */
 if(btnCambiarPinAdmin){
   btnCambiarPinAdmin.onclick=function(){
     if(!isSuper()) return alert('Solo superadmin');
@@ -385,6 +389,14 @@ if(btnCambiarPinAdmin){
     setAdminPin(np); showBanner('Contraseña de ADMIN actualizada ✅');
   };
 }
+
+btnToggleAdmin.onclick=function(){
+  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.title='Ingresar PIN'; btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
+  var code=prompt('Ingresá PIN (Admin o Superadmin)');
+  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='Modo ADMIN'; btnToggleAdmin.title='Cerrar sesión'; btnCambiarPinAdmin.style.display='none'; renderAll(); }
+  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.title='Cerrar sesión'; btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
+  else if(code!==null){ alert('PIN incorrecto'); }
+};
 
 /* ===== Tabs ===== */
 var tabs = $all('.tab');
@@ -404,14 +416,16 @@ var editGeneral=false;
 var nombreEl=$qs(null,'#nombre'), dniEl=$qs(null,'#dni'), legajoEl=$qs(null,'#legajo'), jerarquiaEl=$qs(null,'#jerarquia'), antigEl=$qs(null,'#antiguedad');
 
 $qs(null,'#btnAgregar').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
+  if(!isAdmin()) return alert('Solo Admin');
   if(!nombreEl.value.trim()) return alert('Nombre requerido');
+  snapshot('agregar persona');
   db.personas.push({ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false });
   save(); nombreEl.value=''; dniEl.value=''; legajoEl.value=''; antigEl.value=''; renderGeneral(); renderHoy();
 };
 
 $qs(null,'#btnOrdenarCriterios').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
+  if(!isAdmin()) return alert('Solo Admin');
+  snapshot('ordenar por jerarquía/antigüedad');
   snapshotOrden = db.personas.map(function(p){return p.id;});
   var rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1° (CG)':3,'AYTE 2° (CG)':4,'AYTE 3° (CG)':5,'AYTE 4° (CG)':6,'AYTE 5° (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9};
   db.personas.sort(function(a,b){ if(rank[a.jerarquia]!==rank[b.jerarquia]) return rank[a.jerarquia]-rank[b.jerarquia]; return (b.antiguedad||0)-(a.antiguedad||0); });
@@ -420,15 +434,18 @@ $qs(null,'#btnOrdenarCriterios').onclick=function(){
 };
 
 $qs(null,'#btnDeshacerOrden').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
+  if(!isAdmin()) return alert('Solo Admin');
   if(!snapshotOrden) return alert('No hay orden anterior guardado');
+  snapshot('deshacer orden criterios');
   var base=Date.now(); snapshotOrden.forEach(function(id,i){ var p=getById(id); if(p){ p.order=base+i; } });
   save(); renderGeneral(); renderHoy();
 };
 
 $qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
-  editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar' : 'Editar'; renderGeneral();
+  if(!isAdmin()) return alert('Solo Admin');
+  editGeneral=!editGeneral;
+  $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar edición' : 'Editar';
+  renderGeneral();
 };
 
 function renderGeneral(){
@@ -436,6 +453,7 @@ function renderGeneral(){
   var list=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
   list.forEach(function(p,i){
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
+
     if(editGeneral){
       tr.setAttribute('draggable','true');
       tr.ondragstart=function(ev){ ev.dataTransfer.setData('text/plain', p.id); tr.classList.add('dragging'); };
@@ -445,6 +463,7 @@ function renderGeneral(){
       tr.ondrop=function(ev){
         ev.preventDefault(); tr.style.outline='';
         var fromId=ev.dataTransfer.getData('text/plain'); if(!fromId||fromId===p.id) return;
+        snapshot('drag reorder general');
         var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
         var fromIdx=-1, toIdx=-1;
         for(var z=0;z<ordered.length;z++){ if(ordered[z].id===fromId) fromIdx=z; if(ordered[z].id===p.id) toIdx=z; }
@@ -454,15 +473,16 @@ function renderGeneral(){
         save(); renderGeneral(); renderHoy();
       };
     }
+
     function cell(txt){ return '<td>'+txt+'</td>'; }
     var cOrden = cell(i+1);
     var cNombre = cell(p.nombre);
-    var cDNI = (isSuper() && editGeneral) ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
-    var cLegajo = (isSuper() && editGeneral) ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
+    var cDNI = editGeneral ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
+    var cLegajo = editGeneral ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
     var jerOpts = ['AYTE MY (CG)','AYTE PR (CG)','AYTE 1° (CG)','AYTE 2° (CG)','AYTE 3° (CG)','AYTE 4° (CG)','AYTE 5° (CG)','SUBAYTE (CG)','- vacio -'].map(function(j){ return '<option '+(p.jerarquia===j?'selected':'')+'>'+j+'</option>'; }).join('');
-    var cJer = (isSuper() && editGeneral) ? '<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jerOpts+'</select></td>' : cell(p.jerarquia);
-    var cAnt = (isSuper() && editGeneral) ? '<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>' : cell(p.antiguedad||0);
-    var cDebe = (isSuper() && editGeneral) ? '<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>' : cell(p.debeLista||0);
+    var cJer = editGeneral ? '<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jerOpts+'</select></td>' : cell(p.jerarquia);
+    var cAnt = editGeneral ? '<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>' : cell(p.antiguedad||0);
+    var cDebe = editGeneral ? '<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>' : cell(p.debeLista||0);
 
     var obsParts=[]; if(p.obs.art) obsParts.push('ART '+p.obs.art);
     if(p.obs.licencia && p.obs.licencia.desde && p.obs.licencia.hasta) obsParts.push('LIC '+p.obs.licencia.desde+'→'+p.obs.licencia.hasta);
@@ -470,45 +490,54 @@ function renderGeneral(){
     var cObs = cell(obsParts.join(' · ')||'<span class="muted">—</span>');
 
     var cAcc = editGeneral
-      ? "<td><span class='muted'>Arrastrá para reordenar</span> "+ (isSuper() ? "<button class='danger' onclick=\"eliminar('"+p.id+"')\">✕</button>" : "") +"</td>"
-      : "<td>"+ (isAdmin() ? ("<button class='btn icon-btn' onclick=\"mover('"+p.id+"',-1)\">↑</button> <button class='btn icon-btn' onclick=\"mover('"+p.id+"',1)\">↓</button>") : "<span class='muted'>—</span>") + (isSuper() ? " <button class='danger icon-btn' onclick=\"eliminar('"+p.id+"')\">✕</button>" : "") +"</td>";
+      ? "<td><button class='danger' onclick=\"eliminar('"+p.id+"')\">Eliminar</button></td>"
+      : "<td><span class='muted'>(Solo Admin)</span></td>";
 
     tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cAcc;
+    if(!isAdmin()){
+      $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo Admin'; });
+    }
     tbody.appendChild(tr);
   });
 }
 
-window.setField=function(id,key,val){ if(!isSuper()) return alert('Solo superadmin'); var p=getById(id); if(!p) return; p[key]=val; save(); };
-function mover(id,dir){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
-  var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
-  var idx=-1; for(var i=0;i<ordered.length;i++){ if(ordered[i].id===id){ idx=i; break; } }
-  if(idx<0) return; var swap=idx+dir; if(swap<0||swap>=ordered.length) return;
-  var moved=ordered.splice(idx,1)[0]; ordered.splice(swap,0,moved);
-  var base=Date.now(); ordered.forEach(function(x,i){ x.order=base+i; });
-  save(); renderGeneral(); renderHoy();
+window.setField=function(id,key,val){
+  if(!isAdmin()) return alert('Solo Admin'); var p=getById(id); if(!p) return;
+  snapshot('editar campo '+key); p[key]=val; save();
+};
+
+function eliminar(id){
+  if(!isAdmin()) return alert('Solo Admin');
+  var p=getById(id); if(!p) return;
+  if(!confirm('¿Eliminar a "'+p.nombre+'" de la lista general?')) return;
+  snapshot('eliminar persona');
+  db.personas=db.personas.filter(function(x){return x.id!==id;}); save(); renderGeneral(); renderHoy();
 }
-function eliminar(id){ if(!isSuper()) return alert('Solo superadmin'); if(!confirm('¿Eliminar de la lista?')) return; db.personas=db.personas.filter(function(p){return p.id!==id;}); save(); renderGeneral(); renderHoy(); }
+
 function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id===id) return db.personas[i]; return null; }
 
 /* ===== HOY ===== */
 var fechaEl=$qs(null,'#fecha'); var faltEl=$qs(null,'#faltantes'); fechaEl.value=today();
 function setTitulo(){ $qs(null,'#tituloDia').textContent = 'RECARGOS '+fmtDM(fechaEl.value); }
-setTitulo(); fechaEl.addEventListener('change', setTitulo);
+setTitulo();
+fechaEl.addEventListener('change', function(){ setTitulo(); manualDateChanged=true; });
 
-$qs(null,'#btnReiniciar').onclick=function(){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
-  if(confirm('¿Seguro? Esto reinicia la rotación tomando el orden del listado general.')){
-    var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;}); var base=Date.now();
-    ordered.forEach(function(p,i){ p.rorder=base+i; });
-    prioridadHoy={}; db.generalHead=0; save(); renderHoy();
-  }
+/* Extras (ajenos a la lista, solo observación+pabellón, cuentan al inicio) */
+let dayExtras = []; // [{id, pabellon, obsRecargo}]
+$qs(null,'#btnAgregarExtra').onclick=function(){
+  if(!isAdmin()) return alert('Solo Admin');
+  var obs = prompt('Observación del extra (ej: Administrativo turno X)');
+  if(obs==null) return;
+  snapshot('agregar extra');
+  dayExtras.push({ id:'extra_'+uid(), pabellon:'', obsRecargo: (obs||'').trim() });
+  renderHoy();
 };
-
-$qs(null,'#btnActualizar').onclick=function(){ renderHoy(); };
 
 function generalList(){ return [].concat(db.personas).sort(function(a,b){return a.order-b.order;}); }
 function elegibles(){ return [].concat(db.personas).sort(function(a,b){return (a.rorder||0)-(b.rorder||0);}); }
+
+function getFranco(){ var f=$qs(null,'#francoPasivos'); return f? parseInt(f.value||'1',10):1; }
+function setFranco(v){ var f=$qs(null,'#francoPasivos'); if(f){ f.value=String(v||1); } }
 
 /* Prioridad visual/selección */
 function getPlan(){
@@ -528,6 +557,13 @@ function getPlan(){
   });
 
   var mostrados=[], numerados=[];
+
+  /* Extras al inicio (cuentan) */
+  dayExtras.forEach(function(ex){
+    mostrados.push({extra:true, data:ex});
+    numerados.push(ex);
+  });
+
   function pushPersona(p, forzarContar){
     var saltPorFlag = p.salteado===true;
     var saltar = !forzarContar && (p.obs.art || p.obs.autorizado || inLicencia(p,fecha) || saltPorFlag);
@@ -547,7 +583,7 @@ function getPlan(){
 
 /* Modal */
 function openModal(id){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
+  if(!isAdmin()) return alert('Solo Admin');
   modalId=id; var p=getById(id);
   $qs(null,'#modalNombre').textContent = p? p.nombre : '';
   var L=p && p.obs? p.obs.licencia : null;
@@ -556,30 +592,86 @@ function openModal(id){
   $qs(null,'#backdrop').style.display='flex';
 }
 function closeModal(){ $qs(null,'#backdrop').style.display='none'; modalId=null; }
-function modalSetArt(val){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); if(!p) return; p.obs.art = (val==='clear')? null : val; save(); renderHoy(); renderGeneral(); }
-function modalSetLic(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var d=$qs(null,'#licDesde').value; var h=$qs(null,'#licHasta').value; if(!d||!h) return alert('Completá desde y hasta'); var p=getById(modalId); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy(); renderGeneral(); alert('Licencia guardada'); }
-function modalTogglePresente04(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var id=modalId; if(prioridadHoy[id]==='ART04') delete prioridadHoy[id]; else prioridadHoy[id]='ART04'; renderHoy(); }
-function modalClearLic(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy(); renderGeneral(); alert('Licencia quitada'); }
-function modalToggleAutorizado(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy(); renderGeneral(); }
-function modalToggleSalteado(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.salteado=!p.salteado; save(); renderHoy(); renderGeneral(); }
+function modalSetArt(val){
+  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin'); var p=getById(modalId); if(!p) return;
+  snapshot('set ART '+val); p.obs.art = (val==='clear')? null : val; save(); renderHoy(); renderGeneral();
+}
+function modalSetLic(){
+  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
+  var d=$qs(null,'#licDesde').value; var h=$qs(null,'#licHasta').value; if(!d||!h) return alert('Completá desde y hasta');
+  snapshot('set licencia'); var p=getById(modalId); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy(); renderGeneral(); alert('Licencia guardada');
+}
+function modalTogglePresente04(){
+  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
+  snapshot('toggle presente 04');
+  var id=modalId; if(prioridadHoy[id]==='ART04') delete prioridadHoy[id]; else prioridadHoy[id]='ART04'; renderHoy();
+}
+function modalClearLic(){
+  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
+  snapshot('clear licencia');
+  var p=getById(modalId); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy(); renderGeneral(); alert('Licencia quitada');
+}
+function modalToggleAutorizado(){
+  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
+  snapshot('toggle autorizado');
+  var p=getById(modalId); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy(); renderGeneral();
+}
+function modalToggleSalteado(){
+  if(!modalId) return; if(!isAdmin()) return alert('Solo Admin');
+  snapshot('toggle salteado');
+  var p=getById(modalId); p.salteado=!p.salteado; save(); renderHoy(); renderGeneral();
+}
 
 /* Render del día */
 function renderHoy(){
   setTitulo();
   var fecha=fechaEl.value;
   var prev={};
-  // conservar selecciones previas
-  $all('#tablaDia tbody tr[data-id]').forEach(function(r){
+  // conservar selecciones previas (pab/obs recargo, incl. extras)
+  $all('#tablaDia tbody tr').forEach(function(r){
     var id=r.getAttribute('data-id');
     var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
+    if(!id) return;
     prev[id]={pab: sel?sel.value:'', obs: inp?inp.value:''};
   });
 
   var tb=$qs(null,'#tablaDia tbody'); tb.innerHTML=''; var n=0;
-  db.personas.forEach(function(p){ if(p && p.obs && p.obs.licencia && isDayAfter(p.obs.licencia.hasta, fecha)){ if(!prioridadHoy[p.id]) prioridadHoy[p.id]='ART04'; } });
+  db.personas.forEach(function(p){
+    if(p && p.obs && p.obs.licencia && isDayAfter(p.obs.licencia.hasta, fecha)){
+      if(!prioridadHoy[p.id]) prioridadHoy[p.id]='ART04';
+    }
+  });
 
   var plan=getPlan();
   plan.mostrados.forEach(function(item){
+    // Extras
+    if(item.extra){
+      var ex=item.data;
+      var tr=document.createElement('tr'); tr.setAttribute('data-id', ex.id);
+      var numCell=document.createElement('td'); numCell.textContent = (++n);
+      var pabSel=document.createElement('select');
+      ['', 'Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Portón'].forEach(function(x){
+        var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
+      });
+      if(prev[ex.id] && prev[ex.id].pab) pabSel.value=prev[ex.id].pab;
+      if(!isAdmin()){ pabSel.disabled=true; pabSel.classList.add('lock'); }
+      var obsRecInput=document.createElement('input'); obsRecInput.type='text';
+      obsRecInput.placeholder='(observación)'; obsRecInput.value = (prev[ex.id] && prev[ex.id].obs) ? prev[ex.id].obs : (ex.obsRecargo||'');
+      if(!isAdmin()){ obsRecInput.disabled=true; obsRecInput.classList.add('lock'); }
+      var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
+      actions.innerHTML = isAdmin()? "<button class='btn icon-btn' title='Quitar extra' onclick=\"quitarExtra('"+ex.id+"')\">✕</button>":"";
+      actCell.appendChild(actions);
+
+      tr.appendChild(numCell);
+      tr.insertAdjacentHTML('beforeend', "<td><i>Extra</i></td><td>—</td><td><span class='pill'>EXTRA</span></td>");
+      var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
+      var obsCell=document.createElement('td'); obsCell.appendChild(obsRecInput);
+      tr.appendChild(pabCell); tr.appendChild(obsCell); tr.appendChild(actCell);
+      tb.appendChild(tr);
+      return;
+    }
+
+    // Personas
     var p=item.p, saltar=item.saltar, saltPorFlag=item.saltPorFlag;
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
 
@@ -608,9 +700,9 @@ function renderHoy(){
     var obsRecCell=document.createElement('td'); obsRecCell.appendChild(obsRecInput);
 
     var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
-    actions.innerHTML = "<button class='btn btn-acciones icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo admin/superadmin'":"")+">⚙️</button>";
-    if(p.obs && p.obs.art==='13') actions.innerHTML += "<button class='btn icon-btn' "+(!isAdmin()?"disabled title='Solo admin/superadmin'":"")+" onclick=\"togglePresente('"+p.id+"','ART13')\">13</button>";
-    if(p.obs && p.obs.art==='26') actions.innerHTML += "<button class='btn icon-btn' "+(!isAdmin()?"disabled title='Solo admin/superadmin'":"")+" onclick=\"togglePresente('"+p.id+"','ART26')\">26</button>";
+    actions.innerHTML = "<button class='btn icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo Admin'":"")+">⚙️</button>";
+    if(p.obs && p.obs.art==='13') actions.innerHTML += "<button class='btn icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART13')\">13</button>";
+    if(p.obs && p.obs.art==='26') actions.innerHTML += "<button class='btn icon-btn' "+(!isAdmin()?"disabled title='Solo Admin'":"")+" onclick=\"togglePresente('"+p.id+"','ART26')\">26</button>";
     actCell.appendChild(actions);
 
     tr.appendChild(numCell);
@@ -619,66 +711,106 @@ function renderHoy(){
     tb.appendChild(tr);
   });
 
+  // Pasivos
   var tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML='';
   plan.pasivos.forEach(function(p,i){
+    if(!p.id){ return; } // si vino un extra en pasivos por error, ignorar
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
     tr.innerHTML="<td>"+(i+1)+"</td><td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>";
     tpas.appendChild(tr);
   });
 }
 
+function quitarExtra(id){
+  if(!isAdmin()) return;
+  snapshot('quitar extra');
+  dayExtras = dayExtras.filter(function(x){return x.id!==id;});
+  renderHoy();
+}
+
 function togglePresente(id,tipo){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
+  if(!isAdmin()) return alert('Solo Admin');
+  snapshot('toggle presente '+tipo);
   if(prioridadHoy[id]===tipo) delete prioridadHoy[id]; else prioridadHoy[id]=tipo;
   renderHoy();
 }
 
 /* Copiar orden del día (sin pasivos) */
-$qs(null,'#btnCopiarListado').onclick=function(){
+$qs(null,'#btnCopiarListado')?.addEventListener('click', function(){
   var fecha=fechaEl.value;
   var plan=getPlan();
   var lines=['RECARGOS '+fmtDM(fecha),''];
   var n=0;
-  plan.mostrados.forEach(function(item){
-    var p=item.p, saltar=item.saltar, saltPorFlag=item.saltPorFlag;
-    var prio=prioridadHoy[p.id], tags=[];
-    if(prio){ tags.push(prio==='ART13'?'(presente ART 13)': prio==='ART26'?'(presente ART 26)':'(presente 04)'); }
-    if(p.obs && p.obs.art && !prio) tags.push('(ART '+p.obs.art+')');
-    if(p.obs && p.obs.autorizado) tags.push('(autorizado)');
-    if(saltPorFlag) tags.push('(salteado)');
-    if(inLicencia(p,fecha)) tags.push('(licencia)');
-    if((p.debeLista||0)>0) tags.push('(debe '+p.debeLista+')');
 
-    if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')); }
-    else{ lines.push((++n)+') '+p.nombre+' '+tags.join(' ')); }
+  // Map pabellones a texto corto
+  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
+
+  var tbRows=$all('#tablaDia tbody tr[data-id]');
+  var byId={}; tbRows.forEach(function(r){
+    var id=r.getAttribute('data-id');
+    var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
+    byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''};
   });
+
+  plan.mostrados.forEach(function(item){
+    if(item.extra){
+      var ex=item.data; var row=byId[ex.id]||{}; var pabTxt=mapPab(row.pab);
+      var obs = row.obs?(' ('+row.obs+')'):'';
+      lines.push((++n)+') '+ 'Extra '+ obs + (pabTxt?('  '+pabTxt):''));
+      return;
+    }
+    var p=item.p, saltar=item.saltar, prio=prioridadHoy[p.id], per=getById(p.id)||{};
+    var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
+    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
+    if(per.salteado) tags.push('(salteado)');
+    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
+    if(inLicencia(per, fecha)) tags.push('(licencia)');
+    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
+
+    var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
+
+    if(!saltar){
+      lines.push((++n)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
+    }else{
+      lines.push('- '+p.nombre+' '+tags.join(' '));
+    }
+  });
+
   copyText(lines.join('\n'));
-};
+});
 
 function copyText(txt){
   (navigator.clipboard && navigator.clipboard.writeText)
     ? navigator.clipboard.writeText(txt).then(function(){ alert('Texto copiado'); })
-    : (function(){
-        var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,function(m){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[m];})+'</pre>'); w.document.close(); w.focus();
-      })();
+    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,function(m){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[m];})+'</pre>'); w.document.close(); w.focus(); })();
 }
 
 /* Confirmar guardia */
 $qs(null,'#btnConfirmar').onclick=function(){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
-  var plan=getPlan();
-  var idsAsignados={}; plan.asignados.forEach(function(p){ idsAsignados[p.id]=true; });
+  if(!isAdmin()) return alert('Solo Admin');
+  snapshot('confirmar guardia (pre)'); // para deshacer a estado anterior sin borrar historial
 
-  var rows=$all('#tablaDia tbody tr[data-id]');
-  var recargos=[];
+  var plan=getPlan();
+  var idsAsignados={}; plan.asignados.forEach(function(p){ if(p.id) idsAsignados[p.id]=true; });
+
+  // Leer filas para obtener pab/obs tanto de personas como de extras
+  var rows=$all('#tablaDia tbody tr');
+  var recargos=[]; var extrasForHist=[];
   rows.forEach(function(r){
-    var id=r.getAttribute('data-id'); if(!idsAsignados[id]) return;
-    var sel=r.querySelector('select'); var pab= sel?sel.value:'';
-    var inp=r.querySelector('input[type="text"]'); var obsRec=inp?inp.value.trim():'';
+    var id=r.getAttribute('data-id'); var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
+    var pab= sel?sel.value:''; var obsRec=inp?inp.value.trim():'';
+
+    // Extras
+    if(id && id.indexOf('extra_')===0){
+      extrasForHist.push({id:id, pabellon:pab, obsRecargo:obsRec});
+      return;
+    }
+
+    if(!id || !idsAsignados[id]) return;
     var per=getById(id); recargos.push({id:id,nombre:per?per.nombre:'',pabellon:pab,obsRecargo:obsRec});
   });
 
-  var pasivos=plan.pasivos;
+  var pasivos=plan.pasivos.filter(function(x){return x.id;}); // sólo personas reales
   var fecha=fechaEl.value;
   var falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var glist=generalList(); if(glist.length===0){ alert('No hay personal'); return; }
@@ -711,7 +843,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Avanzar puntero general
   db.generalHead = (db.generalHead + falt) % glist.length;
 
-  // Reubicar rorder de asignados
+  // Reubicar rorder de asignados (solo personas, no extras)
   var baseOrder=Date.now();
   db.personas.forEach(function(p){ if(p.rorder==null) p.rorder=baseOrder; });
   recargos.forEach(function(r,i){ var p=getById(r.id); if(p) p.rorder = baseOrder + i + 1; });
@@ -729,9 +861,23 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Limpiar banderas del día
   db.personas.forEach(function(p){ p.obs.autorizado=false; p.salteado=false; });
 
-  // Layout inline para historial
+  // Layout inline para historial (incluye extras y no numerados en su sitio)
   var conteo=0, layout=[];
+  var tbRows=$all('#tablaDia tbody tr');
+  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
+
   plan.mostrados.forEach(function(item){
+    if(item.extra){
+      // extras contados SI están dentro de los primeros "falt"
+      if(conteo<falt){
+        var r = tbRows.find? tbRows.find(x=>x.getAttribute('data-id')===item.data.id) : null;
+        var sel=r? r.querySelector('select'):null; var pab=sel?sel.value:'';
+        var inp=r? r.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
+        layout.push({id:item.data.id,nombre:'Extra',counted:true,n:conteo+1,pabellon:pab,obsRecargo:obsRec,tags:['(extra)']});
+        conteo++;
+      }
+      return;
+    }
     var p=item.p, saltar=item.saltar;
     var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
     var tags=[];
@@ -760,40 +906,63 @@ $qs(null,'#btnConfirmar').onclick=function(){
     pasivos:pasivos.map(function(x){return {id:x.id,nombre:x.nombre};}),
     llamados:[],
     layout:layout,
-    personasBefore: JSON.parse(JSON.stringify(db.personas)),
-    generalHeadBefore: (db.generalHead - falt + glist.length)%glist.length
+    personasBefore: JSON.parse(JSON.stringify(undoStack[undoStack.length-1]?.personas || db.personas)), // snapshot previo
+    generalHeadBefore: undoStack[undoStack.length-1]?.generalHead ?? db.generalHead,
+    franco:getFranco(),
+    extras:extrasForHist
   });
   save();
   prioridadHoy={};
+  dayExtras=[];
 
-  // Avanzar 3 días sugerido
-  var d=new Date(fechaEl.value); d.setDate(d.getDate()+3);
-  var y=d.getFullYear(), m=('0'+(d.getMonth()+1)).slice(-2), dd=('0'+d.getDate()).slice(-2);
-  fechaEl.value = y+'-'+m+'-'+dd; setTitulo();
+  // Avanzar 2 días solo si NO cambiaste la fecha manualmente
+  if(!manualDateChanged){
+    fechaEl.value = addDays(fechaEl.value, 2);
+    setTitulo();
+  }
+  manualDateChanged=false;
 
   renderAll();
   alert('Guardia guardada. Los llamados se marcan en la guardia siguiente (Historial).');
 };
 
-/* Deshacer última (reversible) */
-$qs(null,'#btnDeshacer').onclick=function(){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
-  if(!db.historial.length) return alert('No hay guardias para deshacer');
-  var h=db.historial.pop();
-  if(h && h.personasBefore){ db.personas = JSON.parse(JSON.stringify(h.personasBefore)); }
-  if(typeof h.generalHeadBefore==='number') db.generalHead = h.generalHeadBefore;
-  save(); renderAll(); alert('Se revirtió la última confirmación.');
+/* Deshacer mínimo (Ctrl+Z) */
+$qs(null,'#btnUndo').onclick=function(){
+  if(!isAdmin()) return alert('Solo Admin');
+  if(!undoStack.length) return alert('No hay cambios para deshacer');
+  var ok=restoreLast();
+  if(!ok) alert('No se pudo deshacer');
 };
 
-/* Copiar resultado final (recargos + pasivos) */
+/* ===== Copiar resultado final (recargos + pasivos) ===== */
 $qs(null,'#btnCopiarResultado').onclick=function(){
   var fecha=fechaEl.value;
   var plan=getPlan();
   var falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var lines=['RECARGOS '+fmtDM(fecha),''];
 
+  function mapPab(p){ var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''}; return m[p||'']||p||''; }
+
+  var tbRows=$all('#tablaDia tbody tr[data-id]');
+  var byId={}; tbRows.forEach(function(r){
+    var id=r.getAttribute('data-id');
+    var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
+    byId[id]={pab: sel?sel.value:'', obs: inp?inp.value.trim():''};
+  });
+
+  // recorrer mostrados contando solo los primeros "falt"
   var conteo=0;
   plan.mostrados.forEach(function(item){
+    if(conteo>=falt && !(item.p && (item.saltar))) return;
+
+    if(item.extra){
+      if(conteo<falt){
+        var row=byId[item.data.id]||{}; var pabTxt=mapPab(row.pab); var obs=row.obs?(' ('+row.obs+')'):'';
+        lines.push((++conteo)+') '+'Extra'+obs+(pabTxt?('  '+pabTxt):''));
+      }
+      return;
+    }
+
     var p=item.p, saltar=item.saltar;
     var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
     var tags=[]; if(prio){ tags.push(prio==='ART13'?'(por ART 13)': prio==='ART26'?'(por ART 26)':'(por ART 04)'); }
@@ -803,22 +972,26 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
     if(inLicencia(per, fecha)) tags.push('(licencia)');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
 
+    var row=byId[p.id]||{}; var pabTxt=mapPab(row.pab); var obs = row.obs? (' ('+row.obs+')') : '';
+
     if(!saltar && conteo<falt){
-      var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
-      var sel=tr?tr.querySelector('select'):null; var pab=sel?sel.value:'';
-      var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
-      var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-      var pabTxt=m[pab||'']||pab||'';
-      var obs = obsRec? (' ('+obsRec+')') : '';
       lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
     }else if(saltar){
       lines.push('- '+p.nombre+' '+tags.join(' '));
     }
   });
 
-  lines.push('','Pasivos','');
+  // Pasivos (considerar Franco 1° o 2°)
+  var franco=getFranco();
+  if(franco===1){
+    lines.push('','Pasivos','');
+  }else{
+    var manana = fmtDM(addDays(fecha,1));
+    lines.push('','Pasivos ('+manana+')','');
+  }
   plan.pasivos.forEach(function(p,i){
-    var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
+    if(!p.id){ return; } // ignorar extras
+    var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]'); // puede no existir
     var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
     var obs = obsRec? (' ('+obsRec+')') : '';
     lines.push((i+1)+') '+p.nombre+obs);
@@ -828,12 +1001,19 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
 };
 
 /* ===== Historial ===== */
+/* Hacemos "cards" responsive; checkboxes solo, sin repetir nombres; botón Copiar por guardia */
 function renderHistorial(){
-  var tb=$qs(null,'#tablaHistorial tbody'); tb.innerHTML='';
+  var cont=$qs(null,'#histCards'); cont.innerHTML='';
   for(var idx=db.historial.length-1; idx>=0; idx--){
     var h=db.historial[idx];
     var esUltimo=(idx===db.historial.length-1);
 
+    // Resumen cantidades
+    var cantRec = (h.layout||[]).filter(x=>x.counted).length || (h.recargos||[]).length;
+    var cantPas = (h.pasivos||[]).length;
+    var cantLlam = (h.llamados||[]).length;
+
+    // Lista recargos render
     var recListHtml='';
     if(h.layout && h.layout.length){
       recListHtml = h.layout.map(function(x){
@@ -855,18 +1035,88 @@ function renderHistorial(){
       }).join('') || '<li>—</li>';
     }
 
-    // checkboxes con labels (mejor en móvil)
-    var llam = "<div class='calls-wrap'>" + (h.pasivos||[]).map(function(x){
+    var pasList = (h.pasivos||[]).map(function(x,i){
+      var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
+      return '<li>'+(i+1)+') '+nombre+'</li>';
+    }).join('') || '<li>—</li>';
+
+    // Checkboxes de llamados (sin repetir nombres)
+    var llam = (h.pasivos||[]).map(function(x){
       var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
-      var per=getById(x.id); var nombre= per? per.nombre : x.nombre;
-      return "<label><input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+(esUltimo?'':'disabled')+" "+checked+"> <span>"+(nombre||'—')+"</span></label>";
-    }).join('') + "</div>";
+      return "<input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+(esUltimo?'':'disabled')+" "+checked+" title='Pasivo "+(x.id||'')+"'>";
+    }).join(' ');
 
-    var delBtn = isSuper()? "<button class='danger' onclick='borrarHist("+idx+")'>Borrar</button>" : "";
+    // Botón copiar del historial (usa el snapshot de ese día)
+    function buildCopyFromHistory(H){
+      var fechaTxt = H.fecha || '';
+      var lines=['RECARGOS '+fechaTxt,''];
+      // recargos desde layout si existe
+      if(H.layout && H.layout.length){
+        H.layout.forEach(function(x){
+          if(x.counted){
+            var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
+            var pabTxt=m[x.pabellon||'']||x.pabellon||'';
+            var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+            var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):'';
+            lines.push(x.n+') '+x.nombre+tags+obs+(pabTxt?('  '+pabTxt):''));
+          }else{
+            var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+            lines.push('- '+x.nombre+tags2);
+          }
+        });
+      }else{
+        (H.recargos||[]).forEach(function(x,i){
+          lines.push((i+1)+') '+x.nombre+(x.obsRecargo?(' ('+x.obsRecargo+')'):'')+(x.pabellon?('  '+x.pabellon):''));
+        });
+      }
 
-    var tr=document.createElement('tr');
-    tr.innerHTML="<td>"+h.fecha+"</td><td><ul style='padding-left:18px;margin:0'>"+recListHtml+"</ul></td><td><ul style='padding-left:18px;margin:0'>"+((h.pasivos||[]).map(function(x,i){var per=getById(x.id);var n=per?per.nombre:x.nombre;return '<li>'+(i+1)+') '+n+'</li>';}).join('')||'<li>—</li>')+"</ul></td><td><div class='row' style='justify-content:space-between;gap:12px'>"+llam+delBtn+"</div></td>";
-    tb.appendChild(tr);
+      // Pasivos con franco
+      var pasHeader='Pasivos';
+      if(H.franco===2){
+        // H.fecha es dd/mm, pasar a próximo día rápido
+        var parts = (H.fecha||'').split('/');
+        if(parts.length===2){
+          var y = new Date().getFullYear(); // referencia
+          var d0 = new Date(y, parseInt(parts[1],10)-1, parseInt(parts[0],10));
+          var d1 = new Date(d0.getTime()+86400000);
+          var dd=('0'+d1.getDate()).slice(-2)+'/'+('0'+(d1.getMonth()+1)).slice(-2);
+          pasHeader = 'Pasivos ('+dd+')';
+        }
+      }
+      lines.push('',pasHeader,'');
+      (H.pasivos||[]).forEach(function(x,i){
+        var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
+        lines.push((i+1)+') '+nombre);
+      });
+
+      return lines.join('\n');
+    }
+
+    var card=document.createElement('div'); card.className='history-card';
+    card.innerHTML =
+      "<div class='history-head'>"+
+        "<div><b>"+(h.fecha||'')+"</b> · <span class='history-meta'>Recargos: "+cantRec+" · Pasivos: "+cantPas+" · Llamados: "+cantLlam+"</span></div>"+
+        "<div class='history-buttons'>"+
+          "<button class='btn' data-copy='"+idx+"'>Copiar</button>"+
+          (isSuper()? "<button class='danger' data-del='"+idx+"'>Borrar</button>": "")+
+        "</div>"+
+      "</div>"+
+      "<div class='history-body'>"+
+        "<div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0'>"+recListHtml+"</ul></div>"+
+        "<div style='margin-top:6px'><b>Pasivos</b><ul style='padding-left:18px;margin:6px 0'>"+pasList+"</ul></div>"+
+        "<div style='margin-top:6px'><b>Marcar llamados (último):</b> "+(llam||'—')+"</div>"+
+      "</div>";
+
+    // acciones
+    card.querySelector('[data-copy]')?.addEventListener('click', function(){
+      copyText(buildCopyFromHistory(h));
+    });
+    card.querySelector('[data-del]')?.addEventListener('click', function(){
+      var idxDel=parseInt(this.getAttribute('data-del'),10);
+      borrarHist(idxDel);
+    });
+
+    cont.appendChild(card);
   }
 }
 
@@ -876,8 +1126,9 @@ function borrarHist(idx){
   db.historial.splice(idx,1); save(); renderHistorial();
 }
 
-$qs(null,'#btnGuardarLlamados').onclick=function(){
-  if(!isAdmin()) return alert('Solo admin/superadmin');
+/* Guardar llamados del último */
+$qs(null,'#btnGuardarLlamados')?.addEventListener('click', function(){
+  if(!isAdmin()) return alert('Solo Admin');
   if(!db.historial.length) return;
   var idx=db.historial.length-1; var h=db.historial[idx];
   var checks=$all("input[type='checkbox'][data-h='"+idx+"']");
@@ -895,9 +1146,9 @@ $qs(null,'#btnGuardarLlamados').onclick=function(){
   seq.forEach(function(id){ if(seen[id]) return; seen[id]=true; var p=getById(id); if(p) p.rorder=base+(i++); });
 
   save(); renderAll(); alert('Llamados actualizados.');
-};
+});
 
-/* Borrar TODO el historial: solo visible si superadmin */
+/* Borrar TODO historial: botón visible solo superadmin */
 var btnBorrarHistorial=$qs(null,'#btnBorrarHistorial');
 if(btnBorrarHistorial){
   btnBorrarHistorial.onclick=function(){
@@ -912,11 +1163,12 @@ if(btnBorrarHistorial){
 /* ===== Render maestro ===== */
 function renderAll(){
   renderGeneral(); renderHoy(); renderHistorial();
+  // Mostrar botón borrar historial solo si superadmin
   var bh=$qs(null,'#btnBorrarHistorial');
   if(bh) bh.style.display = isSuper()? 'inline-block' : 'none';
+  // Mostrar cambiar PIN admin solo superadmin
   if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display = isSuper()? 'inline-block' : 'none';
 }
-updateAuthUI();
 
 /* ===== Seed si está vacío ===== */
 function seedIfEmpty(){
@@ -944,7 +1196,7 @@ function seedIfEmpty(){
 seedIfEmpty();
 renderAll();
 
-/* ===== PWA: SW + instalar + updates ===== */
+/* ====== PWA: SW, instalar, updates ====== */
 (function () {
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
@@ -1005,25 +1257,40 @@ renderAll();
 </footer>
 
 <script>
+/* Mostrar versión desde el manifest */
 (async function updateVisibleVersion() {
   const el = document.getElementById('appVersion');
   if (!el) return;
-  const candidates = ['/RecargApp/manifest.json','/RecargApp/manifest.webmanifest'];
-  let manifest=null;
+
+  const candidates = [
+    '/RecargApp/manifest.json',
+    '/RecargApp/manifest.webmanifest'
+  ];
+
+  let manifest = null;
+  let lastErr = null;
+
   for (const url of candidates) {
     try {
       const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) continue;
+      if (!res.ok) throw new Error('HTTP ' + res.status + ' on ' + url);
       manifest = await res.json();
       break;
-    } catch(e){}
+    } catch (e) { lastErr = e; }
   }
-  if(!manifest){ el.textContent='V?'; return; }
+
+  if (!manifest) {
+    console.error('No pude leer manifest:', lastErr);
+    el.textContent = 'V?';
+    return;
+  }
+
   const fromField = (manifest.version && String(manifest.version).trim()) || '';
   const fromName = (manifest.name && (manifest.name.match(/V\d+(\.\d+)*/i)?.[0] || '').trim()) || '';
   const v = fromField ? ('V' + fromField) : fromName;
   el.textContent = v || 'V?';
 })();
 </script>
+
 </body>
 </html>
