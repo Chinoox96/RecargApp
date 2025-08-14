@@ -8,88 +8,87 @@
   <!-- PWA -->
   <link rel="manifest" href="/RecargApp/manifest.json">
   <meta name="theme-color" content="#0b1223" />
-
-  <!-- iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel="apple-touch-icon" href="/RecargApp/icons/icon-192x192.png">
 
   <style>
-    :root{--bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8}
+    :root{
+      --bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8;
+      --brand:#0b1223;--border:#1f2937
+    }
     *{box-sizing:border-box}
     body{margin:0;background:var(--bg);font:14px/1.4 system-ui,Segoe UI,Roboto,Helvetica,Arial;color:var(--ink)}
-    header{padding:10px 12px;border-bottom:1px solid #1f2937;background:#0b1223;position:sticky;top:0;z-index:5}
-    .header-top{display:flex;align-items:center;justify-content:center;gap:8px;position:relative}
-    h1{font-size:22px;margin:0;text-align:center} /* un poco más grande */
-    .brand-left{
-      position:absolute;left:8px;top:50%;transform:translateY(-50%);
-      display:flex;align-items:center;gap:8px
-    }
-    .brand-left img{width:28px;height:28px;border-radius:6px}
-    .header-actions{
-      position:absolute;right:8px;top:50%;transform:translateY(-50%);
-      display:flex;gap:6px;align-items:center
-    }
-    .tabs{display:flex;gap:6px;justify-content:center;margin-top:8px;flex-wrap:wrap}
-    .tab{background:#0b1223;border:1px solid #1f2937;color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
+    /* HEADER */
+    header{padding:10px 12px;border-bottom:1px solid var(--border);background:var(--brand);position:sticky;top:0;z-index:5}
+    .appbar{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;max-width:1150px;margin:0 auto}
+    .brand{display:flex;align-items:center;gap:8px}
+    .brand img{width:28px;height:28px;border-radius:6px}
+    .titleWrap{display:flex;justify-content:center;align-items:center}
+    h1{font-size:22px;margin:0;letter-spacing:.2px}
+    @media(min-width:720px){ h1{font-size:26px} }
+    .header-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end}
+    .tabs{display:flex;gap:6px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+    .tab{background:var(--brand);border:1px solid var(--border);color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
     .tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
+
+    /* LAYOUT */
     main{padding:10px;max-width:1150px;margin:0 auto}
-    .section{background:var(--card);border:1px solid #1f2937;border-radius:12px;padding:12px;margin-bottom:12px}
+    .section{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;margin-bottom:12px}
     h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
-    .grid{display:grid;gap:10px}
-    .grid-2{grid-template-columns:1fr 1fr}
-    @media (max-width:900px){.grid-2{grid-template-columns:1fr}}
+
+    /* TABLAS */
     .tableWrap{width:100%;overflow-x:auto}
     table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:680px}
-    th,td{padding:6px 8px;border-bottom:1px solid #1f2937;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    th,td{padding:6px 8px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     th{color:var(--accent)}
+    /* columnas HOY */
     #tablaDia th:nth-child(1),#tablaDia td:nth-child(1){width:42px}
     #tablaDia th:nth-child(2),#tablaDia td:nth-child(2){width:200px}
     #tablaDia th:nth-child(3),#tablaDia td:nth-child(3){width:110px}
-    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:260px} /* Estado más ancho por pills */
+    #tablaDia th:nth-child(4),#tablaDia td:nth-child(4){width:240px} /* Estado */
     #tablaDia th:nth-child(5),#tablaDia td:nth-child(5){width:120px}
     #tablaDia th:nth-child(6),#tablaDia td:nth-child(6){width:180px}
     #tablaDia th:nth-child(7),#tablaDia td:nth-child(7){width:120px}
-
+    /* Pasivos */
     #tablaPasivos{min-width:0}
     #tablaPasivos th:nth-child(1),#tablaPasivos td:nth-child(1){width:42px}
     #tablaPasivos th:nth-child(2),#tablaPasivos td:nth-child(2){width:220px}
     #tablaPasivos th:nth-child(3),#tablaPasivos td:nth-child(3){width:140px}
-
+    /* General (más compacta) */
+    #tablaGeneral{min-width:780px}
+    #tablaGeneral th,#tablaGeneral td{padding:6px}
     #tablaGeneral th:nth-child(1),#tablaGeneral td:nth-child(1){width:60px}
-    #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:220px}
+    #tablaGeneral th:nth-child(2),#tablaGeneral td:nth-child(2){width:240px}
     #tablaGeneral th:nth-child(3),#tablaGeneral td:nth-child(3){width:120px}
     #tablaGeneral th:nth-child(4),#tablaGeneral td:nth-child(4){width:120px}
-    #tablaGeneral th:nth-child(5),#tablaGeneral td:nth-child(5){width:140px}
+    #tablaGeneral th:nth-child(5),#tablaGeneral td:nth-child(5){width:160px}
     #tablaGeneral th:nth-child(6),#tablaGeneral td:nth-child(6){width:80px}
     #tablaGeneral th:nth-child(7),#tablaGeneral td:nth-child(7){width:80px}
     #tablaGeneral th:nth-child(8),#tablaGeneral td:nth-child(8){width:220px}
-    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:80px} /* Acciones (solo en Editar) */
+    #tablaGeneral th:nth-child(9),#tablaGeneral td:nth-child(9){width:60px} /* cruz eliminar */
 
-    input,select,textarea{background:#0b1223;border:1px solid #1f2937;color:var(--ink);border-radius:8px;padding:6px;width:100%}
+    input,select,textarea{background:#0b1223;border:1px solid var(--border);color:var(--ink);border-radius:8px;padding:6px;width:100%}
     input[type=date]{cursor:pointer}
     textarea{resize:vertical;min-height:30px;max-height:120px}
     .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-
     button{border:0;border-radius:8px;padding:6px 10px;font-weight:600;cursor:pointer}
-    .btn{background:#0b1223;border:1px solid #1f2937;color:#d1d5db}
+    .btn{background:#0b1223;border:1px solid var(--border);color:#d1d5db}
     .icon-btn{padding:6px 8px;min-width:0;line-height:1}
-    .btn-acciones{background:#0891b2;border-color:#0e7490;color:#fff}
-    .btn-art13{background:#b91c1c;border-color:#7f1d1d;color:#fff}
-    .btn-art26{background:#d97706;border-color:#a16207;color:#fff}
-    .btn-pres04{background:#15803d;border-color:#166534;color:#fff}
-    .btn-autorizado{background:#1d4ed8;border-color:#1e40af;color:#fff}
-    .btn-saltear{background:#6d28d9;border-color:#5b21b6;color:#fff}
-    .btn-secondary{background:#374151;border-color:#4b5563;color:#e5e7eb}
     .primary{background:linear-gradient(180deg,#1f6feb,#1463d6);color:#fff;border:0}
     .warn{background:linear-gradient(180deg,#f59e0b,#d97706);color:#fff}
     .danger{background:linear-gradient(180deg,#ef4444,#dc2626);color:#fff}
+    .btn-acciones{background:#0891b2;border-color:#0e7490;color:#fff}
+    .btn-secondary{background:#374151;border-color:#4b5563;color:#e5e7eb}
+    .btn-autorizado{background:#1d4ed8;border-color:#1e40af;color:#fff}
+    .btn-saltear{background:#6d28d9;border-color:#5b21b6;color:#fff}
+    .btn-pres04{background:#15803d;border-color:#166534;color:#fff}
+    .btn-art13{background:#b91c1c;border-color:#7f1d1d;color:#fff}
+    .btn-art26{background:#d97706;border-color:#a16207;color:#fff}
 
     .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap}
     .pill.warn{background:#2a1b05;color:#fbbf24}
     .pill.err{background:#3b0a0a;color:#fca5a5}
     .pill.ok{background:#052e1a;color:#86efac}
-    .pill.act{background:#0b2e13;border-color:#14532d;color:#86efac} /* presente activo */
-    .pill.toggle{cursor:pointer;border-style:dashed}
     .muted{color:var(--muted)}
     .note{font-size:12px;color:#9ca3af}
     .lock{opacity:.6}
@@ -98,38 +97,16 @@
     .banner strong{letter-spacing:.02em}
 
     #backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20}
-    .modal{background:#0b1223;border:1px solid #1f2937;border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
+    .modal{background:#0b1223;border:1px solid var(--border);border-radius:12px;min-width:300px;max-width:95vw;padding:12px}
     .modal .row.justify-end{justify-content:flex-end}
-
-    /* FAB + Panel About */
-    .fab {
-      position: fixed; right: 14px; bottom: 14px; z-index: 40;
-      background: #0b1223; color: #e5e7eb; border:1px solid #1f2937;
-      border-radius: 999px; padding: 10px 14px; font-weight: 700; cursor: pointer;
-      box-shadow: 0 6px 18px rgba(0,0,0,.35);
-    }
-    #aboutPanelBackdrop{ position:fixed; inset:0; background:rgba(0,0,0,.5); display:none; z-index:39;}
-    #aboutPanel{
-      position:fixed; right:0; top:0; height:100vh; width:min(560px,96vw);
-      background:#0b1223; border-left:1px solid #1f2937; z-index:41;
-      transform: translateX(100%); transition: transform .22s ease;
-      display:flex; flex-direction:column;
-    }
-    #aboutPanel.open{ transform: translateX(0); }
-    #aboutPanel header{
-      display:flex; align-items:center; justify-content:space-between;
-      padding:12px; border-bottom:1px solid #1f2937; background:#0f172a;
-    }
-    #aboutPanel .content{ padding:12px; overflow:auto }
-    .badge{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #334155;color:#93c5fd;margin-left:6px}
-    .noteItem{border:1px solid #1f2937;background:#111827;border-radius:10px;padding:10px;margin:8px 0}
-    .noteItem h4{margin:0 0 4px;font-size:14px;color:#e5e7eb}
-    .noteItem p{margin:0;color:#cbd5e1;font-size:13px;white-space:pre-wrap}
-    .inlineBtns{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
 
     /* Móvil */
     @media (max-width:600px){
       html,body{font-size:13px}
+      .appbar{grid-template-columns:1fr auto 1fr}
+      .titleWrap{grid-column:1 / 4}
+      .brand{justify-content:flex-start}
+      .header-actions{grid-column:3;justify-content:flex-end}
       main{padding:8px}
       .section{padding:10px}
       .row{gap:4px}
@@ -141,25 +118,24 @@
   </style>
 </head>
 <body>
-  <!-- Botón instalar PWA -->
+  <!-- Botón de instalación -->
   <button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
 
   <header>
-    <div class="header-top">
-      <!-- Izquierda: logo -->
-      <div class="brand-left">
-        <img src="/RecargApp/icons/icon-192x192.png" alt="RecargApp">
+    <div class="appbar">
+      <div class="brand">
+        <img src="/RecargApp/icons/icon-192x192.png" alt="logo">
       </div>
-      <!-- Centro: título -->
-      <h1>RecargAPP</h1>
-      <!-- Derecha: login -->
+      <div class="titleWrap">
+        <h1>RecargApp</h1>
+      </div>
       <div class="header-actions">
-        <span id="lockState" class="muted lock">Modo lectura</span>
-        <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN Admin">🔑</button>
-        <button class="btn" id="btnToggleAdmin" title="Iniciar sesión (Admin)">Iniciar sesión</button>
+        <span id="lockState" class="muted lock" style="align-self:center">Modo lectura</span>
+        <button class="btn icon-btn" id="btnCambiarPinAdmin" style="display:none" title="Cambiar PIN del Admin">🔑</button>
+        <button class="btn" id="btnToggleAdmin" title="Iniciar sesión">Iniciar sesión</button>
       </div>
     </div>
-    <!-- Tabs debajo del banner -->
+
     <div class="tabs">
       <div class="tab active" data-tab="hoy">Recargos</div>
       <div class="tab" data-tab="general">Lista</div>
@@ -183,36 +159,47 @@
         <button class="btn" id="btnCopiarListado">Copiar orden</button>
       </div>
 
-      <div class="grid grid-2" style="margin-top:8px">
-        <div>
-          <h2>Listado del día</h2>
-          <div class="tableWrap">
-            <table id="tablaDia">
-              <thead>
-                <tr>
-                  <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
+      <!-- Listado del día -->
+      <div style="margin-top:8px">
+        <h2>Listado del día</h2>
+        <div class="tableWrap">
+          <table id="tablaDia">
+            <thead>
+              <tr>
+                <th>#</th><th>Nombre</th><th>Jerarquía</th><th>Estado</th><th>Pabellón</th><th>Obs recargo</th><th>Acc</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
-        <div>
+        <div class="note">* <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill">SALTEADO</span> o <span class="pill err">LICENCIA</span> se muestran pero <b>no numeran</b>. Con <b>Presente de ART</b> (13/26/04) suben y cuentan. “(debe X)” se ve en la fila.</div>
+      </div>
+
+      <!-- Pasivos (DEBAJO) -->
+      <div style="margin-top:14px">
+        <div class="row" style="justify-content:space-between">
           <h2>Pasivos</h2>
-          <div class="tableWrap">
-            <table id="tablaPasivos">
-              <thead><tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr></thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="row" style="margin-top:6px;justify-content:flex-end">
+          <div class="row" style="gap:10px">
+            <label for="francoSel" class="muted">Pasivos en</label>
+            <select id="francoSel" style="max-width:150px">
+              <option value="1">1er Franco</option>
+              <option value="2">2º Franco</option>
+            </select>
             <button class="btn" id="btnImprimirPasivos">Imprimir pasivos</button>
           </div>
         </div>
+        <div class="tableWrap">
+          <table id="tablaPasivos">
+            <thead>
+              <tr><th>#</th><th>Nombre</th><th>Jerarquía</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
 
-      <div class="row" style="margin-top:10px;gap:10px;justify-content:space-between">
+      <!-- Acciones de día -->
+      <div class="row" style="margin-top:14px;justify-content:space-between">
         <div class="row" style="gap:10px">
           <button class="primary" id="btnConfirmar">Confirmar guardia</button>
           <button class="warn" id="btnDeshacer">Deshacer última</button>
@@ -223,11 +210,11 @@
 
     <!-- TAB: GENERAL -->
     <section class="section" data-panel="general" style="display:none">
-      <h2>Listado general (solo Superadmin puede editar)</h2>
+      <h2>Listado general (Editar permite arrastrar y eliminar)</h2>
       <div class="row">
         <input id="nombre" placeholder="Nombre y Apellido" style="max-width:240px">
-        <input id="dni" placeholder="DNI" style="max-width:140px">
-        <input id="legajo" placeholder="Legajo" style="max-width:140px">
+        <input id="dni" placeholder="DNI" style="max-width:120px">
+        <input id="legajo" placeholder="Legajo" style="max-width:120px">
         <select id="jerarquia" style="max-width:160px">
           <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1° (CG)</option><option>AYTE 2° (CG)</option><option>AYTE 3° (CG)</option><option>AYTE 4° (CG)</option><option>AYTE 5° (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
         </select>
@@ -235,42 +222,69 @@
         <button class="primary" id="btnAgregar">Agregar</button>
         <button class="btn" id="btnOrdenarCriterios">Ordenar (Jerarquía → Antigüedad)</button>
         <button class="btn" id="btnDeshacerOrden" title="Volver al orden anterior">Deshacer orden</button>
-        <button class="warn" id="btnEditarGeneral" title="Editar en línea y arrastrar (solo Admin)">Editar</button>
+        <button class="warn" id="btnEditarGeneral" title="Editar en línea y arrastrar">Editar</button>
       </div>
       <div class="tableWrap">
         <table id="tablaGeneral" style="margin-top:6px">
           <thead><tr>
-            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th><th>Acciones</th>
+            <th>Orden</th><th>Nombre</th><th>DNI</th><th>Legajo</th><th>Jerarquía</th><th>Antig.</th><th>Debe</th><th>Obs</th><th></th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
-      <div class="row" style="margin-top:8px">
+
+      <div class="row" style="margin-top:8px;justify-content:flex-start">
         <button class="btn" id="btnExportar">Exportar JSON</button>
         <button class="btn" id="btnImportar">Importar JSON</button>
+        <button class="btn" id="btnAgregarExtra">Agregar extra</button>
       </div>
-      <div class="note">ART/LIC/AUT/SALTEAR se gestionan desde la **pestaña Recargos** (día).</div>
+      <div class="note">El <b>Admin</b> puede reordenar; eliminar y editar en línea disponibles en modo <b>Editar</b>.</div>
     </section>
 
-    <!-- TAB: HISTORIAL -->
+    <!-- TAB: HISTORIAL (con subtabs) -->
     <section class="section" data-panel="historial" style="display:none">
-      <h2>Historial de guardias</h2>
-      <div class="row" style="margin:6px 0 8px;justify-content:space-between">
-        <button class="primary" id="btnGuardarLlamados">Guardar llamados del último</button>
-        <button class="danger" id="btnBorrarHistorial" style="display:none">Borrar todo el historial</button>
+      <div class="row" style="justify-content:space-between;align-items:center">
+        <h2>Historial</h2>
+        <div class="row">
+          <button class="danger" id="btnBorrarHistRec" style="display:none">Borrar historial de Recargos</button>
+          <button class="danger" id="btnBorrarHistCamb" style="display:none">Borrar historial de Cambios</button>
+        </div>
       </div>
-      <div class="tableWrap">
-        <table id="tablaHistorial">
-          <thead><tr><th>Fecha</th><th>Recargos (lista)</th><th>Pasivos (lista)</th><th>Acciones</th></tr></thead>
-          <tbody></tbody>
-        </table>
+
+      <div class="tabs" id="tabsHist" style="margin-top:8px">
+        <div class="tab active" data-htab="rec">Recargos</div>
+        <div class="tab" data-htab="chg">Cambios</div>
+      </div>
+
+      <!-- Recargos -->
+      <div id="histRec" class="section" style="margin-top:10px">
+        <div class="row" style="margin:6px 0 8px;justify-content:space-between;align-items:center">
+          <div class="muted">“Fue llamado”</div>
+          <button class="primary" id="btnGuardarLlamados">Guardar llamados del último</button>
+        </div>
+        <div class="tableWrap">
+          <table id="tablaHistorial">
+            <thead><tr><th>Resumen</th><th>Acciones</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Cambios -->
+      <div id="histCamb" class="section" style="display:none;margin-top:10px">
+        <div class="tableWrap">
+          <table id="tablaCambios">
+            <thead><tr><th>Fecha</th><th>Acción</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </section>
   </main>
 
-  <!-- Modal de acciones -->
+  <!-- Modal acciones persona -->
   <div id="backdrop">
-    <div class="modal">
+    <div class="modal" id="modalAcciones">
       <h3 style="margin:0 0 8px;font-size:15px">Acciones para <span id="modalNombre"></span></h3>
       <div class="row">
         <button class="btn btn-art13 icon-btn" onclick="modalSetArt('13')">13</button>
@@ -298,49 +312,39 @@
     </div>
   </div>
 
-  <!-- FAB + Panel About/Notas/Updates -->
-  <button class="fab" id="btnOpenAbout" title="Más">⋯</button>
-  <div id="aboutPanelBackdrop"></div>
-  <aside id="aboutPanel" aria-hidden="true">
-    <header>
-      <div>
-        <strong>RecargApp</strong>
-        <span class="badge">v <span id="aboutVersion">—</span></span>
+  <!-- Modal Agregar Extra -->
+  <div id="backdropExtra" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:21">
+    <div class="modal" id="modalExtra">
+      <h3 style="margin:0 0 8px;font-size:15px">Agregar Extra</h3>
+      <div class="row">
+        <input id="extraNombre" placeholder="Nombre (opcional)" style="max-width:240px">
+        <input id="extraJer" placeholder="Jerarquía (opcional)" style="max-width:200px">
+        <input id="extraPab" placeholder="Pabellón (opcional)" style="max-width:200px">
+        <input id="extraObs" placeholder="Observación (opcional)" style="max-width:260px">
       </div>
-      <button class="btn" id="btnCloseAbout">Cerrar</button>
-    </header>
-    <div class="content">
-      <section class="section">
-        <h2>Acerca de</h2>
-        <p style="margin:6px 0 0;color:#cbd5e1">
-          Herramienta para organizar recargos, pasivos y seguimiento de historial.
-        </p>
-        <div class="inlineBtns" style="margin-top:8px">
-          <button class="primary" id="btnCheckUpdates">Buscar actualizaciones</button>
-          <button class="warn" id="btnApplyUpdate" style="display:none">Instalar actualización</button>
-          <span id="updateStatus" class="muted"></span>
-        </div>
-      </section>
-
-      <section class="section">
-        <h2>Notas de actualización</h2>
-        <div id="releaseNotes"><div class="muted">Cargando notas…</div></div>
-      </section>
+      <div class="row justify-end" style="margin-top:10px;gap:8px">
+        <button class="btn" onclick="cerrarExtra()">Cancelar</button>
+        <button class="primary" onclick="confirmarExtra()">Agregar</button>
+      </div>
     </div>
-  </aside>
+  </div>
+
+  <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
+    Versión <span id="appVersion">—</span>
+  </footer>
 
 <script>
-/* ===== util compat ===== */
+/* ===== util ===== */
 function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
 function $qs(root, sel){ return (root||document).querySelector(sel); }
+function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
+function fmtDM_from(dateStr){ var a=dateStr.split('-'); return a[2]+"/"+a[1]; }
+function addDaysISO(iso, days){ const d=new Date(iso); d.setDate(d.getDate()+days); return d.toISOString().slice(0,10); }
 
 /* Mostrar errores en Android antiguos */
-window.addEventListener('error', function(e){ try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
+window.addEventListener('error', e => { try{ alert('Error JS: ' + e.message); }catch(_){} console.error(e); });
 
-/* ===== Modelo =====
-Persona: {id, nombre, dni, legajo, jerarquia, antiguedad, obs:{art:null|"13"|"26", licencia:{desde:null,hasta:null}, autorizado:boolean}, order, rorder, debeLista:number, salteado:boolean}
-Historial: {fecha, recargos:[...], pasivos:[...], llamados:[id], layout:[...], personasBefore, generalHeadBefore}
-*/
+/* ===== Modelo ===== */
 const KEY='recargapp.v1';
 let ADMIN_PIN = localStorage.getItem('recargapp.admin.pin') || '1111';
 const SUPERADMIN_PIN='9999';
@@ -350,63 +354,63 @@ function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
 function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 function today(){ return new Date().toISOString().slice(0,10); }
-function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
 function inLicencia(p, fecha){ var L=p.obs.licencia; if(!L||!L.desde||!L.hasta) return false; return (fecha>=L.desde && fecha<=L.hasta); }
 function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var d=new Date(dateStr), b=new Date(baseStr); var next = new Date(d.getTime()+86400000); return next.toISOString().slice(0,10)===b.toISOString().slice(0,10); }
 
-let db = load() || { personas: [], historial: [], generalHead: 0 };
+let db = load() || { personas: [], historial: [], generalHead: 0, cambios: [] };
 if(db.personas){ var base=Date.now(); db.personas.forEach(function(p,i){ if(p.rorder==null){ p.rorder = (typeof p.order==='number')? p.order : (base+i); } if(typeof p.debeLista!=='number'){ p.debeLista=0; } if(!p.obs){ p.obs={art:null, licencia:{desde:null,hasta:null}, autorizado:false}; } }); }
 
 let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
 let modalId=null;
 let role='viewer';
 
-/* ===== Accesos ===== */
+/* ===== Header / sesión ===== */
 var lockState=$qs(null,'#lockState');
 var btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 var btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
 
-function isAdmin(){ return role==='admin' || role==='superadmin'; }
-function isSuper(){ return role==='superadmin'; }
-
-/* ===== Banner helper ===== */
-function showBanner(msg, opts){
-  opts = opts || {};
-  var b=$qs(null,'#banner'); if(!b) return;
-  if(opts.html){ b.innerHTML = msg; } else { b.textContent = msg; }
-  b.style.display='block';
-  if(showBanner._t){ clearTimeout(showBanner._t); showBanner._t=null; }
-  if(!opts.sticky){ showBanner._t=setTimeout(function(){ b.style.display='none'; }, opts.timeout || 3200); }
-}
+btnToggleAdmin.onclick=function(){
+  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.textContent='Iniciar sesión'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
+  var code=prompt('Ingresá PIN');
+  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='Modo ADMIN'; btnToggleAdmin.textContent='Cerrar sesión'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); }
+  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.textContent='Cerrar sesión'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
+  else if(code!==null){ alert('PIN incorrecto'); }
+};
 
 if(btnCambiarPinAdmin){
   btnCambiarPinAdmin.onclick=function(){
-    if(!isSuper()) return alert('Solo superadmin');
+    if(role!=='superadmin') return alert('Solo superadmin');
     var np=prompt('Nueva contraseña de ADMIN (4-8 dígitos):'); if(np==null) return;
     np=np.trim(); if(!/^\d{4,8}$/.test(np)) return alert('Debe ser de 4 a 8 dígitos.');
     setAdminPin(np); showBanner('Contraseña de ADMIN actualizada ✅');
   };
 }
 
-btnToggleAdmin.onclick=function(){
-  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.textContent='Iniciar sesión'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); return; }
-  var code=prompt('Ingresá PIN (Admin)');
-  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='Modo ADMIN'; btnToggleAdmin.textContent='Salir'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; renderAll(); }
-  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='👑 SUPERADMIN'; btnToggleAdmin.textContent='Salir'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='inline-block'; renderAll(); }
-  else if(code!==null){ alert('PIN incorrecto'); }
-};
+function isAdmin(){ return role==='admin' || role==='superadmin'; }
+function isSuper(){ return role==='superadmin'; }
 
 /* ===== Tabs ===== */
 var tabs = $all('.tab');
 var panels = $all('[data-panel]');
 tabs.forEach(function(t){
   t.addEventListener('click', function(){
-    tabs.forEach(function(x){ x.classList.remove('active'); }); t.classList.add('active');
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
     var name=t.getAttribute('data-tab');
-    panels.forEach(function(p){ p.style.display = (p.getAttribute('data-panel')===name)?'block':'none'; });
+    panels.forEach(p=>p.style.display = (p.getAttribute('data-panel')===name)?'block':'none');
     renderAll();
   });
 });
+
+/* ===== Banner ===== */
+function showBanner(msg, opts){
+  opts = opts || {};
+  var b=$qs(null,'#banner'); if(!b) return;
+  if(opts.html){ b.innerHTML = msg; } else { b.textContent = msg; }
+  b.style.display='block';
+  if(showBanner._t){ clearTimeout(showBanner._t); showBanner._t=null; }
+  if(!opts.sticky){ showBanner._t=setTimeout(()=>{ b.style.display='none'; }, opts.timeout || 3200); }
+}
 
 /* ===== General ===== */
 var snapshotOrden=null;
@@ -416,24 +420,28 @@ var nombreEl=$qs(null,'#nombre'), dniEl=$qs(null,'#dni'), legajoEl=$qs(null,'#le
 $qs(null,'#btnAgregar').onclick=function(){
   if(!isSuper()) return alert('Solo superadmin');
   if(!nombreEl.value.trim()) return alert('Nombre requerido');
-  db.personas.push({ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false });
-  save(); nombreEl.value=''; dniEl.value=''; legajoEl.value=''; antigEl.value=''; renderGeneral(); renderHoy();
+  const p={ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false };
+  db.personas.push(p);
+  db.cambios.push({ts:Date.now(), texto:`Agregado: ${p.nombre}`});
+  save(); nombreEl.value=''; dniEl.value=''; legajoEl.value=''; antigEl.value=''; renderGeneral(); renderHoy(); renderCambios();
 };
 
 $qs(null,'#btnOrdenarCriterios').onclick=function(){
   if(!isSuper()) return alert('Solo superadmin');
-  snapshotOrden = db.personas.map(function(p){return p.id;});
+  snapshotOrden = db.personas.map(p=>p.id);
   var rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1° (CG)':3,'AYTE 2° (CG)':4,'AYTE 3° (CG)':5,'AYTE 4° (CG)':6,'AYTE 5° (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9};
-  db.personas.sort(function(a,b){ if(rank[a.jerarquia]!==rank[b.jerarquia]) return rank[a.jerarquia]-rank[b.jerarquia]; return (b.antiguedad||0)-(a.antiguedad||0); });
-  var base=Date.now(); db.personas.forEach(function(p,i){ p.order=base+i; });
-  save(); renderGeneral(); renderHoy();
+  db.personas.sort((a,b)=> (rank[a.jerarquia]-rank[b.jerarquia]) || ((b.antiguedad||0)-(a.antiguedad||0)));
+  var base=Date.now(); db.personas.forEach((p,i)=>{ p.order=base+i; });
+  db.cambios.push({ts:Date.now(), texto:`Ordenado por jerarquía → antigüedad`});
+  save(); renderGeneral(); renderHoy(); renderCambios();
 };
 
 $qs(null,'#btnDeshacerOrden').onclick=function(){
   if(!isSuper()) return alert('Solo superadmin');
   if(!snapshotOrden) return alert('No hay orden anterior guardado');
   var base=Date.now(); snapshotOrden.forEach(function(id,i){ var p=getById(id); if(p){ p.order=base+i; } });
-  save(); renderGeneral(); renderHoy();
+  db.cambios.push({ts:Date.now(), texto:`Deshacer orden`});
+  save(); renderGeneral(); renderHoy(); renderCambios();
 };
 
 $qs(null,'#btnExportar').onclick=function(){
@@ -449,16 +457,19 @@ $qs(null,'#btnImportar').onclick=function(){
 };
 
 $qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isSuper()) return alert('Solo superadmin');
+  if(!isAdmin()) return alert('Solo Admin');
   editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar' : 'Editar';
   renderGeneral();
 };
 
+function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id===id) return db.personas[i]; return null; }
+
 function renderGeneral(){
   var tbody=$qs(null,'#tablaGeneral tbody'); tbody.innerHTML='';
-  var list=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
+  var list=[].concat(db.personas).sort((a,b)=>a.order-b.order);
   list.forEach(function(p,i){
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
+
     if(editGeneral){
       tr.setAttribute('draggable','true');
       tr.ondragstart=function(ev){ ev.dataTransfer.setData('text/plain', p.id); tr.classList.add('dragging'); };
@@ -468,15 +479,16 @@ function renderGeneral(){
       tr.ondrop=function(ev){
         ev.preventDefault(); tr.style.outline='';
         var fromId=ev.dataTransfer.getData('text/plain'); if(!fromId||fromId===p.id) return;
-        var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
-        var fromIdx=-1, toIdx=-1;
-        for(var z=0;z<ordered.length;z++){ if(ordered[z].id===fromId) fromIdx=z; if(ordered[z].id===p.id) toIdx=z; }
+        var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order);
+        var fromIdx=ordered.findIndex(x=>x.id===fromId), toIdx=ordered.findIndex(x=>x.id===p.id);
         if(fromIdx<0||toIdx<0) return;
         var moved=ordered.splice(fromIdx,1)[0]; ordered.splice(toIdx,0,moved);
-        var base=Date.now(); ordered.forEach(function(x,idx){ x.order=base+idx; });
-        save(); renderGeneral(); renderHoy();
+        var base=Date.now(); ordered.forEach((x,idx)=>{ x.order=base+idx; });
+        db.cambios.push({ts:Date.now(), texto:`Movido: ${moved.nombre} → posición ${toIdx+1}`});
+        save(); renderGeneral(); renderHoy(); renderCambios();
       };
     }
+
     function cell(txt){ return '<td>'+txt+'</td>'; }
     var cOrden = cell(i+1);
     var cNombre = cell(p.nombre);
@@ -492,33 +504,28 @@ function renderGeneral(){
     if(p.obs.autorizado) obsParts.push('AUTORIZADO'); if(p.salteado) obsParts.push('SALTEADO');
     var cObs = cell(obsParts.join(' · ')||'<span class="muted">—</span>');
 
-    var cAcc = editGeneral
-      ? "<td style='text-align:right'><button class='danger' onclick=\"eliminar('"+p.id+"')\">✕</button></td>"
-      : "<td><span class='muted'>—</span></td>";
+    var cDel = editGeneral
+      ? "<td style='text-align:center'><button class='danger icon-btn' title='Eliminar' onclick=\"eliminar('"+p.id+"')\">✕</button></td>"
+      : "<td></td>";
 
-    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cAcc;
-    if(!isSuper()){ $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo superadmin'; }); }
+    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cDel;
+
+    if(!isAdmin()){
+      $all('button,input,select', tr).forEach(function(el){ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo Admin'; });
+    }
     tbody.appendChild(tr);
   });
 }
+window.setField=function(id,key,val){ if(!isAdmin()) return alert('Solo Admin'); var p=getById(id); if(!p) return; p[key]=val; save(); };
 
-window.setField=function(id,key,val){ if(!isSuper()) return alert('Solo superadmin'); var p=getById(id); if(!p) return; p[key]=val; save(); };
-function mover(id,dir){
-  if(!isSuper()) return alert('Solo superadmin');
-  var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;});
-  var idx=-1; for(var i=0;i<ordered.length;i++){ if(ordered[i].id===id){ idx=i; break; } }
-  if(idx<0) return; var swap=idx+dir; if(swap<0||swap>=ordered.length) return;
-  var moved=ordered.splice(idx,1)[0]; ordered.splice(swap,0,moved);
-  var base=Date.now(); ordered.forEach(function(x,i){ x.order=base+i; });
-  save(); renderGeneral(); renderHoy();
-}
 function eliminar(id){
-  if(!isSuper()) return alert('Solo superadmin');
-  if(!confirm('¿Eliminar de la lista?')) return;
-  db.personas=db.personas.filter(function(p){return p.id!==id;});
-  save(); renderGeneral(); renderHoy();
+  if(!isAdmin()) return alert('Solo Admin');
+  const p=getById(id); if(!p) return;
+  if(!confirm('¿Eliminar a '+p.nombre+' del listado?')) return;
+  db.personas=db.personas.filter(x=>x.id!==id);
+  db.cambios.push({ts:Date.now(), texto:`Eliminado: ${p.nombre}`});
+  save(); renderGeneral(); renderHoy(); renderCambios();
 }
-function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id===id) return db.personas[i]; return null; }
 
 /* ===== HOY ===== */
 var fechaEl=$qs(null,'#fecha'); var faltEl=$qs(null,'#faltantes'); fechaEl.value=today();
@@ -528,27 +535,26 @@ setTitulo(); fechaEl.addEventListener('change', setTitulo);
 $qs(null,'#btnReiniciar').onclick=function(){
   if(!isAdmin()) return alert('Solo admin/superadmin');
   if(confirm('¿Seguro? Esto reinicia la rotación tomando el orden del listado general.')){
-    var ordered=[].concat(db.personas).sort(function(a,b){return a.order-b.order;}); var base=Date.now();
-    ordered.forEach(function(p,i){ p.rorder=base+i; });
+    var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); var base=Date.now();
+    ordered.forEach((p,i)=>{ p.rorder=base+i; });
     prioridadHoy={}; db.generalHead=0; save(); renderHoy();
   }
 };
-
 $qs(null,'#btnActualizar').onclick=function(){ renderHoy(); };
 
-function generalList(){ return [].concat(db.personas).sort(function(a,b){return a.order-b.order;}); }
-function elegibles(){ return [].concat(db.personas).sort(function(a,b){return (a.rorder||0)-(b.rorder||0);}); }
+function generalList(){ return [].concat(db.personas).sort((a,b)=>a.order-b.order); }
+function elegibles(){ return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.rorder||0)); }
 
-/* Prioridad visual/selección y pills de Estado */
+/* Plan del día */
 function getPlan(){
   var falt=Math.max(0, parseInt(faltEl.value||'0',10));
   var fecha=fechaEl.value;
   var base=elegibles();
 
   var prioIds=Object.keys(prioridadHoy);
-  var pART = base.filter(function(p){ return prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26'; });
-  var p04  = base.filter(function(p){ return prioridadHoy[p.id]==='ART04'; });
-  var resto= base.filter(function(p){ return prioIds.indexOf(p.id)===-1; });
+  var pART = base.filter(p=> prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26');
+  var p04  = base.filter(p=> prioridadHoy[p.id]==='ART04');
+  var resto= base.filter(p=> prioIds.indexOf(p.id)===-1);
 
   resto.sort(function(a,b){
     var da=(a.debeLista||0), dbb=(b.debeLista||0);
@@ -563,9 +569,9 @@ function getPlan(){
     mostrados.push({p:p, saltar:saltar, saltPorFlag:saltPorFlag});
     if(!saltar) numerados.push(p);
   }
-  pART.forEach(function(p){ pushPersona(p,true); });
-  p04.forEach(function(p){ pushPersona(p,true); });
-  resto.forEach(function(p){ pushPersona(p,false); });
+  pART.forEach(p=>pushPersona(p,true));
+  p04.forEach(p=>pushPersona(p,true));
+  resto.forEach(p=>pushPersona(p,false));
 
   var asignados = numerados.slice(0,falt);
   var idxUlt=falt-1;
@@ -574,7 +580,7 @@ function getPlan(){
   return {mostrados:mostrados, asignados:asignados, pasivos:pasivos};
 }
 
-/* Modal */
+/* Modal acciones */
 function openModal(id){
   if(!isAdmin()) return alert('Solo admin/superadmin');
   modalId=id; var p=getById(id);
@@ -592,7 +598,10 @@ function modalClearLic(){ if(!modalId) return; if(!isAdmin()) return alert('Solo
 function modalToggleAutorizado(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy(); renderGeneral(); }
 function modalToggleSalteado(){ if(!modalId) return; if(!isAdmin()) return alert('Solo admin/superadmin'); var p=getById(modalId); p.salteado=!p.salteado; save(); renderHoy(); renderGeneral(); }
 
-/* Render del día (incluye pills Estado con toggles) */
+/* Estado (toggle inline) helpers */
+function pill(text, cls, onclick){ return `<span class="pill ${cls||''}" ${onclick?`onclick="${onclick}" style="cursor:pointer"`:''}>${text}</span>`; }
+
+/* Render del día */
 function renderHoy(){
   setTitulo();
   var fecha=fechaEl.value;
@@ -605,43 +614,34 @@ function renderHoy(){
   });
 
   var tb=$qs(null,'#tablaDia tbody'); tb.innerHTML=''; var n=0;
+  db.personas.forEach(function(p){ if(p && p.obs && p.obs.licencia && isDayAfter(p.obs.licencia.hasta, fecha)){ if(!prioridadHoy[p.id]) prioridadHoy[p.id]='ART04'; } });
 
   var plan=getPlan();
   plan.mostrados.forEach(function(item){
     var p=item.p, saltar=item.saltar, saltPorFlag=item.saltPorFlag;
     var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
 
-    // === Estado (pills + toggles)
-    var pills=[];
-    // ART 13/26 pill toggle → alterna presente
-    if(p.obs && (p.obs.art==='13' || p.obs.art==='26')){
-      var type = (p.obs.art==='13') ? 'ART13' : 'ART26';
-      var isPres = (prioridadHoy[p.id]===type);
-      var label = isPres ? ('PRESENTE '+(type==='ART13'?'ART 13':'ART 26')) : (type==='ART13'?'ART 13':'ART 26');
-      pills.push("<span class='pill "+(isPres?'act ':'')+"toggle' data-pid='"+p.id+"' data-toggle='"+type+"'>"+label+"</span>");
+    // Estado pills
+    var estadoParts=[];
+    if(p.obs && p.obs.art){
+      var tag = (prioridadHoy[p.id]==='ART13'&&p.obs.art==='13')?'PRESENTE ART 13'
+              : (prioridadHoy[p.id]==='ART26'&&p.obs.art==='26')?'PRESENTE ART 26'
+              : ('ART '+p.obs.art);
+      var toggle = (p.obs.art==='13')?`togglePresente('${p.id}','ART13')`:`togglePresente('${p.id}','ART26')`;
+      estadoParts.push(pill(tag,'warn',toggle));
     }
-
-    // LIC con fechas
-    if(p.obs && p.obs.licencia && p.obs.licencia.desde && p.obs.licencia.hasta){
-      var estaEnLic = inLicencia(p, fecha);
-      var esDiaDesp = isDayAfter(p.obs.licencia.hasta, fecha);
-      pills.push("<span class='pill err'>LIC "+p.obs.licencia.desde+"→"+p.obs.licencia.hasta+"</span>");
-
-      // 04 solo visible si hay LIC vigente o día posterior
-      var show04 = estaEnLic || esDiaDesp;
-      if(show04){
-        // Día posterior al “hasta” → por defecto en PRESENTE 04 (auto)
-        if(esDiaDesp && prioridadHoy[p.id]!=='ART04'){ prioridadHoy[p.id]='ART04'; }
-        var isP04 = (prioridadHoy[p.id]==='ART04');
-        var lbl04 = isP04 ? 'PRESENTE 04' : '04';
-        pills.push("<span class='pill "+(isP04?'act ':'')+"toggle' data-pid='"+p.id+"' data-toggle='ART04'>"+lbl04+"</span>");
+    // LIC ↔ PRESENTE 04
+    if(inLicencia(p,fecha)){
+      var L=p.obs.licencia; var dd=fmtDM_from(L.desde), hh=fmtDM_from(L.hasta);
+      if(prioridadHoy[p.id]==='ART04'){
+        estadoParts.push(pill('PRESENTE 04','ok',`togglePresente('${p.id}','ART04')`));
+      }else{
+        estadoParts.push(pill(`LIC ${dd}→${hh}`,'err',`togglePresente('${p.id}','ART04')`));
       }
     }
-
-    // Otros flags
-    if(p.obs && p.obs.autorizado) pills.push("<span class='pill ok'>AUTORIZADO</span>");
-    if(saltPorFlag) pills.push("<span class='pill'>SALTEADO</span>");
-    if((p.debeLista||0)>0) pills.push("<span class='pill'>debe "+p.debeLista+"</span>");
+    if(p.obs && p.obs.autorizado) estadoParts.push(pill('AUTORIZADO','ok'));
+    if(saltPorFlag) estadoParts.push(pill('SALTEADO',''));
+    if((p.debeLista||0)>0) estadoParts.push(pill('debe '+p.debeLista,''));
 
     var numCell=document.createElement('td'); numCell.textContent = saltar? '-' : (++n);
 
@@ -660,24 +660,15 @@ function renderHoy(){
 
     var actCell=document.createElement('td'); var actions=document.createElement('div'); actions.className='row';
     actions.innerHTML = "<button class='btn btn-acciones icon-btn' aria-label='Acciones' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled title='Solo admin/superadmin'":"")+">⚙️</button>";
+    if(p.obs && p.obs.art==='13') actions.innerHTML += "";
+    if(p.obs && p.obs.art==='26') actions.innerHTML += "";
     actCell.appendChild(actions);
 
     tr.appendChild(numCell);
-    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td><td>"+(pills.join(' ')||'<span class=\"muted\">—</span>')+"</td>");
+    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td><td>"+(estadoParts.join(' ')||'<span class=\"muted\">—</span>')+"</td>");
     tr.appendChild(pabCell); tr.appendChild(obsRecCell); tr.appendChild(actCell);
     tb.appendChild(tr);
   });
-
-  // Delegación de clicks en pills toggle
-  tb.onclick = function(ev){
-    var el = ev.target.closest('.pill.toggle');
-    if(!el) return;
-    if(!isAdmin()) { alert('Solo admin/superadmin'); return; }
-    var pid = el.getAttribute('data-pid');
-    var t   = el.getAttribute('data-toggle'); // ART13 | ART26 | ART04
-    if(prioridadHoy[pid]===t) delete prioridadHoy[pid]; else prioridadHoy[pid]=t;
-    renderHoy();
-  };
 
   // Pasivos
   var tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML='';
@@ -687,7 +678,7 @@ function renderHoy(){
     tpas.appendChild(tr);
   });
 }
-
+// toggle presente helper
 function togglePresente(id,tipo){
   if(!isAdmin()) return alert('Solo admin/superadmin');
   if(prioridadHoy[id]===tipo) delete prioridadHoy[id]; else prioridadHoy[id]=tipo;
@@ -707,7 +698,7 @@ $qs(null,'#btnCopiarListado').onclick=function(){
     if(p.obs && p.obs.art && !prio) tags.push('(ART '+p.obs.art+')');
     if(p.obs && p.obs.autorizado) tags.push('(autorizado)');
     if(saltPorFlag) tags.push('(salteado)');
-    if(inLicencia(p,fecha)) tags.push('(licencia '+p.obs.licencia.desde+'→'+p.obs.licencia.hasta+')');
+    if(inLicencia(p,fecha)) tags.push('(licencia)');
     if((p.debeLista||0)>0) tags.push('(debe '+p.debeLista+')');
 
     if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')); }
@@ -718,10 +709,8 @@ $qs(null,'#btnCopiarListado').onclick=function(){
 
 function copyText(txt){
   (navigator.clipboard && navigator.clipboard.writeText)
-    ? navigator.clipboard.writeText(txt).then(function(){ alert('Texto copiado'); })
-    : (function(){
-        var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,function(m){return {'<':'&lt;','>':'&gt;','&':'&amp;'}[m];})+'</pre>'); w.document.close(); w.focus();
-      })();
+    ? navigator.clipboard.writeText(txt).then(()=>alert('Texto copiado'))
+    : (function(){ var w=window.open('', '_blank'); w.document.write('<pre>'+txt.replace(/[<&>]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))+'</pre>'); w.document.close(); w.focus(); })();
 }
 
 /* Confirmar guardia */
@@ -735,7 +724,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   rows.forEach(function(r){
     var id=r.getAttribute('data-id'); if(!idsAsignados[id]) return;
     var sel=r.querySelector('select'); var pab= sel?sel.value:'';
-    var inp=r.querySelector('input[type="text"]'); var obsRec=inp?inp.value.trim():''; 
+    var inp=r.querySelector('input[type="text"]'); var obsRec=inp?inp.value.trim():'';
     var per=getById(id); recargos.push({id:id,nombre:per?per.nombre:'',pabellon:pab,obsRecargo:obsRec});
   });
 
@@ -790,7 +779,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   // Limpiar banderas del día
   db.personas.forEach(function(p){ p.obs.autorizado=false; p.salteado=false; });
 
-  // Layout inline para historial (incluye no numerados en su sitio)
+  // Layout inline para historial
   var conteo=0, layout=[];
   plan.mostrados.forEach(function(item){
     var p=item.p, saltar=item.saltar;
@@ -800,7 +789,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
     if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
     if(per.salteado) tags.push('(salteado)');
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia '+per.obs.licencia.desde+'→'+per.obs.licencia.hasta+')');
+    if(inLicencia(per, fecha)) tags.push('(licencia)');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
 
     if(!saltar && conteo<falt){
@@ -817,22 +806,23 @@ $qs(null,'#btnConfirmar').onclick=function(){
   save();
   db.historial.push({
     fecha:fmtDM(fecha),
+    fechaISO:fecha,
     recargos:recargos,
-    pasivos:pasivos.map(function(x){return {id:x.id,nombre:x.nombre};}),
+    pasivos:pasivos.map(function(x){return {id:x.id,nombre:x.nombre,jerarquia:x.jerarquia};}),
     llamados:[],
     layout:layout,
     personasBefore: JSON.parse(JSON.stringify(db.personas)),
-    generalHeadBefore: (db.generalHead - falt + glist.length)%glist.length
+    generalHeadBefore: (db.generalHead - falt + glist.length)%glist.length,
+    franco: document.getElementById('francoSel').value || '1'
   });
   save();
   prioridadHoy={};
 
-  // (sin avanzar días automáticamente)
   renderAll();
-  alert('Guardia guardada. Los llamados se marcan en la guardia siguiente (Historial).');
+  alert('Guardia guardada.');
 };
 
-/* Deshacer última (reversible) */
+/* Deshacer última guardia completa */
 $qs(null,'#btnDeshacer').onclick=function(){
   if(!isAdmin()) return alert('Solo admin/superadmin');
   if(!db.historial.length) return alert('No hay guardias para deshacer');
@@ -842,7 +832,7 @@ $qs(null,'#btnDeshacer').onclick=function(){
   save(); renderAll(); alert('Se revirtió la última confirmación.');
 };
 
-/* Copiar resultado final (recargos + pasivos) */
+/* Copiar resultado (respeta Franco) */
 $qs(null,'#btnCopiarResultado').onclick=function(){
   var fecha=fechaEl.value;
   var plan=getPlan();
@@ -857,7 +847,7 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
     if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
     if(per.salteado) tags.push('(salteado)');
     if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia '+per.obs.licencia.desde+'→'+per.obs.licencia.hasta+')');
+    if(inLicencia(per, fecha)) tags.push('(licencia)');
     if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
 
     if(!saltar && conteo<falt){
@@ -865,14 +855,18 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
       var sel=tr?tr.querySelector('select'):null; var pab=sel?sel.value:'';
       var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
       var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
-      var pabTxt=m[pab||'']||pab||''; var obs = obsRec? (' ('+obsRec+')') : '';
-      lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+' '+obs+(pabTxt?('  '+pabTxt):''));
+      var pabTxt=m[pab||'']||pab||'';
+      var obs = obsRec? (' ('+obsRec+')') : '';
+      lines.push((++conteo)+') '+p.nombre+' '+tags.join(' ')+(pabTxt?('  '+pabTxt):'')+obs);
     }else if(saltar){
       lines.push('- '+p.nombre+' '+tags.join(' '));
     }
   });
 
-  lines.push('','Pasivos','');
+  // Pasivos con Franco
+  var fSel = document.getElementById('francoSel').value || '1';
+  var pasivosDate = (fSel==='2') ? fmtDM(addDaysISO(fecha,1)) : fmtDM(fecha);
+  lines.push('', 'Pasivos ('+pasivosDate+')', '');
   plan.pasivos.forEach(function(p,i){
     var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
     var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
@@ -883,16 +877,33 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
   copyText(lines.join('\n'));
 };
 
-/* ===== Historial ===== */
+/* ===== Historial: Recargos (colapsable) y Cambios ===== */
 function renderHistorial(){
   var tb=$qs(null,'#tablaHistorial tbody'); tb.innerHTML='';
   for(var idx=db.historial.length-1; idx>=0; idx--){
     var h=db.historial[idx];
     var esUltimo=(idx===db.historial.length-1);
 
-    var recListHtml='';
+    // resumen
+    var recCount = (h.layout||[]).filter(x=>x.counted).length || (h.recargos||[]).length;
+    var llamadosCount = (h.llamados||[]).length;
+
+    var tr=document.createElement('tr');
+    var idRow = 'hrec_'+idx;
+
+    var resumen = `${h.fecha} — ${recCount} recargos · ${llamadosCount} pasivos llamados`;
+    var btnVer = `<button class="btn" onclick="toggleDetalle('${idRow}')">Ver</button>`;
+    var btnCopy = `<button class="btn" onclick="copiarHist(${idx})">Copiar</button>`;
+    tr.innerHTML = `<td>${resumen}<div id="${idRow}" style="display:none;margin-top:8px"></div></td><td class="row" style="gap:8px;justify-content:flex-end">${btnVer}${btnCopy}</td>`;
+    tb.appendChild(tr);
+
+    // construir detalle (tarjeta)
+    var cont = tr.querySelector('#'+idRow);
+    var detalle = '';
+
+    // lista formateada
     if(h.layout && h.layout.length){
-      recListHtml = h.layout.map(function(x){
+      var lista = h.layout.map(function(x){
         if(x.counted){
           var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
           var pabTxt=m[x.pabellon||'']||x.pabellon||'';
@@ -905,57 +916,93 @@ function renderHistorial(){
           return '<li>- '+x.nombre+tags2+'</li>';
         }
       }).join('');
-    }else{
-      recListHtml = (h.recargos||[]).map(function(x,i){
-        return '<li>'+(i+1)+') '+x.nombre+' — Pab: '+(x.pabellon||'-')+(x.obsRecargo?(' — Obs: '+x.obsRecargo):'')+'</li>';
-      }).join('') || '<li>—</li>';
+      detalle += `<div class="section"><strong>Recargos</strong><ul style="padding-left:18px;margin:6px 0">${lista}</ul></div>`;
     }
 
-    // Pasivos con checkbox inline + título
-    var pasEncabezado = "<div class='muted' style='font-size:12px;margin-bottom:4px'>Fue llamado</div>";
+    // pasivos con check “Fue llamado”
     var pasList = (h.pasivos||[]).map(function(x,i){
-      var per=getById(x.id); var nombre=per?per.nombre:x.nombre;
       var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':'';
-      var dis = esUltimo ? '' : 'disabled';
-      return "<li style='display:flex;align-items:center;gap:10px'>"
-           + "<span>"+(i+1)+") "+nombre+"</span>"
-           + "<label style='display:inline-flex;align-items:center;gap:6px'>"
-           + "<input type='checkbox' data-h='"+idx+"' data-id='"+x.id+"' "+dis+" "+checked+">"
-           + "<span class='muted'>Fue llamado</span>"
-           + "</label>"
-           + "</li>";
-    }).join('') || '<li>—</li>';
+      var nombre = x.nombre;
+      return `<div class="row" style="justify-content:space-between;margin:2px 0">
+        <span>${i+1}) ${nombre}</span>
+        <label class="row" style="gap:6px"><span class="muted">Fue llamado</span>
+          <input type="checkbox" data-h="${idx}" data-id="${x.id}" ${esUltimo?'':"disabled"} ${checked}>
+        </label>
+      </div>`;
+    }).join('') || '—';
 
-    var delBtn = isSuper()? "<button class='danger' onclick='borrarHist("+idx+")'>Borrar</button>" : "";
-    var tr=document.createElement('tr');
-    tr.innerHTML=
-      "<td>"+h.fecha+"</td>"
-    + "<td><ul style='padding-left:18px;margin:0'>"+recListHtml+"</ul></td>"
-    + "<td>"+ pasEncabezado +"<ul style='padding-left:18px;margin:0'>"+pasList+"</ul></td>"
-    + "<td><div class='row' style='justify-content:flex-end;gap:12px'>"+delBtn+"</div></td>";
-    tb.appendChild(tr);
+    // fecha para pasivos (según franco guardado)
+    var pasFecha = (h.franco==='2') ? fmtDM(addDaysISO(h.fechaISO,1)) : h.fecha;
+
+    detalle += `<div class="section" style="margin-top:8px">
+      <strong>Pasivos (${pasFecha})</strong>
+      <div style="margin-top:6px">${pasList}</div>
+    </div>`;
+
+    cont.innerHTML = detalle;
   }
 }
 
-function borrarHist(idx){
-  if(!isSuper()) return alert('Solo superadmin');
-  if(!confirm('¿Borrar registro del historial?')) return;
-  db.historial.splice(idx,1); save(); renderHistorial();
+function toggleDetalle(id){
+  var el=document.getElementById(id);
+  if(!el) return;
+  el.style.display = (el.style.display==='none' || !el.style.display)?'block':'none';
 }
 
+function copiarHist(idx){
+  var h=db.historial[idx];
+  // reconstruimos como en “Copiar recargos+pasivos”
+  var lines=['RECARGOS '+h.fecha,''];
+  var recs=[];
+  if(h.layout && h.layout.length){
+    h.layout.forEach(function(x){
+      if(x.counted){
+        var m={'Vigilancia':'vigilancia','Pab 1':'pab 01','Pab 3S':'pab 03 sur','Pab 3N':'pab 03 norte','Pab 5S':'pab 05 sur','Pab 5N':'pab 05 norte','Pab 7':'pab 07','Pab 9':'pab 09','Pab 11':'pab 11','Pab Aisl':'pab aisl','Cruz':'cruz','Portón':'portón','':''};
+        var pabTxt=m[x.pabellon||'']||x.pabellon||'';
+        var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+        var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):'';
+        lines.push(x.n+') '+x.nombre+tags+(pabTxt?('  '+pabTxt):'')+obs);
+      }else{
+        var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+        lines.push('- '+x.nombre+tags2);
+      }
+    });
+  }else{
+    (h.recargos||[]).forEach(function(x,i){
+      lines.push((i+1)+') '+x.nombre+(x.pabellon?('  '+x.pabellon):'')+(x.obsRecargo?(' ('+x.obsRecargo+')'):''));
+    });
+  }
+  var pasFecha = (h.franco==='2') ? fmtDM(addDaysISO(h.fechaISO,1)) : h.fecha;
+  lines.push('','Pasivos ('+pasFecha+')','');
+  (h.pasivos||[]).forEach(function(x,i){ lines.push((i+1)+') '+x.nombre); });
+  copyText(lines.join('\n'));
+}
+
+function renderCambios(){
+  var tb=$qs(null,'#tablaCambios tbody'); if(!tb) return;
+  tb.innerHTML='';
+  db.cambios.sort((a,b)=>b.ts-a.ts).forEach(function(c){
+    var d=new Date(c.ts); var f=('0'+d.getDate()).slice(-2)+'/'+('0'+(d.getMonth()+1)).slice(-2)+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2);
+    var tr=document.createElement('tr');
+    tr.innerHTML = `<td>${f}</td><td>${c.texto}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+/* Guardar llamados del último */
 $qs(null,'#btnGuardarLlamados').onclick=function(){
   if(!isAdmin()) return alert('Solo admin/superadmin');
   if(!db.historial.length) return;
   var idx=db.historial.length-1; var h=db.historial[idx];
   var checks=$all("input[type='checkbox'][data-h='"+idx+"']");
-  h.llamados = checks.filter(function(c){return c.checked;}).map(function(c){return c.getAttribute('data-id');});
+  h.llamados = checks.filter(c=>c.checked).map(c=>c.getAttribute('data-id'));
 
   // Reordenar próxima guardia: DEBE > pasivos NO llamados > resto > llamados
   var current=elegibles();
-  var debeIds=current.filter(function(p){return (p.debeLista||0)>0;}).map(function(p){return p.id;});
-  var notCalled=(h.pasivos||[]).filter(function(x){return (h.llamados||[]).indexOf(x.id)<0;}).map(function(x){return x.id;});
-  var called=(h.pasivos||[]).filter(function(x){return (h.llamados||[]).indexOf(x.id)>=0;}).map(function(x){return x.id;});
-  var restIds=current.map(function(p){return p.id;}).filter(function(id){ return notCalled.indexOf(id)<0 && called.indexOf(id)<0; });
+  var debeIds=current.filter(p=>(p.debeLista||0)>0).map(p=>p.id);
+  var notCalled=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)<0).map(x=>x.id);
+  var called=(h.pasivos||[]).filter(x=>(h.llamados||[]).indexOf(x.id)>=0).map(x=>x.id);
+  var restIds=current.map(p=>p.id).filter(id=> notCalled.indexOf(id)<0 && called.indexOf(id)<0 );
 
   var seq=[].concat(debeIds, notCalled, restIds, called);
   var seen={}; var base=Date.now(), i=0;
@@ -964,11 +1011,66 @@ $qs(null,'#btnGuardarLlamados').onclick=function(){
   save(); renderAll(); alert('Llamados actualizados.');
 };
 
+/* ===== Historial subtabs & permisos de borrar ===== */
+(function(){
+  const tabs = $all('#tabsHist .tab');
+  const rec = document.getElementById('histRec');
+  const chg = document.getElementById('histCamb');
+  tabs.forEach(t=>{
+    t.addEventListener('click', ()=>{
+      tabs.forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      const tag=t.getAttribute('data-htab');
+      rec.style.display = (tag==='rec')?'block':'none';
+      chg.style.display = (tag==='chg')?'block':'none';
+    });
+  });
+})();
+
+/* Borrar historiales (solo superadmin) */
+const btnBHrec=$qs(null,'#btnBorrarHistRec');
+const btnBHchg=$qs(null,'#btnBorrarHistCamb');
+if(btnBHrec) btnBHrec.onclick=function(){
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Borrar TODO el historial de Recargos?')) return;
+  db.historial=[]; save(); renderHistorial(); showBanner('Historial de recargos borrado');
+};
+if(btnBHchg) btnBHchg.onclick=function(){
+  if(!isSuper()) return alert('Solo superadmin');
+  if(!confirm('¿Borrar TODO el historial de Cambios?')) return;
+  db.cambios=[]; save(); renderCambios(); showBanner('Historial de cambios borrado');
+};
+
+/* ===== Agregar Extra ===== */
+document.getElementById('btnAgregarExtra').onclick=function(){
+  if(!isAdmin()) return alert('Solo Admin');
+  document.getElementById('backdropExtra').style.display='flex';
+};
+function cerrarExtra(){ document.getElementById('backdropExtra').style.display='none'; }
+function confirmarExtra(){
+  // Solo agrega un ítem "virtual" al inicio del listado del día para el copiado
+  const nombre = document.getElementById('extraNombre').value.trim() || 'Extra';
+  const jer = document.getElementById('extraJer').value.trim() || '';
+  const pab = document.getElementById('extraPab').value.trim() || '';
+  const obs = document.getElementById('extraObs').value.trim() || '';
+  // Insertamos al principio de la rotación visual (no persiste en general)
+  const fake = { id: 'extra_'+Date.now(), nombre:nombre, dni:'', legajo:'', jerarquia:jer||'- vacio -', antiguedad:0,
+    obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:0, rorder:0, debeLista:0, salteado:false, _extra:{pab:pab, obs:obs} };
+  // Lo ponemos con rorder “super-prioritario”
+  db.personas.forEach(p=>{ if(p.rorder==null) p.rorder=Date.now(); p.rorder += 1; });
+  db.personas.unshift(fake);
+  save();
+  cerrarExtra();
+  renderHoy();
+  showBanner('Extra agregado para este día');
+}
+
 /* ===== Render maestro ===== */
 function renderAll(){
-  renderGeneral(); renderHoy(); renderHistorial();
-  var bh=$qs(null,'#btnBorrarHistorial');
-  if(bh) bh.style.display = isSuper()? 'inline-block' : 'none';
+  renderGeneral(); renderHoy(); renderHistorial(); renderCambios();
+  // Mostrar botones borrar historial solo si superadmin
+  if(btnBHrec) btnBHrec.style.display = isSuper()? 'inline-block' : 'none';
+  if(btnBHchg) btnBHchg.style.display = isSuper()? 'inline-block' : 'none';
   if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display = isSuper()? 'inline-block' : 'none';
 }
 
@@ -994,23 +1096,41 @@ function seedIfEmpty(){
     localStorage.removeItem(KEY_TEST);
   }catch(e){ console.warn('Autotest falló', e); }
 })();
-
 seedIfEmpty();
 renderAll();
 
-/* ===== PWA: SW + instalar + updates ===== */
+/* ===== PWA: Service Worker + versión ===== */
 (function () {
-  // Registrar Service Worker
+  // Registrar SW
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
       .catch(err => console.error('SW fail', err));
 
-    // Recargar cuando se active un SW nuevo
+    // Reload al activar un SW nuevo
     let refreshing = false;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
       if (refreshing) return;
       refreshing = true;
       window.location.reload();
+    });
+
+    navigator.serviceWorker.getRegistration().then((reg)=>{
+      if(!reg) return;
+      function askToUpdate() {
+        if (confirm('Hay una actualización de RecargApp. ¿Aplicar ahora?')) {
+          reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+        }
+      }
+      if (reg.waiting) askToUpdate();
+      reg.addEventListener('updatefound', () => {
+        const newSW = reg.installing;
+        if (!newSW) return;
+        newSW.addEventListener('statechange', () => {
+          if (newSW.state === 'installed' && navigator.serviceWorker.controller) {
+            askToUpdate();
+          }
+        });
+      });
     });
   }
 
@@ -1033,129 +1153,33 @@ renderAll();
       btnInstall.style.display = 'none';
     });
   }
-
-  // Panel "Más": versión + buscar / aplicar updates + notas externas
-  (function setupAboutPanel(){
-    const backdrop = document.getElementById('aboutPanelBackdrop');
-    const panel   = document.getElementById('aboutPanel');
-    const btnOpen = document.getElementById('btnOpenAbout');
-    const btnClose= document.getElementById('btnCloseAbout');
-    const verSpot = document.getElementById('aboutVersion');
-    const status  = document.getElementById('updateStatus');
-    const btnChk  = document.getElementById('btnCheckUpdates');
-    const btnAppl = document.getElementById('btnApplyUpdate');
-    const notesBox= document.getElementById('releaseNotes');
-
-    function setOpen(v){
-      panel.classList.toggle('open', v);
-      backdrop.style.display = v ? 'block' : 'none';
-      panel.setAttribute('aria-hidden', v ? 'false' : 'true');
-    }
-    btnOpen?.addEventListener('click', ()=> setOpen(true));
-    btnClose?.addEventListener('click', ()=> setOpen(false));
-    backdrop?.addEventListener('click', ()=> setOpen(false));
-
-    // Mostrar versión real
-    (async function syncAboutVersion(){
-      try{
-        const res = await fetch('/RecargApp/manifest.json?t='+Date.now(), {cache:'no-store'});
-        const m = await res.json();
-        const v = (m.version ? 'V'+m.version : (m.name?.match(/V\d+(\.\d+)*/i)?.[0] || '—'));
-        verSpot.textContent = v;
-      }catch(_){ verSpot.textContent='—'; }
-    })();
-
-    // Cargar notas desde archivo externo JSON
-    (async function loadReleaseNotes(){
-      try{
-        const res = await fetch('/RecargApp/release-notes.json?t='+Date.now(), {cache:'no-store'});
-        if(!res.ok) throw new Error('HTTP '+res.status);
-        const arr = await res.json(); // [{version,date,notes}, ...]
-        if(!Array.isArray(arr) || !arr.length){ notesBox.innerHTML = "<div class='muted'>Sin notas.</div>"; return; }
-        // más reciente primero (por si no viene ordenado)
-        arr.sort((a,b)=> (b.date||'').localeCompare(a.date||''));
-        notesBox.innerHTML = arr.map(n=>(
-          "<div class='noteItem'>"
-          +"<h4>Versión "+(n.version||'?')+" <span class='muted' style='font-weight:400'>"+(n.date||'')+"</span></h4>"
-          +"<p>"+( (n.notes||'').replace(/&/g,'&amp;').replace(/</g,'&lt;') )+"</p>"
-          +"</div>"
-        )).join('');
-      }catch(e){
-        console.warn('No pude cargar release-notes.json', e);
-        notesBox.innerHTML = "<div class='muted'>No se pudo cargar <code>release-notes.json</code>.</div>";
-      }
-    })();
-
-    // Buscar actualización
-    btnChk?.addEventListener('click', async ()=>{
-      status.textContent = 'Buscando...';
-      try{
-        const reg = await navigator.serviceWorker?.getRegistration();
-        if(!reg){ status.textContent='Sin Service Worker'; return; }
-        await reg.update();
-        const maybeShow = ()=>{
-          if(reg.waiting && navigator.serviceWorker.controller){
-            status.textContent = 'Nueva versión disponible';
-            btnAppl.style.display = 'inline-block';
-          }else{
-            status.textContent = 'Estás actualizado ✔️';
-            btnAppl.style.display = 'none';
-          }
-        };
-        maybeShow();
-        reg.addEventListener('updatefound', ()=>{
-          const sw = reg.installing;
-          sw?.addEventListener('statechange', ()=> {
-            if(sw.state==='installed' && navigator.serviceWorker.controller){
-              status.textContent='Nueva versión disponible';
-              btnAppl.style.display='inline-block';
-            }
-          });
-        });
-      }catch(e){ console.error(e); status.textContent='Error al buscar'; }
-    });
-
-    // Aplicar actualización
-    btnAppl?.addEventListener('click', async ()=>{
-      try{
-        const reg = await navigator.serviceWorker?.getRegistration();
-        reg?.waiting?.postMessage({type:'SKIP_WAITING'});
-        status.textContent='Actualizando...';
-      }catch(e){ console.error(e); }
-    });
-  })();
 })();
-</script>
 
-<footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
-  Versión <span id="appVersion">—</span>
-</footer>
-
-<script>
+/* Versión visible desde manifest */
 (async function updateVisibleVersion() {
   const el = document.getElementById('appVersion');
   if (!el) return;
-  const candidates = [
-    '/RecargApp/manifest.json',
-    '/RecargApp/manifest.webmanifest'
-  ];
-  let manifest = null;
-  let lastErr = null;
+
+  const candidates = ['/RecargApp/manifest.json','/RecargApp/manifest.webmanifest'];
+  let manifest=null;
   for (const url of candidates) {
     try {
-      const res = await fetch(url + '?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status + ' on ' + url);
-      manifest = await res.json();
-      break;
-    } catch (e) { lastErr = e; }
+      const res = await fetch(url+'?t='+Date.now(), { cache: 'no-store' });
+      if (!res.ok) continue;
+      manifest = await res.json(); break;
+    } catch(_){}
   }
-  if (!manifest) { console.error('No pude leer manifest:', lastErr); el.textContent = 'V?'; return; }
-  const fromField = (manifest.version && String(manifest.version).trim()) || '';
-  const fromName = (manifest.name && (manifest.name.match(/V\d+(\.\d+)*/i)?.[0] || '').trim()) || '';
-  const v = fromField ? ('V' + fromField) : fromName;
+  if(!manifest){ el.textContent='V?'; return; }
+
+  // Si manifest.version existe, usar “Vx.y.z”. Si name ya tiene Vx.y no duplicar “V”.
+  let v = '';
+  if (manifest.version) v = 'V'+String(manifest.version).replace(/^v/i,'');
+  else if (manifest.name) {
+    const m = manifest.name.match(/V\d+(\.\d+)*/i);
+    v = m ? m[0].toUpperCase() : '';
+  }
   el.textContent = v || 'V?';
 })();
 </script>
-
 </body>
 </html>
