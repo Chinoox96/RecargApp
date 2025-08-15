@@ -1,7 +1,7 @@
 {
-  "name": "RecargApp V1.5.9",
+  "name": "RecargApp V1.5.6",
   "short_name": "RecargApp",
-  "version": "1.5.8",
+  "version": "1.5.6",
   "id": "/RecargApp/index.html",
   "start_url": "/RecargApp/index.html",
   "scope": "/RecargApp/",
