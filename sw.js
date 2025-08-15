@@ -1,40 +1,65 @@
-// ===============================
-// Service Worker para RecargApp
-// Versión V1.1
-// ===============================
-const CACHE_NAME = 'recargapp-v1.5.5';
-const FILES_TO_CACHE = [
+// sw.js — RecargApp (GitHub Pages)
+// Cambiá CACHE_VERSION en cada release para forzar aviso de actualización
+const CACHE_VERSION = 'v1.5.6';
+const APP_CACHE = `recargapp-${CACHE_VERSION}`;
+
+const CORE_ASSETS = [
   '/RecargApp/',
   '/RecargApp/index.html',
-  '/RecargApp/manifest.webmanifest',
+  '/RecargApp/manifest.json',
   '/RecargApp/icons/icon-192x192.png',
-  '/RecargApp/icons/icon-512x512.png'
+  '/RecargApp/icons/icon-512x512.png',
+  // agrega aquí más archivos estáticos si corresponde
 ];
 
-// Instalar y precachear
-self.addEventListener('install', event => {
-  event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(FILES_TO_CACHE)));
-});
-
-// Activar y limpiar cachés viejas
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    )
-  );
-  self.clients.claim();
-});
-
-// Responder desde caché primero
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  event.respondWith(
-    caches.match(event.request).then(r => r || fetch(event.request))
+self.addEventListener('install', (e) => {
+  self.skipWaiting(); // queda en waiting hasta que la app lo active
+  e.waitUntil(
+    caches.open(APP_CACHE).then((c) => c.addAll(CORE_ASSETS)).catch(() => {})
   );
 });
 
-// Forzar actualización bajo demanda
-self.addEventListener('message', event => {
-  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
+self.addEventListener('activate', (e) => {
+  e.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(keys.map(k => (k !== APP_CACHE ? caches.delete(k) : null)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener('fetch', (e) => {
+  const req = e.request;
+
+  // manifest y notas: siempre intentar red fresca
+  if (req.url.endsWith('/manifest.json') || req.url.endsWith('/notes.json')) {
+    e.respondWith((async () => {
+      try {
+        const fresh = await fetch(req, { cache: 'no-store' });
+        return fresh;
+      } catch {
+        const cache = await caches.match(req);
+        return cache || Response.error();
+      }
+    })());
+    return;
+  }
+
+  // cache-first para lo demás
+  e.respondWith((async () => {
+    const cache = await caches.match(req);
+    if (cache) return cache;
+    try {
+      const net = await fetch(req);
+      const c = await caches.open(APP_CACHE);
+      if (req.method === 'GET' && net.status === 200) c.put(req, net.clone());
+      return net;
+    } catch {
+      return cache || Response.error();
+    }
+  })());
+});
+
+self.addEventListener('message', (e) => {
+  const { type } = e.data || {};
+  if (type === 'SKIP_WAITING') self.skipWaiting();
 });
