@@ -1,6 +1,6 @@
 // sw.js — RecargApp (GitHub Pages)
 // Cambiá CACHE_VERSION en cada release para forzar aviso de actualización
-const CACHE_VERSION = 'v1.5.7';
+const CACHE_VERSION = 'v1.5.8';
 const APP_CACHE = `recargapp-${CACHE_VERSION}`;
 
 const CORE_ASSETS = [
