@@ -1,339 +1,354 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RecargApp</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RecargApp</title>
 
-  <!-- PWA -->
-  <link rel="manifest" href="/RecargApp/manifest.json">
-  <meta name="theme-color" content="#0b1223" />
+<link rel="manifest" href="/RecargApp/manifest.json">
+<meta name="theme-color" content="#0b1223">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="apple-touch-icon" href="/RecargApp/icons/icon-192x192.png">
 
-  <!-- iOS -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-icon" href="/RecargApp/icons/icon-192x192.png">
+<style>
+:root{
+  --bg:#0f172a;--card:#111827;--ink:#e5e7eb;--muted:#94a3b8;--accent:#38bdf8;--line:#1f2937;--btn:#0b1223;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial}
+a{color:inherit;text-decoration:none}
 
-  <style>
-    :root{
-      --bg:#0f172a;--card:#111827;--muted:#94a3b8;--ok:#16a34a;--warn:#f59e0b;--err:#ef4444;--ink:#e5e7eb;--accent:#38bdf8;
-      --line:#1f2937;--btn:#0b1223;--brand:#1463d6;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui, Segoe UI, Roboto, Helvetica, Arial}
-    a{color:inherit;text-decoration:none}
+/* Header */
+header{position:sticky;top:0;z-index:5;background:#0b1223;border-bottom:1px solid var(--line)}
+.bar{max-width:1150px;margin:0 auto;padding:10px 12px;display:grid;grid-template-columns:120px 1fr 280px;gap:8px;align-items:center}
+.brand{display:flex;align-items:center;gap:8px}
+.brand img{width:28px;height:28px;border-radius:6px;object-fit:cover}
+.titleWrap{display:flex;justify-content:center}
+h1{margin:0;font-size:22px;letter-spacing:.3px}
+.actions{display:flex;gap:8px;justify-content:flex-end;align-items:center}
+.role{font-size:12px;color:var(--muted)}
+.btn{background:var(--btn);border:1px solid var(--line);color:#d1d5db;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
+.btn.primary{background:linear-gradient(180deg,#1f6feb,#1463d6);border:0;color:#fff}
+.btn.warn{background:linear-gradient(180deg,#f59e0b,#d97706);border:0;color:#fff}
+.btn.danger{background:linear-gradient(180deg,#ef4444,#dc2626);border:0;color:#fff}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
 
-    /* Header */
-    header{position:sticky;top:0;z-index:5;background:#0b1223;border-bottom:1px solid var(--line)}
-    .bar{max-width:1150px;margin:0 auto;padding:10px 12px;display:grid;grid-template-columns:120px 1fr 260px;gap:8px;align-items:center}
-    .brand{display:flex;align-items:center;gap:10px;justify-content:flex-start}
-    .brand img{width:28px;height:28px;border-radius:6px;object-fit:cover}
-    .titleWrap{display:flex;justify-content:center}
-    .title{margin:0;font-size:22px;letter-spacing:.4px}
-    .actions{display:flex;justify-content:flex-end;gap:8px;align-items:center}
-    .role{font-size:12px;color:var(--muted)}
-    .btn{background:var(--btn);border:1px solid var(--line);color:#d1d5db;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
-    .btn.primary{background:linear-gradient(180deg,#1f6feb,#1463d6);border:0;color:#fff}
-    .btn.warn{background:linear-gradient(180deg,#f59e0b,#d97706);border:0;color:#fff}
-    .btn.danger{background:linear-gradient(180deg,#ef4444,#dc2626);border:0;color:#fff}
-    .btn.light{background:var(--btn);border:1px solid var(--line);color:#cbd5e1}
-    .btn[disabled]{opacity:.6;cursor:not-allowed}
+.tabs{max-width:1150px;margin:0 auto 8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:0 12px}
+.tab{background:var(--btn);border:1px solid var(--line);color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
+.tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
 
-    .tabs{max-width:1150px;margin:0 auto 8px;display:flex;gap:6px;justify-content:center;flex-wrap:wrap;padding:0 12px}
-    .tab{background:var(--btn);border:1px solid var(--line);color:var(--muted);padding:6px 10px;border-radius:10px;cursor:pointer}
-    .tab.active{color:#fff;border-color:#2563eb;background:linear-gradient(180deg,#1f6feb,#1463d6)}
+main{padding:10px;max-width:1150px;margin:0 auto}
+.section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
+h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+input,select,textarea{background:var(--btn);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px}
+.tableWrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:780px}
+th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+th{color:var(--accent)}
+.note{font-size:12px;color:var(--muted)}
+.muted{color:var(--muted)}
 
-    main{padding:10px;max-width:1150px;margin:0 auto}
-    .section{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:12px}
-    h2{margin:0 0 8px;font-size:13px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase}
-    .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-    .spacer{flex:1}
-    input,select,textarea{background:var(--btn);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:6px}
-    textarea{resize:vertical;min-height:30px;max-height:120px}
-    .tableWrap{width:100%;overflow-x:auto}
-    table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:780px}
-    th,td{padding:8px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    th{color:var(--accent)}
-    .muted{color:var(--muted)}
-    .note{font-size:12px;color:#9ca3af}
+/* Pills */
+.pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap;font-size:12px}
+.pill.warn{background:#2a1b05;color:#fbbf24;border-color:#533c0d}
+.pill.err{background:#3b0a0a;color:#fca5a5;border-color:#6b1a1a}
+.pill.ok{background:#052e1a;color:#86efac;border-color:#0d3e28}
+.pill.info{background:#0b1223;color:#cbd5e1;border-color:#334155}
+.clickable{cursor:pointer}
 
-    /* Pills */
-    .pill{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:999px;border:1px solid #334155;white-space:nowrap;font-size:12px}
-    .pill.warn{background:#2a1b05;color:#fbbf24;border-color:#533c0d}
-    .pill.err{background:#3b0a0a;color:#fca5a5;border-color:#6b1a1a}
-    .pill.ok{background:#052e1a;color:#86efac;border-color:#0d3e28}
-    .pill.info{background:#0b1223;color:#cbd5e1;border-color:#334155}
-    .clickable{cursor:pointer}
+/* Drawer (M│s) */
+#fabMore{position:fixed;right:14px;bottom:14px;z-index:40}
+#drawer{position:fixed;inset:0;display:none}
+#drawer .back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+#drawer .panel{position:absolute;right:0;top:0;height:100%;width:min(520px,94vw);background:#0b1223;border-left:1px solid var(--line);padding:16px;overflow:auto}
+#drawer h3{margin:10px 0 6px}
+#drawer ul{margin:6px 0 12px;padding-left:18px}
 
-    /* Drawer (Mas ...) */
-    #fabMore{position:fixed;right:14px;bottom:14px;z-index:40}
-    #drawer{position:fixed;inset:0;display:none}
-    #drawer .back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
-    #drawer .panel{position:absolute;right:0;top:0;height:100%;width:min(480px,92vw);background:#0b1223;border-left:1px solid var(--line);padding:14px;overflow:auto}
-    #drawer h3{margin:0 0 8px}
-    #drawer pre{white-space:pre-wrap;background:#0f172a;border:1px solid var(--line);padding:10px;border-radius:10px}
+/* Footer */
+footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 
-    /* Footer */
-    footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
-
-    /* movil */
-    @media (max-width:720px){
-      .bar{grid-template-columns:42px 1fr 160px}
-      .title{font-size:18px}
-      table{min-width:640px}
-    }
-  </style>
+/* Mobile */
+@media (max-width:720px){
+  .bar{grid-template-columns:42px 1fr 180px}
+  h1{font-size:18px}
+  table{min-width:640px}
+}
+</style>
 </head>
 <body>
-  <!-- Boton instalar (solo visible si PWA permite) -->
-  <button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
 
-  <header>
-    <div class="bar">
-      <div class="brand"><img src="/RecargApp/icons/icon-192x192.png" alt="logo"></div>
-      <div class="titleWrap"><h1 class="title">RecargApp</h1></div>
-      <div class="actions">
-        <span id="lockState" class="role">Modo lectura</span>
-        <button class="btn light" id="btnCambiarPinAdmin" style="display:none">Cambiar PIN</button>
-        <button class="btn light" id="btnToggleAdmin">Iniciar sesion</button>
-      </div>
+<button class="btn" id="btnInstall" style="display:none;margin:8px">Instalar</button>
+
+<header>
+  <div class="bar">
+    <div class="brand"><img src="/RecargApp/icons/icon-192x192.png" alt="logo"></div>
+    <div class="titleWrap"><h1>RecargApp</h1></div>
+    <div class="actions">
+      <span id="lockState" class="role">Modo lectura</span>
+      <button class="btn" id="btnCambiarPinAdmin" style="display:none">Cambiar PIN</button>
+      <button class="btn" id="btnToggleAdmin">Iniciar sesion</button>
     </div>
-    <div class="tabs">
-      <button class="tab active" data-tab="hoy">Recargos</button>
-      <button class="tab" data-tab="general">Lista</button>
-      <button class="tab" data-tab="historial">Historial</button>
+  </div>
+  <div class="tabs">
+    <button class="tab active" data-tab="hoy">Recargos</button>
+    <button class="tab" data-tab="general">Lista</button>
+    <button class="tab" data-tab="historial">Historial</button>
+  </div>
+</header>
+
+<main>
+  <div id="banner" class="section" style="display:none"></div>
+
+  <!-- HOY -->
+  <section class="section" data-panel="hoy">
+    <h2 id="tituloDia">RECARGOS DEL DIA</h2>
+    <div class="row">
+      <label>Fecha</label><input id="fecha" type="date" style="max-width:160px">
+      <label>Faltantes</label><input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
+      <div class="spacer"></div>
+      <button class="btn danger only-admin" id="btnReiniciar">Reiniciar lista</button>
+      <button class="btn only-admin" id="btnActualizar">Actualizar</button>
+      <button class="btn only-admin" id="btnCopiarListado">Copiar orden</button>
+      <button class="btn primary only-admin" id="btnAgregarExtra">+ Agregar extra</button>
     </div>
-  </header>
 
-  <main>
-    <div id="banner" class="section" style="display:none"></div>
+    <div class="tableWrap" style="margin-top:8px">
+      <table id="tablaDia">
+        <thead>
+          <tr>
+            <th style="width:46px">#</th>
+            <th style="width:240px">Nombre</th>
+            <th style="width:120px">Jerarquia</th>
+            <th style="width:240px">Estado</th>
+            <th style="width:160px">Pabellon</th>
+            <th style="width:220px">Obs recargo</th>
+            <th style="width:90px">Acc</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-    <!-- ====== HOY ====== -->
-    <section class="section" data-panel="hoy">
-      <h2 id="tituloDia">RECARGOS DEL DIA</h2>
+    <div class="note" style="margin-top:6px">
+      * <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill info">SALTEADO</span>,
+      <span class="pill err">LICENCIA</span> se muestran pero no numeran. Con <b>Presente</b> (13/26/04) suben y cuentan. (debe X) se ve en la fila.
+    </div>
+
+    <!-- PASIVOS -->
+    <div class="section" style="margin-top:12px">
+      <h2>PASIVOS</h2>
       <div class="row">
-        <label>Fecha</label>
-        <input id="fecha" type="date" style="max-width:160px">
-        <label>Faltantes</label>
-        <input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
+        <label>Para:</label>
+        <select id="pasivosPara" style="max-width:280px">
+          <option value="mismo">1er dia de franco (mismo dia)</option>
+          <option value="siguiente">2do dia de franco (al dia siguiente)</option>
+        </select>
         <div class="spacer"></div>
-        <button class="btn danger only-admin" id="btnReiniciar">Reiniciar lista</button>
-        <button class="btn only-admin" id="btnActualizar">Actualizar</button>
-        <button class="btn only-admin" id="btnCopiarListado">Copiar orden</button>
-        <button class="btn only-admin" id="btnAgregarExtra">+ Agregar extra</button>
+        <button class="btn only-admin" id="btnImprimirPasivos">Imprimir pasivos</button>
+        <button class="btn only-admin" id="btnCopiarResultado">Copiar recargos+pasivos</button>
       </div>
-
-      <div class="tableWrap" style="margin-top:8px">
-        <table id="tablaDia">
-          <thead>
-            <tr>
-              <th style="width:46px">#</th>
-              <th style="width:240px">Nombre</th>
-              <th style="width:120px">Jerarquia</th>
-              <th style="width:240px">Estado</th>
-              <th style="width:160px">Pabellon</th>
-              <th style="width:220px">Obs recargo</th>
-              <th style="width:90px">Acc</th>
-            </tr>
-          </thead>
+      <div class="tableWrap" style="margin-top:6px">
+        <table id="tablaPasivos">
+          <thead><tr><th style="width:42px">#</th><th>Nombre</th><th style="width:160px">Jerarquia</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
+    </div>
 
-      <div class="note" style="margin-top:6px">
-        * <span class="pill warn">ART</span>,
-        <span class="pill ok">AUTORIZADO</span>,
-        <span class="pill info">SALTEADO</span> o
-        <span class="pill err">LICENCIA</span> se muestran pero no numeran.
-        Con <b>Presente</b> (13/26/04) suben y cuentan. (debe X) se ve en la fila.
-      </div>
+    <div class="row" style="margin-top:12px;gap:14px">
+      <button class="btn primary only-admin" id="btnConfirmar">Confirmar guardia</button>
+      <button class="btn warn only-admin" id="btnDeshacer" title="Ctrl+Z">Deshacer (Ctrl+Z)</button>
+    </div>
+  </section>
 
-      <!-- Pasivos abajo -->
-      <div class="section" style="margin-top:12px">
-        <h2>PASIVOS</h2>
-        <div class="row">
-          <label>Para:</label>
-          <select id="pasivosPara" style="max-width:260px">
-            <option value="mismo">1er dia de franco (mismo dia)</option>
-            <option value="siguiente">2do dia de franco (al dia siguiente)</option>
-          </select>
-          <div class="spacer"></div>
-          <button class="btn only-admin" id="btnImprimirPasivos">Imprimir pasivos</button>
-          <button class="btn only-admin" id="btnCopiarResultado">Copiar recargos+pasivos</button>
-        </div>
-        <div class="tableWrap" style="margin-top:6px">
-          <table id="tablaPasivos">
-            <thead>
-              <tr><th style="width:42px">#</th><th>Nombre</th><th style="width:160px">Jerarquia</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
+  <!-- GENERAL -->
+  <section class="section" data-panel="general" style="display:none">
+    <h2>Listado general</h2>
+    <div class="row">
+      <input id="nombre" placeholder="Nombre y Apellido" style="max-width:240px">
+      <input id="dni" placeholder="DNI" style="max-width:140px">
+      <input id="legajo" placeholder="Legajo" style="max-width:140px">
+      <select id="jerarquia" style="max-width:160px">
+        <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
+      </select>
+      <input id="antiguedad" type="number" placeholder="Antiguedad (anios)" style="max-width:140px">
+      <button class="btn primary only-admin" id="btnAgregar">Agregar</button>
+      <button class="btn only-admin" id="btnOrdenarCriterios">Ordenar (Jerarquia -> Antiguedad)</button>
+      <button class="btn only-admin" id="btnDeshacerOrden">Deshacer orden</button>
+      <button class="btn warn only-admin" id="btnEditarGeneral">Editar</button>
+    </div>
+    <div class="tableWrap" style="margin-top:8px">
+      <table id="tablaGeneral">
+        <thead><tr>
+          <th style="width:64px">Orden</th>
+          <th style="width:260px">Nombre</th>
+          <th style="width:120px">DNI</th>
+          <th style="width:120px">Legajo</th>
+          <th style="width:150px">Jerarquia</th>
+          <th style="width:80px">Antig.</th>
+          <th style="width:70px">Debe</th>
+          <th>Obs</th>
+          <th style="width:80px" class="muted">Eliminar</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <div class="row" style="margin-top:8px">
+      <button class="btn only-admin" id="btnExportar">Exportar JSON</button>
+      <button class="btn only-admin" id="btnImportar">Importar JSON</button>
+    </div>
+    <div class="note">Editar permite arrastrar para reordenar. Eliminar pide confirmacion. (Solo Admin)</div>
+  </section>
 
-      <div class="row" style="margin-top:12px;gap:14px">
-        <button class="btn primary only-admin" id="btnConfirmar">Confirmar guardia</button>
-        <button class="btn warn only-admin" id="btnDeshacer" title="Ctrl+Z">Deshacer (Ctrl+Z)</button>
-      </div>
-    </section>
+  <!-- HISTORIAL -->
+  <section class="section" data-panel="historial" style="display:none">
+    <h2>Historial</h2>
+    <div class="row" style="justify-content:flex-end;margin-bottom:8px">
+      <button class="btn danger only-super" id="btnBorrarHistRec">Borrar historial Recargos</button>
+      <button class="btn danger only-super" id="btnBorrarHistCamb">Borrar historial Cambios</button>
+    </div>
 
-    <!-- ====== GENERAL ====== -->
-    <section class="section" data-panel="general" style="display:none">
-      <h2>Listado general</h2>
-      <div class="row">
-        <input id="nombre" placeholder="Nombre y Apellido" style="max-width:240px">
-        <input id="dni" placeholder="DNI" style="max-width:140px">
-        <input id="legajo" placeholder="Legajo" style="max-width:140px">
-        <select id="jerarquia" style="max-width:160px">
-          <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
-        </select>
-        <input id="antiguedad" type="number" placeholder="Antiguedad (anios)" style="max-width:140px">
-        <button class="btn primary only-admin" id="btnAgregar">Agregar</button>
-        <button class="btn only-admin" id="btnOrdenarCriterios">Ordenar (Jerarquia -> Antiguedad)</button>
-        <button class="btn only-admin" id="btnDeshacerOrden" title="Volver al orden anterior">Deshacer orden</button>
-        <button class="btn warn only-admin" id="btnEditarGeneral" title="Editar en linea y arrastrar">Editar</button>
-      </div>
-      <div class="tableWrap" style="margin-top:8px">
-        <table id="tablaGeneral">
+    <div class="row" style="gap:10px;margin-bottom:6px">
+      <button class="tab subtab active" id="subRec">Recargos</button>
+      <button class="tab subtab" id="subCamb">Cambios</button>
+      <div class="spacer"></div>
+      <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del ultimo</button>
+    </div>
+
+    <!-- Recargos (resumen en linea, desplegable) -->
+    <div id="histRecargos" class="section" style="padding:10px">
+      <div class="tableWrap">
+        <table id="tablaHistorial">
           <thead><tr>
-            <th style="width:64px">Orden</th>
-            <th style="width:260px">Nombre</th>
-            <th style="width:120px">DNI</th>
-            <th style="width:120px">Legajo</th>
-            <th style="width:150px">Jerarquia</th>
-            <th style="width:80px">Antig.</th>
-            <th style="width:70px">Debe</th>
-            <th>Obs</th>
-            <th style="width:80px" class="muted">Eliminar</th>
+            <th style="width:80px">Ver</th>
+            <th>Resumen</th>
+            <th style="width:180px">Acciones</th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
-      <div class="row" style="margin-top:8px">
-        <button class="btn only-admin" id="btnExportar">Exportar JSON</button>
-        <button class="btn only-admin" id="btnImportar">Importar JSON</button>
-      </div>
-      <div class="note">Para editar la posicion, presiona "Editar" y arrastra filas. Eliminar pide confirmacion. (Solo Admin)</div>
-    </section>
-
-    <!-- ====== HISTORIAL ====== -->
-    <section class="section" data-panel="historial" style="display:none">
-      <h2>Historial</h2>
-      <div class="row" style="justify-content:flex-end;margin-bottom:8px">
-        <button class="btn danger only-super" id="btnBorrarHistRec">Borrar historial Recargos</button>
-        <button class="btn danger only-super" id="btnBorrarHistCamb">Borrar historial Cambios</button>
-      </div>
-
-      <div class="row" style="gap:10px;margin-bottom:6px">
-        <button class="tab subtab active" id="subRec">Recargos</button>
-        <button class="tab subtab" id="subCamb">Cambios</button>
-        <div class="spacer"></div>
-        <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del ultimo</button>
-      </div>
-
-      <div id="histRecargos" class="section" style="padding:10px">
-        <div class="tableWrap">
-          <table id="tablaHistorial">
-            <thead><tr>
-              <th style="width:80px">Ver</th>
-              <th>Resumen</th>
-              <th style="width:180px">Acciones</th>
-            </tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="histCambios" class="section" style="display:none;padding:10px">
-        <div class="tableWrap">
-          <table id="tablaCambios">
-            <thead><tr>
-              <th style="width:80px">Ver</th>
-              <th>Cambio</th>
-              <th style="width:160px">Acciones</th>
-            </tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Drawer "Mas" -->
-  <button class="btn light" id="fabMore" title="Mas">?</button>
-  <div id="drawer">
-    <div class="back"></div>
-    <div class="panel">
-      <div class="row" style="justify-content:space-between;align-items:center">
-        <h3 style="margin:0">Acerca de</h3>
-        <button class="btn light" id="closeDrawer">Cerrar</button>
-      </div>
-      <p>RecargApp. Gestor simple de recargos, pasivos e historial.</p>
-      <div class="row" style="gap:8px;margin:8px 0">
-        <button class="btn" id="btnCheckUpdate">Buscar actualizaciones</button>
-        <span id="updMsg" class="muted"></span>
-      </div>
-      <h3>Notas de actualizacion</h3>
-      <pre id="changelog">Cargando notas...</pre>
     </div>
-  </div>
 
-  <!-- Modal "Extra" -->
-  <div id="backdrop" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20">
-    <div class="section" style="min-width:300px;max-width:95vw">
-      <h3 style="margin:0 0 8px;font-size:16px">Agregar extra</h3>
-      <div class="row"><input id="extraNombre" placeholder="Nombre (opcional)" style="flex:1"></div>
-      <div class="row">
-        <select id="extraJerarquia" style="max-width:220px">
-          <option value="">(sin jerarquia)</option>
-          <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
-        </select>
-        <select id="extraPab" style="max-width:220px">
-          <option value="">(sin pabellon)</option>
-          <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option><option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option><option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Porton</option>
-        </select>
-      </div>
-      <div class="row"><input id="extraObs" placeholder="Observacion (opcional)" style="flex:1"></div>
-      <div class="row" style="justify-content:flex-end">
-        <button class="btn" id="extraCancel">Cancelar</button>
-        <button class="btn primary" id="extraOk">Agregar</button>
+    <!-- Cambios (una linea) -->
+    <div id="histCambios" class="section" style="display:none;padding:10px">
+      <div class="tableWrap">
+        <table id="tablaCambios">
+          <thead><tr><th>Detalle</th><th style="width:160px">Acciones</th></tr></thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
-  </div>
+  </section>
+</main>
 
-  <footer>Version <span id="appVersion">！</span></footer>
+<!-- Boton / Drawer M│s -->
+<button class="btn" id="fabMore" title="Mas">? Mas</button>
+<div id="drawer">
+  <div class="back"></div>
+  <div class="panel">
+    <div class="row" style="align-items:center;gap:10px">
+      <img src="/RecargApp/icons/icon-192x192.png" alt="logo" style="width:28px;height:28px;border-radius:6px">
+      <div class="spacer"><strong>RecargApp</strong> <span id="drawerVersion" class="muted"></span></div>
+      <button class="btn" id="closeDrawer">Cerrar</button>
+    </div>
+
+    <div class="row" style="gap:8px;margin:10px 0">
+      <button class="btn" id="btnCheckUpdate">Buscar actualizaciones</button>
+      <span id="updMsg" class="muted"></span>
+    </div>
+
+    <h3>Descripcion</h3>
+    <p>Gestor de recargos del dia, pasivos e historial. Incluye lista general con orden, permisos por rol y soporte PWA.</p>
+
+    <h3>Notas de actualizacion</h3>
+    <div id="releaseNotes" class="note">Cargando...</div>
+  </div>
+</div>
+
+<!-- Modal Extra -->
+<div id="modalExtra" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20">
+  <div class="section" style="min-width:300px;max-width:95vw">
+    <h3 style="margin:0 0 8px;font-size:16px">Agregar extra</h3>
+    <div class="row"><input id="extraNombre" placeholder="Nombre (opcional)" style="flex:1"></div>
+    <div class="row">
+      <select id="extraJerarquia" style="max-width:220px">
+        <option value="">(sin jerarquia)</option>
+        <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
+      </select>
+      <select id="extraPab" style="max-width:220px">
+        <option value="">(sin pabellon)</option>
+        <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option><option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option><option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Porton</option>
+      </select>
+    </div>
+    <div class="row"><input id="extraObs" placeholder="Observacion (opcional)" style="flex:1"></div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn" id="extraCancel">Cancelar</button>
+      <button class="btn primary" id="extraOk">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Acciones -->
+<div id="modalAcc" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:21">
+  <div class="section" style="min-width:320px;max-width:95vw">
+    <h3 style="margin:0 0 8px;font-size:16px">Acciones para <span id="accNombre"></span></h3>
+    <div class="row">
+      <button class="btn" id="accArt13">ART 13</button>
+      <button class="btn" id="accArt26">ART 26</button>
+      <button class="btn" id="accArtClear">Quitar ART</button>
+      <button class="btn" id="accPres04">Presente 04</button>
+    </div>
+    <hr style="border-color:#1f2937;margin:10px 0">
+    <div class="row">
+      <label>Lic desde</label><input id="accLicD" type="date" style="max-width:170px">
+      <label>hasta</label><input id="accLicH" type="date" style="max-width:170px">
+      <button class="btn" id="accLicSave">Guardar licencia</button>
+      <button class="btn danger" id="accLicClear">Quitar licencia</button>
+    </div>
+    <hr style="border-color:#1f2937;margin:10px 0">
+    <div class="row">
+      <button class="btn" id="accAut">AUTORIZADO</button>
+      <button class="btn" id="accSalt">SALTEAR</button>
+    </div>
+    <div class="row" style="justify-content:flex-end;margin-top:6px">
+      <button class="btn primary" id="accClose">Listo</button>
+    </div>
+  </div>
+</div>
+
+<footer>Version <span id="appVersion">！</span></footer>
 
 <script>
-/* ===== Helpers ===== */
-function $all(sel, root){ return Array.prototype.slice.call((root||document).querySelectorAll(sel)); }
-function $qs(root, sel){ return (root||document).querySelector(sel); }
-function showBanner(msg,opts){opts=opts||{};var b=$qs(null,'#banner');if(!b)return;b.textContent=msg;b.style.display='block';if(showBanner._t)clearTimeout(showBanner._t);if(!opts.sticky){showBanner._t=setTimeout(()=>b.style.display='none',opts.timeout||3200);}}
+/* ===== util ===== */
+function $qs(r,s){return (r||document).querySelector(s)}
+function $all(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function showBanner(t,o){o=o||{};const b=$qs(null,'#banner');if(!b)return;b.textContent=t;b.style.display='block';if(showBanner._t)clearTimeout(showBanner._t);if(!o.sticky)showBanner._t=setTimeout(()=>b.style.display='none',o.timeout||3200)}
+function uid(){return Math.random().toString(36).slice(2,9)}
+function today(){return new Date().toISOString().slice(0,10)}
+function fmtDM(s){var a=s.split('-');return a[2]+'/'+a[1]}
+function isDayAfter(a,b){if(!a||!b)return false;var d=new Date(a),e=new Date(b);var n=new Date(d.getTime()+86400000);return n.toISOString().slice(0,10)===e.toISOString().slice(0,10)}
+function inLic(p,f){var L=p.obs.licencia;return L&&L.desde&&L.hasta&&(f>=L.desde&&f<=L.hasta)}
 
 /* ===== Modelo ===== */
 const KEY='recargapp.v1';
-let ADMIN_PIN = localStorage.getItem('recargapp.admin.pin') || '1111';
+let ADMIN_PIN=localStorage.getItem('recargapp.admin.pin')||'1111';
 const SUPERADMIN_PIN='9999';
-function setAdminPin(newPin){ ADMIN_PIN=String(newPin); localStorage.setItem('recargapp.admin.pin', ADMIN_PIN); }
+function setAdminPin(v){ADMIN_PIN=String(v);localStorage.setItem('recargapp.admin.pin',ADMIN_PIN)}
+function save(){localStorage.setItem(KEY,JSON.stringify(db))}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){return null}}
 
-function save(){ localStorage.setItem(KEY, JSON.stringify(db)); }
-function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'null'); }catch(e){ return null; } }
-function uid(){ return Math.random().toString(36).slice(2,9); }
-function today(){ return new Date().toISOString().slice(0,10); }
-function fmtDM(s){ var a=s.split('-'); return a[2]+"/"+a[1]; }
-function inLicencia(p, fecha){ var L=p.obs.licencia; if(!L||!L.desde||!L.hasta) return false; return (fecha>=L.desde && fecha<=L.hasta); }
-function isDayAfter(dateStr, baseStr){ if(!dateStr||!baseStr) return false; var d=new Date(dateStr), b=new Date(baseStr); var next=new Date(d.getTime()+86400000); return next.toISOString().slice(0,10)===b.toISOString().slice(0,10); }
+let db=load()||{personas:[],historial:[],cambios:[],generalHead:0};
+if(db.personas){var base=Date.now();db.personas.forEach((p,i)=>{if(p.rorder==null)p.rorder=(typeof p.order==='number')?p.order:(base+i);if(typeof p.debeLista!=='number')p.debeLista=0;if(!p.obs)p.obs={art:null,licencia:{desde:null,hasta:null},autorizado:false}})}
 
-let db = load() || { personas: [], historial: [], cambios: [], generalHead: 0 };
-if(db.personas){ var base=Date.now(); db.personas.forEach((p,i)=>{ if(p.rorder==null){ p.rorder=(typeof p.order==='number')?p.order:(base+i);} if(typeof p.debeLista!=='number'){p.debeLista=0;} if(!p.obs){p.obs={art:null,licencia:{desde:null,hasta:null},autorizado:false};} }); }
-
-let prioridadHoy = {}; // {id:'ART13'|'ART26'|'ART04'}
+let prioridadHoy={}; // {id:'ART13'|'ART26'|'ART04'}
 let role='viewer';
-
-/* ===== Permisos ===== */
-function isAdmin(){ return role==='admin' || role==='superadmin'; }
-function isSuper(){ return role==='superadmin'; }
+function isAdmin(){return role==='admin'||role==='superadmin'}
+function isSuper(){return role==='superadmin'}
 function applyRoleVisibility(){
-  $all('.only-admin').forEach(b=>{ b.style.display = isAdmin() ? '' : 'none'; if(!isAdmin()) b.setAttribute('disabled','disabled'); else b.removeAttribute('disabled'); });
-  $all('.only-super').forEach(b=>{ b.style.display = isSuper() ? '' : 'none'; if(!isSuper()) b.setAttribute('disabled','disabled'); else b.removeAttribute('disabled'); });
+  $all('.only-admin').forEach(b=>{b.style.display=isAdmin()?'':'none'; if(!isAdmin()) b.setAttribute('disabled','disabled'); else b.removeAttribute('disabled')})
+  $all('.only-super').forEach(b=>{b.style.display=isSuper()?'':'none'; if(!isSuper()) b.setAttribute('disabled','disabled'); else b.removeAttribute('disabled')})
 }
 
 /* ===== Sesion ===== */
@@ -342,696 +357,527 @@ const btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 const btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
 
 btnToggleAdmin.onclick=function(){
-  if(role!=='viewer'){ role='viewer'; lockState.textContent='Modo lectura'; btnToggleAdmin.textContent='Iniciar sesion'; if(btnCambiarPinAdmin) btnCambiarPinAdmin.style.display='none'; applyRoleVisibility(); return; }
+  if(role!=='viewer'){role='viewer';lockState.textContent='Modo lectura';btnToggleAdmin.textContent='Iniciar sesion';btnCambiarPinAdmin.style.display='none';applyRoleVisibility();return}
   var code=prompt('Ingresar PIN');
-  if(code===ADMIN_PIN){ role='admin'; lockState.textContent='ADMIN'; btnToggleAdmin.textContent='Salir'; btnCambiarPinAdmin.style.display='none'; applyRoleVisibility(); }
-  else if(code===SUPERADMIN_PIN){ role='superadmin'; lockState.textContent='SUPERADMIN'; btnToggleAdmin.textContent='Salir'; btnCambiarPinAdmin.style.display='inline-block'; applyRoleVisibility(); }
-  else if(code!==null){ alert('PIN incorrecto'); }
-};
+  if(code===ADMIN_PIN){role='admin';lockState.textContent='ADMIN';btnToggleAdmin.textContent='Salir';btnCambiarPinAdmin.style.display='none';applyRoleVisibility()}
+  else if(code===SUPERADMIN_PIN){role='superadmin';lockState.textContent='SUPERADMIN';btnToggleAdmin.textContent='Salir';btnCambiarPinAdmin.style.display='inline-block';applyRoleVisibility()}
+  else if(code!==null){alert('PIN incorrecto')}
+}
 btnCambiarPinAdmin.onclick=function(){
-  if(!isSuper()) return;
-  var np=prompt('Nueva contrasena de ADMIN (4-8 digitos):'); if(np==null) return;
-  np=np.trim(); if(!/^\d{4,8}$/.test(np)) return alert('Debe ser de 4 a 8 digitos.');
-  setAdminPin(np); showBanner('Contrasena de ADMIN actualizada');
-};
+  if(!isSuper())return;var np=prompt('Nueva contrasena ADMIN (4-8 digitos):');if(np==null)return;
+  if(!/^\d{4,8}$/.test(np.trim()))return alert('Debe ser 4-8 digitos');setAdminPin(np.trim());showBanner('PIN ADMIN actualizado')
+}
 
 /* ===== Tabs ===== */
-var tabs = $all('.tab[data-tab]');
-var panels = $all('[data-panel]');
-tabs.forEach(function(t){
-  t.addEventListener('click', function(){
-    tabs.forEach(x=>x.classList.remove('active')); t.classList.add('active');
-    var name=t.getAttribute('data-tab');
-    panels.forEach(p=>p.style.display=(p.getAttribute('data-panel')===name)?'block':'none');
-    if(name==='historial'){ renderHistorial(); }
-  });
-});
+$all('.tab[data-tab]').forEach(t=>{
+  t.onclick=function(){
+    $all('.tab[data-tab]').forEach(x=>x.classList.remove('active')); t.classList.add('active');
+    const name=t.getAttribute('data-tab');
+    $all('[data-panel]').forEach(p=>p.style.display=(p.getAttribute('data-panel')===name)?'block':'none');
+    if(name==='historial') renderHistorial();
+  }
+})
+
+/* ===== Undo ===== */
+const undoStack=[];
+function pushUndo(obj){undoStack.push(JSON.parse(JSON.stringify(obj)))}
+function popUndo(){return undoStack.length?undoStack.pop():null}
 
 /* ===== General ===== */
-var snapshotOrden=null, editGeneral=false;
-var nombreEl=$qs(null,'#nombre'), dniEl=$qs(null,'#dni'), legajoEl=$qs(null,'#legajo'), jerarquiaEl=$qs(null,'#jerarquia'), antigEl=$qs(null,'#antiguedad');
+function getById(id){return db.personas.find(p=>p.id===id)||null}
+function generalList(){return [].concat(db.personas).sort((a,b)=>a.order-b.order)}
+function elegibles(){return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.rorder||0))}
 
-const undoStack=[];
-function pushUndo(payload){ undoStack.push(JSON.parse(JSON.stringify(payload))); }
-function popUndo(){
-  if(!undoStack.length) return null;
-  return undoStack.pop();
-}
+const nombreEl=$qs(null,'#nombre'),dniEl=$qs(null,'#dni'),legajoEl=$qs(null,'#legajo'),jerarquiaEl=$qs(null,'#jerarquia'),antigEl=$qs(null,'#antiguedad')
+let snapshotOrden=null, editGeneral=false
 
 $qs(null,'#btnAgregar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  if(!nombreEl.value.trim()) return alert('Nombre requerido');
-  const p={ id:uid(), nombre:nombreEl.value.trim(), dni:dniEl.value.trim(), legajo:legajoEl.value.trim(), jerarquia:jerarquiaEl.value, antiguedad:parseInt(antigEl.value||'0',10), obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:Date.now(), rorder:Date.now(), debeLista:0, salteado:false };
-  pushUndo({type:'general', personas:db.personas});
-  db.personas.push(p);
-  db.cambios.push({t:Date.now(), tipo:'agregar', nombre:p.nombre});
-  save(); nombreEl.value=''; dniEl.value=''; legajoEl.value=''; antigEl.value=''; renderGeneral(); renderHoy();
-};
-
-$qs(null,'#btnOrdenarCriterios').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  snapshotOrden = db.personas.map(p=>p.id);
-  var rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1ro (CG)':3,'AYTE 2do (CG)':4,'AYTE 3ro (CG)':5,'AYTE 4to (CG)':6,'AYTE 5to (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9};
-  pushUndo({type:'general', personas:db.personas});
-  db.personas.sort((a,b)=> rank[a.jerarquia]-rank[b.jerarquia] || (b.antiguedad||0)-(a.antiguedad||0));
-  var base=Date.now(); db.personas.forEach((p,i)=>{ p.order=base+i; });
-  db.cambios.push({t:Date.now(), tipo:'ordenar', detalle:'Jerarquia -> Antiguedad'});
-  save(); renderGeneral(); renderHoy();
-};
-
-$qs(null,'#btnDeshacerOrden').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  if(!snapshotOrden) return alert('No hay orden anterior');
-  pushUndo({type:'general', personas:db.personas});
-  var base=Date.now(); snapshotOrden.forEach((id,i)=>{ var p=getById(id); if(p){ p.order=base+i; } });
-  db.cambios.push({t:Date.now(), tipo:'deshacer-orden'});
-  save(); renderGeneral(); renderHoy();
-};
-
-$qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent = editGeneral? 'Guardar' : 'Editar';
-  renderGeneral();
-};
-
-function getById(id){ for(var i=0;i<db.personas.length;i++) if(db.personas[i].id===id) return db.personas[i]; return null; }
-
-function renderGeneral(){
-  var tbody=$qs(null,'#tablaGeneral tbody'); tbody.innerHTML='';
-  var list=[].concat(db.personas).sort((a,b)=>a.order-b.order);
-  list.forEach(function(p,i){
-    var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
-
-    if(editGeneral){
-      tr.setAttribute('draggable','true');
-      tr.ondragstart=function(ev){ ev.dataTransfer.setData('text/plain', p.id); tr.classList.add('dragging'); };
-      tr.ondragend=function(){ tr.classList.remove('dragging'); };
-      tr.ondragover=function(ev){ ev.preventDefault(); tr.style.outline='1px dashed #334155'; };
-      tr.ondragleave=function(){ tr.style.outline=''; };
-      tr.ondrop=function(ev){
-        ev.preventDefault(); tr.style.outline='';
-        var fromId=ev.dataTransfer.getData('text/plain'); if(!fromId||fromId===p.id) return;
-        var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order);
-        var fromIdx=ordered.findIndex(x=>x.id===fromId);
-        var toIdx=ordered.findIndex(x=>x.id===p.id);
-        if(fromIdx<0||toIdx<0) return;
-        pushUndo({type:'general', personas:db.personas});
-        var moved=ordered.splice(fromIdx,1)[0]; ordered.splice(toIdx,0,moved);
-        var base=Date.now(); ordered.forEach((x,idx)=>{ x.order=base+idx; });
-        db.cambios.push({t:Date.now(), tipo:'mover', nombre:moved.nombre, detalle:'a posicion '+(toIdx+1)});
-        save(); renderGeneral(); renderHoy();
-      };
-    }
-
-    function cell(txt){ return '<td>'+txt+'</td>'; }
-    var cOrden = cell(i+1);
-    var cNombre = cell(p.nombre);
-    var cDNI = editGeneral ? '<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>' : cell(p.dni||'');
-    var cLegajo = editGeneral ? '<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>' : cell(p.legajo||'');
-    var jerOpts = ['AYTE MY (CG)','AYTE PR (CG)','AYTE 1ro (CG)','AYTE 2do (CG)','AYTE 3ro (CG)','AYTE 4to (CG)','AYTE 5to (CG)','SUBAYTE (CG)','- vacio -']
-      .map(j=>'<option '+(p.jerarquia===j?'selected':'')+'>'+j+'</option>').join('');
-    var cJer = editGeneral ? '<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jerOpts+'</select></td>' : cell(p.jerarquia);
-    var cAnt = editGeneral ? '<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>' : cell(p.antiguedad||0);
-    var cDebe = editGeneral ? '<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>' : cell(p.debeLista||0);
-    var obsParts=[]; if(p.obs.art) obsParts.push('ART '+p.obs.art);
-    if(p.obs.licencia && p.obs.licencia.desde && p.obs.licencia.hasta) obsParts.push('LIC '+fmtDM(p.obs.licencia.desde)+'-'+fmtDM(p.obs.licencia.hasta));
-    if(p.obs.autorizado) obsParts.push('AUTORIZADO'); if(p.salteado) obsParts.push('SALTEADO');
-    var cObs = cell(obsParts.join(' ， ')||'<span class="muted">-</span>');
-    var cDel = editGeneral
-      ? "<td><button class='btn danger' onclick=\"eliminar('"+p.id+"')\">Eliminar</button></td>"
-      : "<td class='muted'>-</td>";
-
-    tr.innerHTML = cOrden + cNombre + cDNI + cLegajo + cJer + cAnt + cDebe + cObs + cDel;
-    if(!isAdmin()){ $all('button,input,select', tr).forEach(el=>{ el.setAttribute('disabled','disabled'); el.classList.add('lock'); el.title='Solo Admin'; }); }
-    tbody.appendChild(tr);
-  });
+  if(!isAdmin())return alert('Solo Admin')
+  if(!nombreEl.value.trim())return alert('Nombre requerido')
+  const p={id:uid(),nombre:nombreEl.value.trim(),dni:dniEl.value.trim(),legajo:legajoEl.value.trim(),jerarquia:jerarquiaEl.value,antiguedad:parseInt(antigEl.value||'0',10),obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:Date.now(),rorder:Date.now(),debeLista:0,salteado:false}
+  pushUndo({type:'general',personas:db.personas})
+  db.personas.push(p); db.cambios.push({t:Date.now(),tipo:'agregar',nombre:p.nombre})
+  save(); nombreEl.value='';dniEl.value='';legajoEl.value='';antigEl.value=''; renderGeneral(); renderHoy()
 }
-window.setField=function(id,key,val){ if(!isAdmin()) return alert('Solo Admin'); var p=getById(id); if(!p) return; pushUndo({type:'general', personas:db.personas}); p[key]=val; save(); };
+$qs(null,'#btnOrdenarCriterios').onclick=function(){
+  if(!isAdmin())return alert('Solo Admin')
+  snapshotOrden=db.personas.map(p=>p.id)
+  const rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1ro (CG)':3,'AYTE 2do (CG)':4,'AYTE 3ro (CG)':5,'AYTE 4to (CG)':6,'AYTE 5to (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9}
+  pushUndo({type:'general',personas:db.personas})
+  db.personas.sort((a,b)=>rank[a.jerarquia]-rank[b.jerarquia] || (b.antiguedad||0)-(a.antiguedad||0))
+  const base=Date.now(); db.personas.forEach((p,i)=>p.order=base+i)
+  db.cambios.push({t:Date.now(),tipo:'ordenar',detalle:'Jerarquia -> Antiguedad'})
+  save(); renderGeneral(); renderHoy()
+}
+$qs(null,'#btnDeshacerOrden').onclick=function(){
+  if(!isAdmin())return alert('Solo Admin')
+  if(!snapshotOrden)return alert('No hay orden anterior')
+  pushUndo({type:'general',personas:db.personas})
+  const base=Date.now(); snapshotOrden.forEach((id,i)=>{const p=getById(id); if(p)p.order=base+i})
+  db.cambios.push({t:Date.now(),tipo:'deshacer-orden'})
+  save(); renderGeneral(); renderHoy()
+}
+$qs(null,'#btnEditarGeneral').onclick=function(){
+  if(!isAdmin())return alert('Solo Admin')
+  editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent=editGeneral?'Guardar':'Editar'; renderGeneral()
+}
+window.setField=function(id,key,val){ if(!isAdmin())return alert('Solo Admin'); const p=getById(id); if(!p)return; pushUndo({type:'general',personas:db.personas}); p[key]=val; save(); }
 function eliminar(id){
-  if(!isAdmin()) return alert('Solo Admin');
-  var p=getById(id); if(!p) return;
-  if(!confirm('Eliminar a '+p.nombre+' del listado?')) return;
-  pushUndo({type:'general', personas:db.personas});
+  if(!isAdmin())return alert('Solo Admin')
+  const p=getById(id); if(!p)return;
+  if(!confirm('Eliminar a '+p.nombre+' del listado?'))return;
+  pushUndo({type:'general',personas:db.personas})
   db.personas=db.personas.filter(x=>x.id!==id);
-  db.cambios.push({t:Date.now(), tipo:'eliminar', nombre:p.nombre});
-  save(); renderGeneral(); renderHoy();
+  db.cambios.push({t:Date.now(),tipo:'eliminar',nombre:p.nombre})
+  save(); renderGeneral(); renderHoy()
+}
+function renderGeneral(){
+  const tb=$qs(null,'#tablaGeneral tbody'); tb.innerHTML=''
+  const list=[].concat(db.personas).sort((a,b)=>a.order-b.order)
+  list.forEach((p,i)=>{
+    const tr=document.createElement('tr'); tr.dataset.id=p.id
+    if(editGeneral){
+      tr.draggable=true
+      tr.ondragstart=e=>{e.dataTransfer.setData('text/plain',p.id); tr.classList.add('dragging')}
+      tr.ondragend=()=>tr.classList.remove('dragging')
+      tr.ondragover=e=>{e.preventDefault(); tr.style.outline='1px dashed #334155'}
+      tr.ondragleave=()=>tr.style.outline=''
+      tr.ondrop=e=>{
+        e.preventDefault(); tr.style.outline=''
+        const fromId=e.dataTransfer.getData('text/plain'); if(!fromId||fromId===p.id)return
+        const ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order)
+        const a=ordered.findIndex(x=>x.id===fromId), b=ordered.findIndex(x=>x.id===p.id)
+        if(a<0||b<0)return
+        pushUndo({type:'general',personas:db.personas})
+        const moved=ordered.splice(a,1)[0]; ordered.splice(b,0,moved)
+        const base=Date.now(); ordered.forEach((x,idx)=>x.order=base+idx)
+        db.cambios.push({t:Date.now(),tipo:'mover',nombre:moved.nombre,detalle:'a posicion '+(b+1)})
+        save(); renderGeneral(); renderHoy()
+      }
+    }
+    function cell(t){return '<td>'+t+'</td>'}
+    const cOrden=cell(i+1)
+    const cNombre=cell(p.nombre)
+    const cDNI=editGeneral?'<td><input value="'+(p.dni||'')+'" onblur="setField(\''+p.id+'\',\'dni\',this.value)"></td>':cell(p.dni||'')
+    const cLeg=editGeneral?'<td><input value="'+(p.legajo||'')+'" onblur="setField(\''+p.id+'\',\'legajo\',this.value)"></td>':cell(p.legajo||'')
+    const jer=['AYTE MY (CG)','AYTE PR (CG)','AYTE 1ro (CG)','AYTE 2do (CG)','AYTE 3ro (CG)','AYTE 4to (CG)','AYTE 5to (CG)','SUBAYTE (CG)','- vacio -']
+      .map(j=>'<option '+(p.jerarquia===j?'selected':'')+'>'+j+'</option>').join('')
+    const cJer=editGeneral?'<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jer+'</select></td>':cell(p.jerarquia)
+    const cAnt=editGeneral?'<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>':cell(p.antiguedad||0)
+    const cDebe=editGeneral?'<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>':cell(p.debeLista||0)
+    const obs=[]; if(p.obs.art)obs.push('ART '+p.obs.art); if(p.obs.licencia&&p.obs.licencia.desde&&p.obs.licencia.hasta)obs.push('LIC '+fmtDM(p.obs.licencia.desde)+'-'+fmtDM(p.obs.licencia.hasta)); if(p.obs.autorizado)obs.push('AUTORIZADO'); if(p.salteado)obs.push('SALTEADO')
+    const cObs=cell(obs.join(' ， ')||'<span class="muted">-</span>')
+    const cDel=editGeneral?"<td><button class='btn danger' onclick=\"eliminar('"+p.id+"')\">Eliminar</button></td>":"<td class='muted'>-</td>"
+    tr.innerHTML=cOrden+cNombre+cDNI+cLeg+cJer+cAnt+cDebe+cObs+cDel
+    if(!isAdmin()) $all('button,input,select',tr).forEach(el=>{el.setAttribute('disabled','disabled');el.title='Solo Admin'})
+    tb.appendChild(tr)
+  })
 }
 
 /* ===== HOY ===== */
-var fechaEl=$qs(null,'#fecha'); var faltEl=$qs(null,'#faltantes'); fechaEl.value=today();
-function setTitulo(){ $qs(null,'#tituloDia').textContent = 'RECARGOS '+fmtDM(fechaEl.value); }
-setTitulo(); fechaEl.addEventListener('change', setTitulo);
+const fechaEl=$qs(null,'#fecha'); const faltEl=$qs(null,'#faltantes'); fechaEl.value=today()
+function setTitulo(){ $qs(null,'#tituloDia').textContent='RECARGOS '+fmtDM(fechaEl.value) }
+setTitulo(); fechaEl.onchange=setTitulo
 
 $qs(null,'#btnReiniciar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  if(confirm('Seguro? Esto reinicia la rotacion desde el listado general.')){
-    var ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); var base=Date.now();
-    pushUndo({type:'general', personas:db.personas});
-    ordered.forEach((p,i)=>{ p.rorder=base+i; });
-    prioridadHoy={}; db.generalHead=0; save(); renderHoy();
-  }
-};
-$qs(null,'#btnActualizar').onclick=function(){ renderHoy(); };
-
-function generalList(){ return [].concat(db.personas).sort((a,b)=>a.order-b.order); }
-function elegibles(){ return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.rorder||0)); }
-
-/* Plan del dia */
-function getPlan(){
-  var falt=Math.max(0, parseInt(faltEl.value||'0',10));
-  var fecha=fechaEl.value;
-  var base=elegibles();
-
-  var prioIds=Object.keys(prioridadHoy);
-  var pART = base.filter(p=> prioridadHoy[p.id]==='ART13' || prioridadHoy[p.id]==='ART26');
-  var p04  = base.filter(p=> prioridadHoy[p.id]==='ART04');
-  var resto= base.filter(p=> prioIds.indexOf(p.id)===-1);
-
-  resto.sort((a,b)=> (b.debeLista||0)-(a.debeLista||0) || (a.rorder||0)-(b.rorder||0));
-
-  var mostrados=[], numerados=[];
-  function pushPersona(p, forzarContar){
-    var saltPorFlag = p.salteado===true;
-    var saltar = !forzarContar && (p.obs.art || p.obs.autorizado || inLicencia(p,fecha) || saltPorFlag);
-    mostrados.push({p:p, saltar:saltar, saltPorFlag:saltPorFlag});
-    if(!saltar) numerados.push(p);
-  }
-  pART.forEach(p=>pushPersona(p,true));
-  p04.forEach(p=>pushPersona(p,true));
-  resto.forEach(p=>pushPersona(p,false));
-
-  var asignados = numerados.slice(0,falt);
-  var idxUlt=falt-1;
-  var pasivos = (idxUlt>=0)? numerados.slice(idxUlt+1, idxUlt+3) : numerados.slice(0,2);
-
-  return {mostrados, asignados, pasivos};
+  if(!isAdmin())return alert('Solo Admin')
+  if(!confirm('Reiniciar rotacion tomando el orden general?'))return
+  const ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); const base=Date.now()
+  pushUndo({type:'general',personas:db.personas})
+  ordered.forEach((p,i)=>p.rorder=base+i)
+  prioridadHoy={}; db.generalHead=0; save(); renderHoy()
 }
+$qs(null,'#btnActualizar').onclick=()=>renderHoy()
 
-/* Estado (pills) */
-function estadoPills(p, fecha){
-  var pills=[];
-  if(p.obs && (p.obs.art==='13' || p.obs.art==='26')){
-    var tipo=p.obs.art;
-    var isPres = (prioridadHoy[p.id]==='ART13' && tipo==='13') || (prioridadHoy[p.id]==='ART26' && tipo==='26');
-    var txt = isPres? ('Presente '+tipo) : ('ART '+tipo);
-    pills.push('<span class="pill warn clickable" data-act="toggle-art" data-tipo="'+tipo+'" data-id="'+p.id+'">'+txt+'</span>');
+function estadoPills(p,fecha){
+  const pills=[]
+  if(p.obs&&(p.obs.art==='13'||p.obs.art==='26')){
+    const t=p.obs.art
+    const pres=(prioridadHoy[p.id]==='ART13'&&t==='13')||(prioridadHoy[p.id]==='ART26'&&t==='26')
+    pills.push('<span class="pill warn clickable" data-act="toggle-art" data-id="'+p.id+'" data-tipo="'+t+'">'+(pres?'Presente '+t:'ART '+t)+'</span>')
   }
-  if(inLicencia(p,fecha) || prioridadHoy[p.id]==='ART04'){
-    var L=p.obs.licencia||{desde:null,hasta:null};
-    var isPres04 = (prioridadHoy[p.id]==='ART04');
-    if(isPres04){
-      pills.push('<span class="pill err clickable" data-act="toggle-lic" data-id="'+p.id+'">Presente 04</span>');
-    }else if(L.desde && L.hasta){
-      pills.push('<span class="pill err clickable" data-act="toggle-lic" data-id="'+p.id+'">LIC '+fmtDM(L.desde)+'-'+fmtDM(L.hasta)+'</span>');
-    }
+  if(inLic(p,fecha)||prioridadHoy[p.id]==='ART04'){
+    const L=p.obs.licencia||{desde:null,hasta:null}
+    const pres04=(prioridadHoy[p.id]==='ART04')
+    if(pres04) pills.push('<span class="pill err clickable" data-act="toggle-lic" data-id="'+p.id+'">Presente 04</span>')
+    else if(L.desde&&L.hasta) pills.push('<span class="pill err clickable" data-act="toggle-lic" data-id="'+p.id+'">LIC '+fmtDM(L.desde)+'-'+fmtDM(L.hasta)+'</span>')
   }
-  if(p.obs && p.obs.autorizado) pills.push('<span class="pill ok">AUTORIZADO</span>');
-  if(p.salteado) pills.push('<span class="pill info">SALTEADO</span>');
-  if((p.debeLista||0)>0) pills.push('<span class="pill info">debe '+p.debeLista+'</span>');
-  return pills.join(' ');
+  if(p.obs&&p.obs.autorizado)pills.push('<span class="pill ok">AUTORIZADO</span>')
+  if(p.salteado)pills.push('<span class="pill info">SALTEADO</span>')
+  if((p.debeLista||0)>0)pills.push('<span class="pill info">debe '+p.debeLista+'</span>')
+  return pills.join(' ')
 }
-
 function attachEstadoHandlers(tb){
-  function handler(ev){
-    var el=ev.target.closest('[data-act]'); if(!el) return;
-    if(!isAdmin()) return alert('Solo Admin');
-    // snapshot para deshacer
-    pushUndo({type:'prioridad', prioridad:prioridadHoy});
-    var id=el.getAttribute('data-id');
-    var act=el.getAttribute('data-act');
+  tb.onclick=function(ev){
+    const el=ev.target.closest('[data-act]'); if(!el)return
+    if(!isAdmin())return alert('Solo Admin')
+    pushUndo({type:'prioridad',prioridad:prioridadHoy})
+    const id=el.dataset.id, act=el.dataset.act
     if(act==='toggle-art'){
-      var tipo=el.getAttribute('data-tipo');
-      var key=(tipo==='13'?'ART13':'ART26');
-      prioridadHoy[id] = (prioridadHoy[id]===key)? undefined : key;
+      const k=(el.dataset.tipo==='13'?'ART13':'ART26')
+      prioridadHoy[id]=(prioridadHoy[id]===k)?undefined:k
+    }else if(act==='toggle-lic'){
+      prioridadHoy[id]=(prioridadHoy[id]==='ART04')?undefined:'ART04'
     }
-    if(act==='toggle-lic'){
-      prioridadHoy[id] = (prioridadHoy[id]==='ART04')? undefined : 'ART04';
-    }
-    renderHoy();
+    renderHoy()
   }
-  tb.removeEventListener('click', handler);
-  tb.addEventListener('click', handler, {passive:true});
+}
+
+function getPlan(){
+  const falt=Math.max(0,parseInt(faltEl.value||'0',10))
+  const fecha=fechaEl.value
+  const base=elegibles()
+  const prioIds=Object.keys(prioridadHoy)
+  const pART=base.filter(p=>prioridadHoy[p.id]==='ART13'||prioridadHoy[p.id]==='ART26')
+  const p04 =base.filter(p=>prioridadHoy[p.id]==='ART04')
+  const resto=base.filter(p=>prioIds.indexOf(p.id)===-1)
+  resto.sort((a,b)=>(b.debeLista||0)-(a.debeLista||0)||(a.rorder||0)-(b.rorder||0))
+  const mostrados=[],numerados=[]
+  function pushP(p,force){const skip=!force&&(p.obs.art||p.obs.autorizado||inLic(p,fecha)||p.salteado); mostrados.push({p:p,saltar:skip}); if(!skip)numerados.push(p)}
+  pART.forEach(p=>pushP(p,true)); p04.forEach(p=>pushP(p,true)); resto.forEach(p=>pushP(p,false))
+  const asignados=numerados.slice(0,falt)
+  const idxUlt=falt-1
+  const pasivos=(idxUlt>=0)?numerados.slice(idxUlt+1,idxUlt+3):numerados.slice(0,2)
+  return {mostrados,asignados,pasivos}
 }
 
 function renderHoy(){
-  setTitulo();
-  var fecha=fechaEl.value;
-  var prev={};
-  $all('#tablaDia tbody tr[data-id]').forEach(function(r){
-    var id=r.getAttribute('data-id');
-    var sel=r.querySelector('select'); var inp=r.querySelector('input[type="text"]');
-    prev[id]={pab: sel?sel.value:'', obs: inp?inp.value:''};
-  });
+  setTitulo()
+  const fecha=fechaEl.value
+  // activar 04 el dia siguiente de fin de licencia
+  db.personas.forEach(p=>{ if(p&&p.obs&&p.obs.licencia&&isDayAfter(p.obs.licencia.hasta,fecha)){ if(!prioridadHoy[p.id])prioridadHoy[p.id]='ART04' }})
+  const prev={}
+  $all('#tablaDia tbody tr[data-id]').forEach(r=>{
+    const id=r.dataset.id; const sel=r.querySelector('select'); const inp=r.querySelector('input[type="text"]')
+    prev[id]={pab:sel?sel.value:'',obs:inp?inp.value:''}
+  })
+  const tb=$qs(null,'#tablaDia tbody'); tb.innerHTML=''
+  let n=0
+  const plan=getPlan()
+  plan.mostrados.forEach(item=>{
+    const p=item.p, saltar=item.saltar
+    const tr=document.createElement('tr'); tr.dataset.id=p.id
+    const num=document.createElement('td'); num.textContent=saltar?'-':(++n)
+    const estado=document.createElement('td'); estado.innerHTML=estadoPills(p,fecha)||'<span class="muted">-</span>'
+    const pabSel=document.createElement('select')
+    ;['','Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Porton'].forEach(x=>{const o=document.createElement('option');o.textContent=x;pabSel.appendChild(o)})
+    if(prev[p.id]&&prev[p.id].pab)pabSel.value=prev[p.id].pab
+    if(saltar||!isAdmin()){pabSel.disabled=true}
+    const obs=document.createElement('input'); obs.type='text'; obs.placeholder='(ej. cubre Ibarra)'; if(prev[p.id]&&prev[p.id].obs)obs.value=prev[p.id].obs; if(!isAdmin()){obs.disabled=true}
+    const acc=document.createElement('td'); acc.innerHTML="<button class='btn only-admin' onclick=\"openAcc('"+p.id+"')\" "+(!isAdmin()?"disabled":"")+">Acciones</button>"
 
-  var tb=$qs(null,'#tablaDia tbody'); tb.innerHTML=''; var n=0;
-
-  db.personas.forEach(function(p){
-    if(p && p.obs && p.obs.licencia && isDayAfter(p.obs.licencia.hasta, fecha)){
-      if(!prioridadHoy[p.id]) prioridadHoy[p.id]='ART04';
-    }
-  });
-
-  var plan=getPlan();
-  plan.mostrados.forEach(function(item){
-    var p=item.p, saltar=item.saltar;
-    var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
-
-    var numCell=document.createElement('td'); numCell.textContent = saltar? '-' : (++n);
-
-    var pabSel=document.createElement('select');
-    ['','Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Porton'].forEach(function(x){
-      var opt=document.createElement('option'); opt.textContent=x; pabSel.appendChild(opt);
-    });
-    if(prev[p.id] && prev[p.id].pab) pabSel.value=prev[p.id].pab;
-    if(saltar || !isAdmin()){ pabSel.disabled=true; pabSel.classList.add('lock'); }
-    var pabCell=document.createElement('td'); pabCell.appendChild(pabSel);
-
-    var obsRecInput=document.createElement('input'); obsRecInput.type='text'; obsRecInput.placeholder='(ej. cubre Ibarra)';
-    if(prev[p.id] && prev[p.id].obs) obsRecInput.value=prev[p.id].obs;
-    if(!isAdmin()){ obsRecInput.disabled=true; obsRecInput.classList.add('lock'); }
-    var obsRecCell=document.createElement('td'); obsRecCell.appendChild(obsRecInput);
-
-    var estadoHTML = estadoPills(p, fecha) || '<span class="muted">-</span>';
-    var estadoCell=document.createElement('td'); estadoCell.innerHTML = estadoHTML;
-
-    var actCell=document.createElement('td');
-    actCell.innerHTML = "<button class='btn only-admin' onclick=\"openModal('"+p.id+"')\" "+(!isAdmin()?"disabled": "")+">Abrir</button>";
-
-    tr.appendChild(numCell);
-    tr.insertAdjacentHTML('beforeend', "<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>");
-    tr.appendChild(estadoCell);
-    tr.appendChild(pabCell); tr.appendChild(obsRecCell); tr.appendChild(actCell);
-    tb.appendChild(tr);
-  });
-
-  attachEstadoHandlers(tb);
+    tr.appendChild(num)
+    tr.insertAdjacentHTML('beforeend',"<td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>")
+    tr.appendChild(estado)
+    const tdP=document.createElement('td'); tdP.appendChild(pabSel); tr.appendChild(tdP)
+    const tdO=document.createElement('td'); tdO.appendChild(obs); tr.appendChild(tdO)
+    tr.appendChild(acc)
+    tb.appendChild(tr)
+  })
+  attachEstadoHandlers(tb)
 
   // Pasivos
-  var tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML='';
-  plan.pasivos.forEach(function(p,i){
-    var tr=document.createElement('tr'); tr.setAttribute('data-id', p.id);
-    tr.innerHTML="<td>"+(i+1)+"</td><td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>";
-    tpas.appendChild(tr);
-  });
+  const tpas=$qs(null,'#tablaPasivos tbody'); tpas.innerHTML=''
+  plan.pasivos.forEach((p,i)=>{
+    const tr=document.createElement('tr'); tr.dataset.id=p.id
+    tr.innerHTML="<td>"+(i+1)+"</td><td>"+p.nombre+"</td><td>"+p.jerarquia+"</td>"
+    tpas.appendChild(tr)
+  })
 
-  applyRoleVisibility();
+  applyRoleVisibility()
 }
 
-function copyText(txt){
-  (navigator.clipboard && navigator.clipboard.writeText)
-    ? navigator.clipboard.writeText(txt).then(()=>alert('Texto copiado'))
-    : (function(){var w=window.open('', '_blank'); w.document.write('<pre>'+txt+'</pre>'); w.document.close(); w.focus();})();
-}
-
-/* Copiar orden del dia (sin pasivos) */
+/* Copiar orden (solo recargos) */
 $qs(null,'#btnCopiarListado').onclick=function(){
-  var fecha=fechaEl.value;
-  var plan=getPlan();
-  var lines=['RECARGOS '+fmtDM(fecha),''];
-  var n=0;
-  plan.mostrados.forEach(function(item){
-    var p=item.p, saltar=item.saltar;
-    var prio=prioridadHoy[p.id], tags=[];
-    if(prio){ tags.push(prio==='ART13'?'(presente 13)': prio==='ART26'?'(presente 26)':'(presente 04)'); }
-    if(p.obs && p.obs.art && !prio) tags.push('(ART '+p.obs.art+')');
-    if(p.obs && p.obs.autorizado) tags.push('(autorizado)');
-    if(item.saltPorFlag) tags.push('(salteado)');
-    if(inLicencia(p,fecha)) tags.push('(licencia)');
-    if((p.debeLista||0)>0) tags.push('(debe '+p.debeLista+')');
+  const fecha=fechaEl.value, plan=getPlan()
+  const lines=['RECARGOS '+fmtDM(fecha),'']; let n=0
+  plan.mostrados.forEach(item=>{
+    const p=item.p, saltar=item.saltar; const prio=prioridadHoy[p.id]; const tags=[]
+    if(prio) tags.push(prio==='ART13'?'(presente 13)':prio==='ART26'?'(presente 26)':'(presente 04)')
+    if(p.obs&&p.obs.art&&!prio) tags.push('(ART '+p.obs.art+')')
+    if(p.obs&&p.obs.autorizado) tags.push('(autorizado)')
+    if(inLic(p,fecha)) tags.push('(licencia)')
+    if((p.debeLista||0)>0) tags.push('(debe '+p.debeLista+')')
+    if(saltar) lines.push('- '+p.nombre+' '+tags.join(' '))
+    else lines.push((++n)+') '+p.nombre+' '+tags.join(' '))
+  })
+  copyText(lines.join('\n'))
+}
 
-    if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')); }
-    else{ lines.push((++n)+') '+p.nombre+' '+tags.join(' ')); }
-  });
-  copyText(lines.join('\n'));
-};
-
-/* Extra (modal) */
-const backdrop=$qs(null,'#backdrop');
-$qs(null,'#btnAgregarExtra').onclick=function(){ if(!isAdmin()) return alert('Solo Admin'); backdrop.style.display='flex'; }
-$qs(null,'#extraCancel').onclick=function(){ backdrop.style.display='none'; }
+/* Extra modal */
+const mExtra=$qs(null,'#modalExtra')
+$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return alert('Solo Admin');mExtra.style.display='flex'}
+$qs(null,'#extraCancel').onclick=()=>mExtra.style.display='none'
 $qs(null,'#extraOk').onclick=function(){
-  if(!isAdmin()) return;
-  var nombre=($qs(null,'#extraNombre').value||'Extra').trim();
-  var jer=$qs(null,'#extraJerarquia').value||'- vacio -';
-  var pab=$qs(null,'#extraPab').value||'';
-  var obs=$qs(null,'#extraObs').value||'';
-  var id='extra_'+uid();
-  var tbody=$qs(null,'#tablaDia tbody');
-  var tr=document.createElement('tr'); tr.setAttribute('data-id', id);
-  tr.innerHTML='<td>*</td><td>'+nombre+'</td><td>'+jer+'</td><td><span class="pill info">EXTRA</span></td>'
-              +'<td>'+ (pab||'') +'</td><td>'+ (obs||'') +'</td><td>-</td>';
-  tbody.insertBefore(tr, tbody.firstChild);
-  backdrop.style.display='none';
-};
+  if(!isAdmin())return
+  const nombre=($qs(null,'#extraNombre').value||'Extra').trim()
+  const jer=$qs(null,'#extraJerarquia').value||'- vacio -'
+  const pab=$qs(null,'#extraPab').value||''
+  const obs=$qs(null,'#extraObs').value||''
+  const id='extra_'+uid()
+  const tbody=$qs(null,'#tablaDia tbody'); const tr=document.createElement('tr'); tr.dataset.id=id
+  tr.innerHTML='<td>*</td><td>'+nombre+'</td><td>'+jer+'</td><td><span class="pill info">EXTRA</span></td><td>'+pab+'</td><td>'+obs+'</td><td>-</td>'
+  tbody.insertBefore(tr,tbody.firstChild); mExtra.style.display='none'
+}
 
-/* Confirmar guardia */
+/* Modal Acciones (edicion de persona) */
+const mAcc=$qs(null,'#modalAcc'); let accId=null
+function openAcc(id){
+  if(!isAdmin())return alert('Solo Admin')
+  accId=id; const p=getById(id); if(!p)return
+  $qs(null,'#accNombre').textContent=p.nombre
+  $qs(null,'#accLicD').value=(p.obs.licencia&&p.obs.licencia.desde)||''
+  $qs(null,'#accLicH').value=(p.obs.licencia&&p.obs.licencia.hasta)||''
+  mAcc.style.display='flex'
+}
+window.openAcc=openAcc
+$qs(null,'#accClose').onclick=()=>{mAcc.style.display='none';accId=null}
+$qs(null,'#accArt13').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='13'; save(); renderHoy() }
+$qs(null,'#accArt26').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='26'; save(); renderHoy() }
+$qs(null,'#accArtClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art=null; save(); renderHoy() }
+$qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); prioridadHoy[accId]=(prioridadHoy[accId]==='ART04')?undefined:'ART04'; renderHoy() }
+$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return alert('Completar fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
+$qs(null,'#accLicClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy() }
+$qs(null,'#accAut').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy() }
+$qs(null,'#accSalt').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.salteado=!p.salteado; save(); renderHoy() }
+
+/* Confirmar */
 $qs(null,'#btnConfirmar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  var plan=getPlan();
-  var idsAsignados={}; plan.asignados.forEach(p=>idsAsignados[p.id]=true);
+  if(!isAdmin())return alert('Solo Admin')
+  const plan=getPlan()
+  const idsAsig={}; plan.asignados.forEach(p=>idsAsig[p.id]=true)
+  const rows=$all('#tablaDia tbody tr[data-id]')
+  const recargos=[]
+  rows.forEach(r=>{
+    const id=r.dataset.id; if(!idsAsig[id])return
+    const sel=r.querySelector('select'); const pab=sel?sel.value:''
+    const inp=r.querySelector('input[type="text"]'); const obs=inp?inp.value.trim():''
+    const per=getById(id); recargos.push({id:id,nombre:per?per.nombre:r.children[1].textContent,pabellon:pab,obsRecargo:obs})
+  })
+  const pasivos=plan.pasivos
+  const fecha=fechaEl.value
+  const falt=Math.max(0,parseInt(faltEl.value||'0',10))
+  const glist=generalList(); if(!glist.length){alert('No hay personal');return}
+  if(db.generalHead>=glist.length)db.generalHead=0
+  pushUndo({type:'afterConfirm',personas:db.personas,generalHead:db.generalHead})
 
-  var rows=$all('#tablaDia tbody tr[data-id]');
-  var recargos=[];
-  rows.forEach(function(r){
-    var id=r.getAttribute('data-id'); if(!idsAsignados[id]) return;
-    var sel=r.querySelector('select'); var pab= sel?sel.value:'';
-    var inp=r.querySelector('input[type="text"]'); var obsRec=inp?inp.value.trim():'';
-    var per=getById(id); recargos.push({id:id,nombre:per?per.nombre:(r.children[1].textContent),pabellon:pab,obsRecargo:obsRec});
-  });
+  const ventanaIdx=[], start=db.generalHead; let idx=start
+  for(let k=0;k<falt&&k<glist.length;k++){ventanaIdx.push(idx); idx=(idx+1)%glist.length}
+  const ventanaIds=ventanaIdx.map(i=>glist[i].id)
+  const asigIds={}; recargos.forEach(r=>asigIds[r.id]=true)
+  ventanaIds.forEach(id=>{
+    const p=getById(id); if(!p)return
+    const prio=prioridadHoy[id]; const lic=inLic(p,fecha)
+    const quedo=!!asigIds[id] && !(prio==='ART13'||prio==='ART26'||prio==='ART04')
+    if(quedo){ if((p.debeLista||0)>0)p.debeLista=0 }
+    else{ if(!lic && (p.obs.art||p.obs.autorizado||prio)) if((p.debeLista||0)<1)p.debeLista=1 }
+  })
+  db.generalHead=(db.generalHead+falt)%glist.length
 
-  var pasivos=plan.pasivos;
-  var fecha=fechaEl.value;
-  var falt=Math.max(0, parseInt(faltEl.value||'0',10));
-  var glist=generalList(); if(glist.length===0){ alert('No hay personal'); return; }
-  if(db.generalHead>=glist.length) db.generalHead=0;
+  const base=Date.now(); db.personas.forEach(p=>{if(p.rorder==null)p.rorder=base})
+  recargos.forEach((r,i)=>{const p=getById(r.id); if(p)p.rorder=base+i+1})
 
-  // snapshot para deshacer post-confirm
-  pushUndo({type:'afterConfirm', personas:db.personas, generalHead:db.generalHead});
+  for(const pid in prioridadHoy){const why=prioridadHoy[pid]; if((why==='ART13'||why==='ART26')&&getById(pid))getById(pid).obs.art=null}
+  const tail=Date.now()+100000; let k=0; db.personas.forEach(p=>{if(p.salteado)p.rorder=tail+(++k)})
+  db.personas.forEach(p=>{p.obs.autorizado=false; p.salteado=false})
 
-  // ventana segun lista general
-  var ventanaIdx=[], idx=db.generalHead;
-  for(var k=0;k<falt && k<glist.length;k++){ ventanaIdx.push(idx); idx=(idx+1)%glist.length; }
-  var ventanaIds=ventanaIdx.map(i=>glist[i].id);
+  // layout
+  let c=0; const layout=[]
+  plan.mostrados.forEach(item=>{
+    const p=item.p, saltar=item.saltar; const prio=prioridadHoy[p.id]; const per=getById(p.id)||{}
+    const tags=[]; if(prio)tags.push(prio==='ART13'?'(por 13)':prio==='ART26'?'(por 26)':'(por 04)')
+    if(per.obs&&per.obs.autorizado)tags.push('(autorizado)')
+    if(per.salteado)tags.push('(salteado)')
+    if(per.obs&&per.obs.art&&!prio)tags.push('(ART '+per.obs.art+')')
+    if(inLic(per,fecha))tags.push('(licencia)')
+    if((per.debeLista||0)>0)tags.push('(debe '+per.debeLista+')')
+    if(!saltar&&c<falt){
+      const tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]')
+      const sel=tr?tr.querySelector('select'):null; const pab=sel?sel.value:''
+      const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
+      layout.push({id:p.id,nombre:p.nombre,counted:true,n:c+1,pabellon:pab,obsRecargo:ob,tags:tags}); c++
+    }else if(saltar){ layout.push({id:p.id,nombre:p.nombre,counted:false,tags:tags}) }
+  })
+  db.historial.push({fecha:fmtDM(fecha),recargos:recargos,pasivos:pasivos.map(x=>({id:x.id,nombre:x.nombre})),llamados:[],layout:layout})
+  save(); prioridadHoy={}; renderHistorial(); renderHoy(); alert('Guardia guardada')
+}
 
-  var asignadosIds={}; recargos.forEach(r=>asignadosIds[r.id]=true);
-
-  // reglas DEBE
-  ventanaIds.forEach(function(id){
-    var p=getById(id); if(!p) return;
-    var prio=prioridadHoy[id];
-    var lic=inLicencia(p,fecha);
-    var quedoPorLista = !!asignadosIds[id] && !(prio==='ART13' || prio==='ART26' || prio==='ART04');
-    if(quedoPorLista){ if((p.debeLista||0)>0) p.debeLista=0; }
-    else{
-      if(lic) return;
-      if(p.obs.art || p.obs.autorizado || prio){ if((p.debeLista||0)<1) p.debeLista=1; }
-    }
-  });
-
-  // Avanzar puntero general
-  db.generalHead = (db.generalHead + falt) % glist.length;
-
-  // Reubicar rorder
-  var baseOrder=Date.now();
-  db.personas.forEach(p=>{ if(p.rorder==null) p.rorder=baseOrder; });
-  recargos.forEach((r,i)=>{ var p=getById(r.id); if(p) p.rorder = baseOrder + i + 1; });
-
-  // Limpiar ART 13/26 si se presentaron
-  for(var pid in prioridadHoy){
-    var why=prioridadHoy[pid];
-    if((why==='ART13'||why==='ART26') && getById(pid)){ getById(pid).obs.art=null; }
-  }
-
-  // Salteados al fondo
-  var tailBase=Date.now()+100000, kk=0;
-  db.personas.forEach(p=>{ if(p.salteado){ p.rorder = tailBase+(++kk); } });
-
-  // Limpiar banderas del dia
-  db.personas.forEach(p=>{ p.obs.autorizado=false; p.salteado=false; });
-
-  // Layout para historial
-  var conteo=0, layout=[];
-  plan.mostrados.forEach(function(item){
-    var p=item.p, saltar=item.saltar;
-    var prio=prioridadHoy[p.id]; var per=getById(p.id)||{};
-    var tags=[];
-    if(prio){ tags.push(prio==='ART13'?'(por 13)': prio==='ART26'?'(por 26)':'(por 04)'); }
-    if(per.obs && per.obs.autorizado) tags.push('(autorizado)');
-    if(per.salteado) tags.push('(salteado)');
-    if(per.obs && per.obs.art && !prio) tags.push('(ART '+per.obs.art+')');
-    if(inLicencia(per, fecha)) tags.push('(licencia)');
-    if((per.debeLista||0)>0) tags.push('(debe '+per.debeLista+')');
-
-    if(!saltar && conteo<falt){
-      var tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]');
-      var sel=tr?tr.querySelector('select'):null; var pab=sel?sel.value:'';
-      var inp=tr?tr.querySelector('input[type="text"]'):null; var obsRec=inp?inp.value.trim():'';
-      layout.push({id:p.id,nombre:p.nombre,counted:true,n:conteo+1,pabellon:pab,obsRecargo:obsRec,tags:tags});
-      conteo++;
-    }else if(saltar){
-      layout.push({id:p.id,nombre:p.nombre,counted:false,tags:tags});
-    }
-  });
-
-  db.historial.push({
-    fecha:fmtDM(fecha),
-    recargos:recargos,
-    pasivos:pasivos.map(x=>({id:x.id,nombre:x.nombre})),
-    llamados:[],
-    layout:layout
-  });
-  save();
-  prioridadHoy={};
-
-  renderHistorial();
-  renderHoy();
-  alert('Guardia guardada.');
-};
-
-/* Deshacer (Ctrl+Z) */
-document.addEventListener('keydown',function(e){
-  if(e.ctrlKey && e.key.toLowerCase()==='z') $qs(null,'#btnDeshacer').click();
-});
+/* Deshacer */
+document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key.toLowerCase()==='z')$qs(null,'#btnDeshacer').click()})
 $qs(null,'#btnDeshacer').onclick=function(){
-  var snap=popUndo();
-  if(!snap) return showBanner('Nada para deshacer');
-  if(snap.type==='prioridad'){ prioridadHoy = snap.prioridad || {}; renderHoy(); return; }
-  if(snap.type==='general'){ db.personas = JSON.parse(JSON.stringify(snap.personas)); save(); renderGeneral(); renderHoy(); return; }
-  if(snap.type==='afterConfirm'){ db.personas = JSON.parse(JSON.stringify(snap.personas)); db.generalHead=snap.generalHead; save(); renderHoy(); showBanner('Se revirtio el listado del dia (la confirmacion queda en historial)'); return; }
-};
+  const s=popUndo(); if(!s){showBanner('Nada para deshacer');return}
+  if(s.type==='prioridad'){prioridadHoy=s.prioridad||{}; renderHoy(); return}
+  if(s.type==='general'){db.personas=JSON.parse(JSON.stringify(s.personas)); save(); renderGeneral(); renderHoy(); return}
+  if(s.type==='afterConfirm'){db.personas=JSON.parse(JSON.stringify(s.personas)); db.generalHead=s.generalHead; save(); renderHoy(); showBanner('Se revirtio el listado (la confirmacion queda en historial)'); return}
+}
 
-/* ===== Historial ===== */
+/* Copiar resultado recargos+pasivos */
+$qs(null,'#btnCopiarResultado').onclick=function(){
+  const fecha=fechaEl.value, plan=getPlan(), falt=Math.max(0,parseInt(faltEl.value||'0',10))
+  const lines=['RECARGOS '+fmtDM(fecha),'']; let c=0
+  plan.mostrados.forEach(item=>{
+    const p=item.p, saltar=item.saltar; const prio=prioridadHoy[p.id]; const tags=[]
+    if(prio)tags.push(prio==='ART13'?'(por 13)':prio==='ART26'?'(por 26)':'(por 04)')
+    if(p.obs&&p.obs.art&&!prio)tags.push('(ART '+p.obs.art+')')
+    if(p.obs&&p.obs.autorizado)tags.push('(autorizado)')
+    if(inLic(p,fecha))tags.push('(licencia)')
+    if((p.debeLista||0)>0)tags.push('(debe '+p.debeLista+')')
+    if(!saltar && c<falt){
+      const tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]')
+      const sel=tr?tr.querySelector('select'):null; const pab=sel?sel.value:''; const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
+      const extraPab=pab?('  '+pab):''; const extraObs=ob?(' ('+ob+')'):''
+      lines.push((++c)+') '+p.nombre+' '+tags.join(' ')+extraObs+extraPab)
+    }else if(saltar){ lines.push('- '+p.nombre+' '+tags.join(' ')) }
+  })
+  lines.push('')
+  const para=$qs(null,'#pasivosPara').value
+  if(para==='siguiente'){
+    const d=new Date(fecha); d.setDate(d.getDate()+1); const y=d.getFullYear(),m=('0'+(d.getMonth()+1)).slice(-2),dd=('0'+d.getDate()).slice(-2)
+    lines.push('Pasivos (para '+dd+'/'+m+')','')
+  }else{
+    lines.push('Pasivos','')
+  }
+  plan.pasivos.forEach((p,i)=>{
+    const tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]'); const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
+    lines.push((i+1)+') '+p.nombre+(ob?(' ('+ob+')'):''))
+  })
+  (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Copiado')):(()=>{var w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()}))()
+}
+
+/* Historial */
 function renderHistorial(){
-  // subtabs
-  const subRec=$qs(null,'#subRec'), subCamb=$qs(null,'#subCamb');
-  const boxRec=$qs(null,'#histRecargos'), boxCamb=$qs(null,'#histCambios');
-  subRec.onclick=function(){ subRec.classList.add('active'); subCamb.classList.remove('active'); boxRec.style.display='block'; boxCamb.style.display='none'; };
-  subCamb.onclick=function(){ subCamb.classList.add('active'); subRec.classList.remove('active'); boxRec.style.display='none'; boxCamb.style.display='block'; };
+  const subRec=$qs(null,'#subRec'), subCamb=$qs(null,'#subCamb'), boxRec=$qs(null,'#histRecargos'), boxCamb=$qs(null,'#histCambios')
+  subRec.onclick=()=>{subRec.classList.add('active');subCamb.classList.remove('active');boxRec.style.display='block';boxCamb.style.display='none'}
+  subCamb.onclick=()=>{subCamb.classList.add('active');subRec.classList.remove('active');boxRec.style.display='none';boxCamb.style.display='block'}
 
-  // Recargos
-  var tb=$qs(null,'#tablaHistorial tbody'); tb.innerHTML='';
-  for(var idx=db.historial.length-1; idx>=0; idx--){
-    var h=db.historial[idx];
-    var recCount=(h.layout||[]).filter(x=>x.counted).length;
-    var extraCount=(h.layout||[]).filter(x=>x.extra===true).length;
-    var llamados=(h.llamados||[]).length;
-
-    var tr=document.createElement('tr');
-    var vid='rec_det_'+idx;
+  const tb=$qs(null,'#tablaHistorial tbody'); tb.innerHTML=''
+  for(let idx=db.historial.length-1; idx>=0; idx--){
+    const h=db.historial[idx]; const rec=(h.layout||[]).filter(x=>x.counted).length; const extra=(h.layout||[]).filter(x=>x.extra===true).length; const llam=(h.llamados||[]).length
+    const tr=document.createElement('tr'); const vid='rec_det_'+idx
     tr.innerHTML="<td><button class='btn' data-toggle='"+vid+"'>Ver</button></td>"
-      +"<td>"+h.fecha+" ！ Recargos: "+recCount+" ！ Extras: "+extraCount+" ！ Llamados: "+llamados+"</td>"
-      +"<td><button class='btn danger "+(isSuper()?'':'only-super')+"' data-del='"+idx+"'>Borrar</button> <button class='btn' data-copy='"+idx+"'>Copiar</button></td>";
-    tb.appendChild(tr);
-
-    var det=document.createElement('tr'); det.id=vid; det.style.display='none';
-    var htmlRec='';
-    if(h.layout && h.layout.length){
-      htmlRec = h.layout.map(function(x){
-        if(x.counted){
-          var pabTxt=x.pabellon||''; var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          var obs=x.obsRecargo?(' ！ Obs: '+x.obsRecargo):''; var pab=pabTxt?(' ！ Pab: '+pabTxt):'';
-          return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>';
-        }else{
-          var tags2=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          return '<li>- '+x.nombre+tags2+'</li>';
-        }
-      }).join('');
-    }else{ htmlRec='<li>-</li>'; }
-
-    var htmlPas = (h.pasivos||[]).map(function(x,i){
-      var nombre=getById(x.id)?getById(x.id).nombre:x.nombre;
-      var checked = (h.llamados||[]).indexOf(x.id)>=0 ? 'checked':''; 
-      var disabled = (idx===db.historial.length-1 && isAdmin())? '' : 'disabled';
-      return '<li><label><input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+disabled+' '+checked+'> '+(i+1)+') '+nombre+'</label></li>';
-    }).join('') || '<li>-</li>';
-
-    det.innerHTML="<td></td><td colspan='2'><div class='row' style='gap:20px'>"
-      +"<div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlRec+"</ul></div>"
-      +"<div><b>Pasivos (Fue llamado)</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlPas+"</ul></div>"
-      +"</div></td>";
-    tb.appendChild(det);
+      +"<td>"+h.fecha+" - Recargos: "+rec+" - Extras: "+extra+" - Llamados: "+llam+"</td>"
+      +"<td><button class='btn danger only-super' data-del='"+idx+"'>Borrar</button> <button class='btn' data-copy='"+idx+"'>Copiar</button></td>"
+    tb.appendChild(tr)
+    const det=document.createElement('tr'); det.id=vid; det.style.display='none'
+    const htmlRec=(h.layout||[]).map(x=>{
+      if(x.counted){const pab=x.pabellon?(' - Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+        const obs=x.obsRecargo?(' - Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
+      else{return '<li>- '+x.nombre+'</li>'}
+    }).join('')
+    const htmlPas=(h.pasivos||[]).map((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre);const chk=(h.llamados||[]).indexOf(x.id)>=0?'checked':'';const dis=(idx===db.historial.length-1&&isAdmin())?'':'disabled';return '<li><label><input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+dis+' '+chk+'> '+(i+1)+') '+nombre+'</label></li>'}).join('')||'<li>-</li>'
+    det.innerHTML="<td></td><td colspan='2'><div class='row' style='gap:18px'><div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlRec+"</ul></div><div><b>Pasivos (Fue llamado)</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlPas+"</ul></div></div></td>"
+    tb.appendChild(det)
   }
-
   tb.onclick=function(e){
-    var t=e.target;
-    if(t.dataset.toggle){ var row=$qs(null,'#'+t.dataset.toggle); if(row) row.style.display=(row.style.display==='none')?'table-row':'none'; }
-    if(t.dataset.del){ if(!isSuper()) return alert('Solo Superadmin'); var i=parseInt(t.dataset.del,10); if(confirm('Borrar registro?')){ db.historial.splice(i,1); save(); renderHistorial(); } }
+    const t=e.target
+    if(t.dataset.toggle){const row=$qs(null,'#'+t.dataset.toggle); if(row)row.style.display=(row.style.display==='none')?'table-row':'none'}
+    if(t.dataset.del){ if(!isSuper())return alert('Solo Superadmin'); const i=parseInt(t.dataset.del,10); if(confirm('Borrar registro?')){db.historial.splice(i,1); save(); renderHistorial()} }
     if(t.dataset.copy){
-      var i=parseInt(t.dataset.copy,10); var h=db.historial[i];
-      var lines=['RECARGOS '+h.fecha,''];
-      var conteo=0;
-      (h.layout||[]).forEach(function(x){
-        if(x.counted){ var pab=x.pabellon?('  '+x.pabellon):''; var tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):''; var obs=x.obsRecargo?(' ('+x.obsRecargo+')'):''; lines.push((++conteo)+') '+x.nombre+tags+obs+pab); }
-        else{ lines.push('- '+x.nombre); }
-      });
-      lines.push('','Pasivos','');
-      (h.pasivos||[]).forEach(function(x,i){
-        var nombre=getById(x.id)?getById(x.id).nombre:x.nombre;
-        lines.push((i+1)+') '+nombre);
-      });
-      copyText(lines.join('\n'));
+      const i=parseInt(t.dataset.copy,10); const h=db.historial[i]; const lines=['RECARGOS '+h.fecha,'']; let c=0
+      (h.layout||[]).forEach(x=>{ if(x.counted){const pab=x.pabellon?('  '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):''; const obs=x.obsRecargo?(' ('+x.obsRecargo+')'):''; lines.push((++c)+') '+x.nombre+tags+obs+pab)} else lines.push('- '+x.nombre) })
+      lines.push('','Pasivos',''); (h.pasivos||[]).forEach((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre); lines.push((i+1)+') '+nombre) })
+      (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Copiado')):(()=>{var w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()}))()
     }
-  };
-
-  // Cambios
-  var tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML='';
-  for(var i=db.cambios.length-1;i>=0;i--){
-    var c=db.cambios[i];
-    var id='chg_'+i;
-    var desc = (c.tipo==='agregar')? ('Se agrego: '+c.nombre)
-             : (c.tipo==='eliminar')? ('Se elimino: '+c.nombre)
-             : (c.tipo==='mover')? ('Se movio: '+c.nombre+' '+(c.detalle||'')) 
-             : (c.tipo==='ordenar')? ('Se ordeno: '+(c.detalle||'')) 
-             : (c.tipo==='deshacer-orden')? ('Se deshizo el orden') 
-             : (c.detalle||c.tipo);
-    var tr=document.createElement('tr');
-    tr.innerHTML="<td><button class='btn' data-toggle='"+id+"'>Ver</button></td>"
-      +"<td>"+desc+"</td>"
-      +"<td><button class='btn danger only-super' data-delc='"+i+"'>Borrar</button></td>";
-    tc.appendChild(tr);
-    var det=document.createElement('tr'); det.id=id; det.style.display='none';
-    det.innerHTML="<td></td><td colspan='2' class='muted'>"+new Date(c.t||Date.now()).toLocaleString()+"</td>";
-    tc.appendChild(det);
   }
-  tc.onclick=function(e){
-    var t=e.target;
-    if(t.dataset.toggle){ var row=$qs(null,'#'+t.dataset.toggle); if(row) row.style.display=(row.style.display==='none')?'table-row':'none'; }
-    if(t.dataset.delc){ if(!isSuper()) return alert('Solo Superadmin'); var i=parseInt(t.dataset.delc,10); if(confirm('Borrar item de cambios?')){ db.cambios.splice(i,1); save(); renderHistorial(); } }
-  };
 
-  applyRoleVisibility();
+  // Cambios (no desplegable)
+  const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML=''
+  for(let i=db.cambios.length-1;i>=0;i--){
+    const c=db.cambios[i]
+    const desc=c.tipo==='agregar'?'Se agrego: '+c.nombre
+      : c.tipo==='eliminar'?'Se elimino: '+c.nombre
+      : c.tipo==='mover'?'Se movio: '+c.nombre+' '+(c.detalle||'')
+      : c.tipo==='ordenar'?'Se ordeno: '+(c.detalle||'')
+      : c.tipo==='deshacer-orden'?'Se deshizo el orden'
+      : (c.detalle||c.tipo)
+    const tr=document.createElement('tr')
+    tr.innerHTML="<td>"+desc+"</td><td><button class='btn danger only-super' data-delc='"+i+"'>Borrar</button></td>"
+    tc.appendChild(tr)
+  }
+  tc.onclick=function(e){const t=e.target; if(t.dataset.delc){ if(!isSuper())return alert('Solo Superadmin'); const i=parseInt(t.dataset.delc,10); if(confirm('Borrar item?')){db.cambios.splice(i,1); save(); renderHistorial()} }}
+
+  applyRoleVisibility()
 }
 
-/* Guardar llamados del ultimo */
 $qs(null,'#btnGuardarLlamados').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  if(!db.historial.length) return;
-  var idx=db.historial.length-1; var h=db.historial[idx];
-  var checks=$all("input[type='checkbox'][data-h='"+idx+"']");
-  h.llamados = checks.filter(c=>c.checked).map(c=>c.getAttribute('data-id'));
-  save(); renderHistorial(); showBanner('Llamados guardados');
-};
-
-/* Export/Import */
-$qs(null,'#btnExportar').onclick=function(){
-  var blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}); var url=URL.createObjectURL(blob);
-  var a=document.createElement('a'); a.href=url; a.download='recargapp_db.json'; a.click(); URL.revokeObjectURL(url);
-};
-$qs(null,'#btnImportar').onclick=function(){
-  if(!isAdmin()) return alert('Solo Admin');
-  var inp=document.createElement('input'); inp.type='file'; inp.accept='.json,application/json';
-  inp.onchange=function(e){ var f=e.target.files[0]; if(!f) return; var fr=new FileReader(); fr.onload=function(){ try{ db=JSON.parse(fr.result); save(); renderAll(); }catch(err){ alert('Archivo invalido'); } }; fr.readAsText(f); };
-  inp.click();
-};
-
-/* ===== Render ===== */
-function renderAll(){ renderGeneral(); renderHoy(); renderHistorial(); applyRoleVisibility(); }
-
-/* ===== Seed ===== */
-(function seedIfEmpty(){
-  if(db.personas && db.personas.length) return;
-  var base=Date.now();
-  var N=['Julio Angulo','Leandro Ordonez','Mariano Lezcano','Medina Diego','Jorge Tobar','Ortigoza Joaquin','Quirico Andres','Cheche Tobias','Moore Mariano','Mareco','Oliva Enzo','Mansilla David','Maidana Marcos'];
-  db.personas=N.map(function(nombre,i){
-    return { id:uid(), nombre:nombre, dni:'', legajo:'', jerarquia:'- vacio -', antiguedad:0, obs:{art:null, licencia:{desde:null,hasta:null}, autorizado:false}, order:base+i, rorder:base+i, debeLista:0, salteado:false };
-  });
-  save();
-})();
-renderAll();
-
-/* ===== Drawer (Mas) ===== */
-const drawer=$qs(null,'#drawer'), fab=$qs(null,'#fabMore');
-fab.onclick=function(){ drawer.style.display='block'; loadChangelog(); };
-$qs(null,'#closeDrawer').onclick=function(){ drawer.style.display='none'; };
-$qs(null,'#drawer .back').onclick=function(){ drawer.style.display='none'; };
-
-async function loadChangelog(){
-  const el=$qs(null,'#changelog');
-  try{
-    const res=await fetch('/RecargApp/changelog.txt?t='+(+new Date()), {cache:'no-store'});
-    if(!res.ok) throw 0;
-    el.textContent = await res.text();
-  }catch(e){ el.textContent='No hay notas disponibles (sube /RecargApp/changelog.txt).'; }
+  if(!isAdmin())return alert('Solo Admin')
+  if(!db.historial.length)return
+  const idx=db.historial.length-1; const h=db.historial[idx]
+  const checks=$all("input[type='checkbox'][data-h='"+idx+"']"); h.llamados=checks.filter(c=>c.checked).map(c=>c.dataset.id)
+  save(); renderHistorial(); showBanner('Llamados guardados')
 }
 
-/* ===== PWA: SW, updates y version ===== */
+/* Export / Import */
+$qs(null,'#btnExportar').onclick=function(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='recargapp_db.json';a.click();URL.revokeObjectURL(url)}
+$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return alert('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){alert('Archivo invalido')}};fr.readAsText(f)};inp.click()}
+
+/* Seed + Render */
+(function(){if(db.personas&&db.personas.length)return;const base=Date.now();const N=['Julio Angulo','Leandro Ordonez','Mariano Lezcano','Medina Diego','Jorge Tobar','Ortigoza Joaquin','Quirico Andres','Cheche Tobias','Moore Mariano','Mareco','Oliva Enzo','Mansilla David','Maidana Marcos'];db.personas=N.map((n,i)=>({id:uid(),nombre:n,dni:'',legajo:'',jerarquia:'- vacio -',antiguedad:0,obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:base+i,rorder:base+i,debeLista:0,salteado:false}));save()})()
+function renderAll(){renderGeneral();renderHoy();renderHistorial();applyRoleVisibility()}
+renderAll()
+
+/* Drawer "Mas" */
+const drawer=$qs(null,'#drawer'), fab=$qs(null,'#fabMore')
+fab.onclick=function(){drawer.style.display='block'; loadReleaseNotes()}
+$qs(null,'#closeDrawer').onclick=()=>drawer.style.display='none'
+$qs(null,'#drawer .back').onclick=()=>drawer.style.display='none'
+
+async function loadReleaseNotes(){
+  // Mostrar version en header del drawer
+  const vtxt=$qs(null,'#appVersion').textContent.trim()
+  $qs(null,'#drawerVersion').textContent=vtxt?('('+vtxt+')'):''
+  const box=$qs(null,'#releaseNotes')
+  try{
+    const res=await fetch('/RecargApp/release-notes.json?t='+(+new Date()),{cache:'no-store'})
+    if(!res.ok) throw 0
+    const data=await res.json()
+    // data puede ser {notes:[...]} o un array directamente
+    const notes=Array.isArray(data)?data:(Array.isArray(data.notes)?data.notes:[])
+    if(!notes.length){box.textContent='No hay notas disponibles.';return}
+    // Ordenar por version o fecha descendente si vienen varias
+    const html=notes.map(n=>{
+      if(typeof n==='string') return '<li>'+n+'</li>'
+      const head=(n.version?('V'+n.version+' - '):'')+(n.date||'')
+      const items=Array.isArray(n.items)?('<ul>'+n.items.map(i=>'<li>'+i+'</li>').join('')+'</ul>'):''
+      const text=(n.text||'')
+      return '<div style="margin:8px 0"><b>'+head+'</b>'+items+(text?('<div>'+text+'</div>'):'')+'</div>'
+    }).join('')
+    box.innerHTML=html
+  }catch(e){ box.textContent='No pude leer /RecargApp/release-notes.json' }
+}
+
+/* PWA, updates y version */
 (function(){
-  let userAcceptedUpdate=false;
-
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
-      .catch(err => console.error('SW fail', err));
-
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (userAcceptedUpdate) window.location.reload();
-    });
-
+  let userAccepted=false
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/RecargApp/sw.js',{scope:'/RecargApp/'}).catch(()=>{})
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(userAccepted) location.reload() })
     navigator.serviceWorker.getRegistration().then(reg=>{
-      if(!reg) return;
-      function askToUpdate(){
-        if(confirm('Hay una actualizacion de RecargApp. Aplicar ahora?')){
-          userAcceptedUpdate=true;
-          reg.waiting && reg.waiting.postMessage({type:'SKIP_WAITING'});
-        }
-      }
-      if(reg.waiting) askToUpdate();
-      reg.addEventListener('updatefound', ()=>{
-        const nw = reg.installing;
-        if(!nw) return;
-        nw.addEventListener('statechange', ()=>{
-          if(nw.state==='installed' && navigator.serviceWorker.controller){
-            askToUpdate();
-          }
-        });
-      });
-
-      // Boton manual "Buscar actualizaciones"
-      const btn=$qs(null,'#btnCheckUpdate'), msg=$qs(null,'#updMsg');
-      if(btn){
-        btn.onclick=async ()=>{
-          msg.textContent='Buscando...';
-          try{
-            await reg.update();
-            setTimeout(async ()=>{
-              const r=await navigator.serviceWorker.getRegistration();
-              if(r && r.waiting){ msg.textContent='Actualizacion disponible'; if(confirm('Instalar ahora?')){ userAcceptedUpdate=true; r.waiting.postMessage({type:'SKIP_WAITING'}); } }
-              else{ msg.textContent='Estas actualizado'; }
-            }, 300);
-          }catch(e){ msg.textContent='No se pudo verificar'; }
-        };
-      }
-    });
+      if(!reg)return
+      function ask(){ if(confirm('Hay una actualizacion disponible. Instalar ahora?')){ userAccepted=true; reg.waiting&&reg.waiting.postMessage({type:'SKIP_WAITING'}) } }
+      if(reg.waiting) ask()
+      reg.addEventListener('updatefound',()=>{const nw=reg.installing; if(!nw)return; nw.addEventListener('statechange',()=>{ if(nw.state==='installed' && navigator.serviceWorker.controller) ask() }) })
+      // Boton buscar actualizaciones
+      const btn=$qs(null,'#btnCheckUpdate'), msg=$qs(null,'#updMsg')
+      if(btn){ btn.onclick=async()=>{ msg.textContent='Buscando...'; try{ await reg.update(); setTimeout(async()=>{const r=await navigator.serviceWorker.getRegistration(); if(r&&r.waiting){ msg.textContent='Actualizacion lista'; if(confirm('Instalar ahora?')){userAccepted=true; r.waiting.postMessage({type:'SKIP_WAITING'})}} else { msg.textContent='Estas actualizado' }},300)}catch(_){ msg.textContent='No se pudo verificar' } } }
+    })
   }
+  // install prompt propio
+  let deferred=null; const btnI=$qs(null,'#btnInstall')
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'})
+  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
 
-  // Install prompt propio
-  let deferredPrompt=null;
-  const btnInstall=document.getElementById('btnInstall');
-  window.addEventListener('beforeinstallprompt', (e)=>{
-    e.preventDefault(); deferredPrompt=e;
-    if(btnInstall) btnInstall.style.display='inline-block';
-  });
-  if(btnInstall){
-    btnInstall.addEventListener('click', async ()=>{
-      if(!deferredPrompt) return;
-      await deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt=null; btnInstall.style.display='none';
-    });
-  }
-
-  // Version visible (no adelanta a la nueva hasta aceptar)
-  async function updateVisibleVersion(){
-    const el=document.getElementById('appVersion'); if(!el) return;
+  // Version visible (desde manifest)
+  ;(async function(){
+    const el=$qs(null,'#appVersion'); if(!el)return
     try{
-      const res=await fetch('/RecargApp/manifest.json?t='+(+new Date()), {cache:'no-store'});
-      const m=await res.json();
-      const v = m.version ? ('V'+m.version) : ((m.name&& (m.name.match(/V\\d+(\\.\\d+)*/i)?.[0]||''))||'');
-      el.textContent = v || 'V?';
-    }catch(e){ el.textContent='V?'; }
-  }
-  updateVisibleVersion();
-})();
-
+      const res=await fetch('/RecargApp/manifest.json?t='+(+new Date()),{cache:'no-store'})
+      const m=await res.json()
+      const v=m.version?('V'+m.version):((m.name&&(m.name.match(/V\d+(\.\d+)*/i)||[])[0])||'')
+      el.textContent=v||'V?'
+    }catch(_){ el.textContent='V?' }
+  })()
+})()
 </script>
 </body>
 </html>
