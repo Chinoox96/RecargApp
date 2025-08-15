@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RecargApp</title>
 
 <link rel="manifest" href="/RecargApp/manifest.json">
@@ -13,6 +13,7 @@
 <style>
 :root{
   --bg:#0f172a;--card:#111827;--ink:#e5e7eb;--muted:#94a3b8;--accent:#38bdf8;--line:#1f2937;--btn:#0b1223;
+  --ok:#16a34a;--warn:#f59e0b;--err:#ef4444;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial}
@@ -20,13 +21,14 @@ a{color:inherit;text-decoration:none}
 
 /* Header */
 header{position:sticky;top:0;z-index:5;background:#0b1223;border-bottom:1px solid var(--line)}
-.bar{max-width:1150px;margin:0 auto;padding:10px 12px;display:grid;grid-template-columns:120px 1fr 280px;gap:8px;align-items:center}
+.bar{max-width:1150px;margin:0 auto;padding:10px 12px;display:grid;grid-template-columns:120px 1fr 300px;gap:8px;align-items:center}
 .brand{display:flex;align-items:center;gap:8px}
 .brand img{width:28px;height:28px;border-radius:6px;object-fit:cover}
 .titleWrap{display:flex;justify-content:center}
-h1{margin:0;font-size:22px;letter-spacing:.3px}
+h1{margin:0;font-size:22px}
 .actions{display:flex;gap:8px;justify-content:flex-end;align-items:center}
 .role{font-size:12px;color:var(--muted)}
+
 .btn{background:var(--btn);border:1px solid var(--line);color:#d1d5db;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
 .btn.primary{background:linear-gradient(180deg,#1f6feb,#1463d6);border:0;color:#fff}
 .btn.warn{background:linear-gradient(180deg,#f59e0b,#d97706);border:0;color:#fff}
@@ -60,7 +62,7 @@ th{color:var(--accent)}
 
 /* Drawer (M¨¢s) */
 #fabMore{position:fixed;right:14px;bottom:14px;z-index:40}
-#drawer{position:fixed;inset:0;display:none}
+#drawer{position:fixed;inset:0;display:none;z-index:50}
 #drawer .back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
 #drawer .panel{position:absolute;right:0;top:0;height:100%;width:min(520px,94vw);background:#0b1223;border-left:1px solid var(--line);padding:16px;overflow:auto}
 #drawer h3{margin:10px 0 6px}
@@ -69,7 +71,10 @@ th{color:var(--accent)}
 /* Footer */
 footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 
-/* Mobile */
+/* Confirm modal */
+#confirm{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60}
+#confirm .box{background:#0b1223;border:1px solid var(--line);border-radius:12px;max-width:92vw;min-width:260px;padding:14px}
+
 @media (max-width:720px){
   .bar{grid-template-columns:42px 1fr 180px}
   h1{font-size:18px}
@@ -199,7 +204,6 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <button class="btn only-admin" id="btnExportar">Exportar JSON</button>
       <button class="btn only-admin" id="btnImportar">Importar JSON</button>
     </div>
-    <div class="note">Editar permite arrastrar para reordenar. Eliminar pide confirmacion. (Solo Admin)</div>
   </section>
 
   <!-- HISTORIAL -->
@@ -217,7 +221,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del ultimo</button>
     </div>
 
-    <!-- Recargos (resumen en linea, desplegable) -->
+    <!-- Recargos -->
     <div id="histRecargos" class="section" style="padding:10px">
       <div class="tableWrap">
         <table id="tablaHistorial">
@@ -243,7 +247,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </section>
 </main>
 
-<!-- Boton / Drawer M¨¢s -->
+<!-- Bot¨®n / Drawer ¡°M¨¢s¡± -->
 <button class="btn" id="fabMore" title="Mas">? Mas</button>
 <div id="drawer">
   <div class="back"></div>
@@ -318,6 +322,17 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </div>
 </div>
 
+<!-- Modal Confirm propio -->
+<div id="confirm">
+  <div class="box">
+    <div id="confirmMsg" style="margin-bottom:10px">Confirmar?</div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn" id="confirmNo">Cancelar</button>
+      <button class="btn danger" id="confirmYes">Confirmar</button>
+    </div>
+  </div>
+</div>
+
 <footer>Version <span id="appVersion">¡ª</span></footer>
 
 <script>
@@ -330,6 +345,8 @@ function today(){return new Date().toISOString().slice(0,10)}
 function fmtDM(s){var a=s.split('-');return a[2]+'/'+a[1]}
 function isDayAfter(a,b){if(!a||!b)return false;var d=new Date(a),e=new Date(b);var n=new Date(d.getTime()+86400000);return n.toISOString().slice(0,10)===e.toISOString().slice(0,10)}
 function inLic(p,f){var L=p.obs.licencia;return L&&L.desde&&L.hasta&&(f>=L.desde&&f<=L.hasta)}
+/* confirm propio */
+function ask(msg){return new Promise(res=>{const box=$qs(null,'#confirm');$qs(null,'#confirmMsg').textContent=msg;box.style.display='flex';const yes=$qs(null,'#confirmYes'),no=$qs(null,'#confirmNo');function done(v){box.style.display='none';yes.onclick=no.onclick=null;res(v)};yes.onclick=()=>done(true);no.onclick=()=>done(false)})}
 
 /* ===== Modelo ===== */
 const KEY='recargapp.v1';
@@ -340,7 +357,13 @@ function save(){localStorage.setItem(KEY,JSON.stringify(db))}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){return null}}
 
 let db=load()||{personas:[],historial:[],cambios:[],generalHead:0};
-if(db.personas){var base=Date.now();db.personas.forEach((p,i)=>{if(p.rorder==null)p.rorder=(typeof p.order==='number')?p.order:(base+i);if(typeof p.debeLista!=='number')p.debeLista=0;if(!p.obs)p.obs={art:null,licencia:{desde:null,hasta:null},autorizado:false}})}
+if(!db.personas||!db.personas.length){ // seed garantizado
+  const base=Date.now();
+  const N=['Julio Angulo','Leandro Ordonez','Mariano Lezcano','Medina Diego','Jorge Tobar','Ortigoza Joaquin','Quirico Andres','Cheche Tobias','Moore Mariano','Mareco','Oliva Enzo','Mansilla David','Maidana Marcos'];
+  db.personas=N.map((n,i)=>({id:uid(),nombre:n,dni:'',legajo:'',jerarquia:'- vacio -',antiguedad:0,obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:base+i,rorder:base+i,debeLista:0,salteado:false}));
+  save();
+}
+db.personas.forEach((p,i)=>{if(p.rorder==null)p.rorder=p.order||Date.now()+i;if(typeof p.debeLista!=='number')p.debeLista=0;if(!p.obs)p.obs={art:null,licencia:{desde:null,hasta:null},autorizado:false}})
 
 let prioridadHoy={}; // {id:'ART13'|'ART26'|'ART04'}
 let role='viewer';
@@ -361,11 +384,13 @@ btnToggleAdmin.onclick=function(){
   var code=prompt('Ingresar PIN');
   if(code===ADMIN_PIN){role='admin';lockState.textContent='ADMIN';btnToggleAdmin.textContent='Salir';btnCambiarPinAdmin.style.display='none';applyRoleVisibility()}
   else if(code===SUPERADMIN_PIN){role='superadmin';lockState.textContent='SUPERADMIN';btnToggleAdmin.textContent='Salir';btnCambiarPinAdmin.style.display='inline-block';applyRoleVisibility()}
-  else if(code!==null){alert('PIN incorrecto')}
+  else if(code!==null){showBanner('PIN incorrecto')}
 }
-btnCambiarPinAdmin.onclick=function(){
-  if(!isSuper())return;var np=prompt('Nueva contrasena ADMIN (4-8 digitos):');if(np==null)return;
-  if(!/^\d{4,8}$/.test(np.trim()))return alert('Debe ser 4-8 digitos');setAdminPin(np.trim());showBanner('PIN ADMIN actualizado')
+btnCambiarPinAdmin.onclick=async function(){
+  if(!isSuper())return;
+  var np=prompt('Nueva contrasena ADMIN (4-8 digitos):'); if(np==null)return;
+  if(!/^\d{4,8}$/.test(np.trim()))return showBanner('Debe ser 4-8 digitos');
+  setAdminPin(np.trim()); showBanner('PIN ADMIN actualizado');
 }
 
 /* ===== Tabs ===== */
@@ -383,24 +408,25 @@ const undoStack=[];
 function pushUndo(obj){undoStack.push(JSON.parse(JSON.stringify(obj)))}
 function popUndo(){return undoStack.length?undoStack.pop():null}
 
-/* ===== General ===== */
+/* ===== Helpers personas ===== */
 function getById(id){return db.personas.find(p=>p.id===id)||null}
 function generalList(){return [].concat(db.personas).sort((a,b)=>a.order-b.order)}
 function elegibles(){return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.rorder||0))}
 
+/* ===== General ===== */
 const nombreEl=$qs(null,'#nombre'),dniEl=$qs(null,'#dni'),legajoEl=$qs(null,'#legajo'),jerarquiaEl=$qs(null,'#jerarquia'),antigEl=$qs(null,'#antiguedad')
 let snapshotOrden=null, editGeneral=false
 
 $qs(null,'#btnAgregar').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
-  if(!nombreEl.value.trim())return alert('Nombre requerido')
+  if(!isAdmin())return showBanner('Solo Admin');
+  if(!nombreEl.value.trim())return showBanner('Nombre requerido');
   const p={id:uid(),nombre:nombreEl.value.trim(),dni:dniEl.value.trim(),legajo:legajoEl.value.trim(),jerarquia:jerarquiaEl.value,antiguedad:parseInt(antigEl.value||'0',10),obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:Date.now(),rorder:Date.now(),debeLista:0,salteado:false}
   pushUndo({type:'general',personas:db.personas})
   db.personas.push(p); db.cambios.push({t:Date.now(),tipo:'agregar',nombre:p.nombre})
   save(); nombreEl.value='';dniEl.value='';legajoEl.value='';antigEl.value=''; renderGeneral(); renderHoy()
 }
 $qs(null,'#btnOrdenarCriterios').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
+  if(!isAdmin())return showBanner('Solo Admin');
   snapshotOrden=db.personas.map(p=>p.id)
   const rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1ro (CG)':3,'AYTE 2do (CG)':4,'AYTE 3ro (CG)':5,'AYTE 4to (CG)':6,'AYTE 5to (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9}
   pushUndo({type:'general',personas:db.personas})
@@ -410,22 +436,22 @@ $qs(null,'#btnOrdenarCriterios').onclick=function(){
   save(); renderGeneral(); renderHoy()
 }
 $qs(null,'#btnDeshacerOrden').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
-  if(!snapshotOrden)return alert('No hay orden anterior')
+  if(!isAdmin())return showBanner('Solo Admin');
+  if(!snapshotOrden)return showBanner('No hay orden anterior');
   pushUndo({type:'general',personas:db.personas})
   const base=Date.now(); snapshotOrden.forEach((id,i)=>{const p=getById(id); if(p)p.order=base+i})
   db.cambios.push({t:Date.now(),tipo:'deshacer-orden'})
   save(); renderGeneral(); renderHoy()
 }
 $qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
+  if(!isAdmin())return showBanner('Solo Admin');
   editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent=editGeneral?'Guardar':'Editar'; renderGeneral()
 }
-window.setField=function(id,key,val){ if(!isAdmin())return alert('Solo Admin'); const p=getById(id); if(!p)return; pushUndo({type:'general',personas:db.personas}); p[key]=val; save(); }
-function eliminar(id){
-  if(!isAdmin())return alert('Solo Admin')
+window.setField=function(id,key,val){ if(!isAdmin())return showBanner('Solo Admin'); const p=getById(id); if(!p)return; pushUndo({type:'general',personas:db.personas}); p[key]=val; save(); }
+async function eliminar(id){
+  if(!isAdmin())return showBanner('Solo Admin');
   const p=getById(id); if(!p)return;
-  if(!confirm('Eliminar a '+p.nombre+' del listado?'))return;
+  if(!(await ask('Eliminar a '+p.nombre+' del listado?')))return;
   pushUndo({type:'general',personas:db.personas})
   db.personas=db.personas.filter(x=>x.id!==id);
   db.cambios.push({t:Date.now(),tipo:'eliminar',nombre:p.nombre})
@@ -479,13 +505,13 @@ const fechaEl=$qs(null,'#fecha'); const faltEl=$qs(null,'#faltantes'); fechaEl.v
 function setTitulo(){ $qs(null,'#tituloDia').textContent='RECARGOS '+fmtDM(fechaEl.value) }
 setTitulo(); fechaEl.onchange=setTitulo
 
-$qs(null,'#btnReiniciar').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
-  if(!confirm('Reiniciar rotacion tomando el orden general?'))return
+$qs(null,'#btnReiniciar').onclick=async function(){
+  if(!isAdmin())return showBanner('Solo Admin');
+  if(!(await ask('Reiniciar rotacion y limpiar estados?')))return
   const ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); const base=Date.now()
   pushUndo({type:'general',personas:db.personas})
-  ordered.forEach((p,i)=>p.rorder=base+i)
-  prioridadHoy={}; db.generalHead=0; save(); renderHoy()
+  ordered.forEach((p,i)=>{p.rorder=base+i;p.obs.art=null;p.obs.autorizado=false;p.salteado=false;p.obs.licencia={desde:null,hasta:null};p.debeLista=0})
+  prioridadHoy={}; db.generalHead=0; save(); renderHoy(); showBanner('Lista reiniciada')
 }
 $qs(null,'#btnActualizar').onclick=()=>renderHoy()
 
@@ -510,7 +536,7 @@ function estadoPills(p,fecha){
 function attachEstadoHandlers(tb){
   tb.onclick=function(ev){
     const el=ev.target.closest('[data-act]'); if(!el)return
-    if(!isAdmin())return alert('Solo Admin')
+    if(!isAdmin())return showBanner('Solo Admin');
     pushUndo({type:'prioridad',prioridad:prioridadHoy})
     const id=el.dataset.id, act=el.dataset.act
     if(act==='toggle-art'){
@@ -601,12 +627,12 @@ $qs(null,'#btnCopiarListado').onclick=function(){
     if(saltar) lines.push('- '+p.nombre+' '+tags.join(' '))
     else lines.push((++n)+') '+p.nombre+' '+tags.join(' '))
   })
-  copyText(lines.join('\n'))
+  navigator.clipboard?.writeText(lines.join('\n')).then(()=>showBanner('Copiado')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()})
 }
 
 /* Extra modal */
 const mExtra=$qs(null,'#modalExtra')
-$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return alert('Solo Admin');mExtra.style.display='flex'}
+$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return showBanner('Solo Admin');mExtra.style.display='flex'}
 $qs(null,'#extraCancel').onclick=()=>mExtra.style.display='none'
 $qs(null,'#extraOk').onclick=function(){
   if(!isAdmin())return
@@ -620,10 +646,10 @@ $qs(null,'#extraOk').onclick=function(){
   tbody.insertBefore(tr,tbody.firstChild); mExtra.style.display='none'
 }
 
-/* Modal Acciones (edicion de persona) */
+/* Modal Acciones */
 const mAcc=$qs(null,'#modalAcc'); let accId=null
 function openAcc(id){
-  if(!isAdmin())return alert('Solo Admin')
+  if(!isAdmin())return showBanner('Solo Admin')
   accId=id; const p=getById(id); if(!p)return
   $qs(null,'#accNombre').textContent=p.nombre
   $qs(null,'#accLicD').value=(p.obs.licencia&&p.obs.licencia.desde)||''
@@ -636,14 +662,14 @@ $qs(null,'#accArt13').onclick=function(){ if(!isAdmin()||!accId)return; const p=
 $qs(null,'#accArt26').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='26'; save(); renderHoy() }
 $qs(null,'#accArtClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art=null; save(); renderHoy() }
 $qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); prioridadHoy[accId]=(prioridadHoy[accId]==='ART04')?undefined:'ART04'; renderHoy() }
-$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return alert('Completar fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
+$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return showBanner('Completar fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
 $qs(null,'#accLicClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy() }
 $qs(null,'#accAut').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy() }
 $qs(null,'#accSalt').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.salteado=!p.salteado; save(); renderHoy() }
 
 /* Confirmar */
 $qs(null,'#btnConfirmar').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
+  if(!isAdmin())return showBanner('Solo Admin')
   const plan=getPlan()
   const idsAsig={}; plan.asignados.forEach(p=>idsAsig[p.id]=true)
   const rows=$all('#tablaDia tbody tr[data-id]')
@@ -657,7 +683,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   const pasivos=plan.pasivos
   const fecha=fechaEl.value
   const falt=Math.max(0,parseInt(faltEl.value||'0',10))
-  const glist=generalList(); if(!glist.length){alert('No hay personal');return}
+  const glist=generalList(); if(!glist.length){showBanner('No hay personal');return}
   if(db.generalHead>=glist.length)db.generalHead=0
   pushUndo({type:'afterConfirm',personas:db.personas,generalHead:db.generalHead})
 
@@ -693,13 +719,12 @@ $qs(null,'#btnConfirmar').onclick=function(){
     if((per.debeLista||0)>0)tags.push('(debe '+per.debeLista+')')
     if(!saltar&&c<falt){
       const tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]')
-      const sel=tr?tr.querySelector('select'):null; const pab=sel?sel.value:''
-      const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
+      const sel=tr?tr.querySelector('select'):null; const pab=sel?sel.value:''; const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
       layout.push({id:p.id,nombre:p.nombre,counted:true,n:c+1,pabellon:pab,obsRecargo:ob,tags:tags}); c++
     }else if(saltar){ layout.push({id:p.id,nombre:p.nombre,counted:false,tags:tags}) }
   })
   db.historial.push({fecha:fmtDM(fecha),recargos:recargos,pasivos:pasivos.map(x=>({id:x.id,nombre:x.nombre})),llamados:[],layout:layout})
-  save(); prioridadHoy={}; renderHistorial(); renderHoy(); alert('Guardia guardada')
+  save(); prioridadHoy={}; renderHistorial(); renderHoy(); showBanner('Guardia guardada')
 }
 
 /* Deshacer */
@@ -741,7 +766,7 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
     const tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]'); const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
     lines.push((i+1)+') '+p.nombre+(ob?(' ('+ob+')'):''))
   })
-  (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Copiado')):(()=>{var w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()}))()
+  navigator.clipboard?.writeText(lines.join('\n')).then(()=>showBanner('Copiado')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()})
 }
 
 /* Historial */
@@ -771,16 +796,16 @@ function renderHistorial(){
   tb.onclick=function(e){
     const t=e.target
     if(t.dataset.toggle){const row=$qs(null,'#'+t.dataset.toggle); if(row)row.style.display=(row.style.display==='none')?'table-row':'none'}
-    if(t.dataset.del){ if(!isSuper())return alert('Solo Superadmin'); const i=parseInt(t.dataset.del,10); if(confirm('Borrar registro?')){db.historial.splice(i,1); save(); renderHistorial()} }
+    if(t.dataset.del){ if(!isSuper())return showBanner('Solo Superadmin'); const i=parseInt(t.dataset.del,10); ask('Borrar registro?').then(ok=>{if(!ok)return; db.historial.splice(i,1); save(); renderHistorial()}) }
     if(t.dataset.copy){
       const i=parseInt(t.dataset.copy,10); const h=db.historial[i]; const lines=['RECARGOS '+h.fecha,'']; let c=0
       (h.layout||[]).forEach(x=>{ if(x.counted){const pab=x.pabellon?('  '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):''; const obs=x.obsRecargo?(' ('+x.obsRecargo+')'):''; lines.push((++c)+') '+x.nombre+tags+obs+pab)} else lines.push('- '+x.nombre) })
       lines.push('','Pasivos',''); (h.pasivos||[]).forEach((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre); lines.push((i+1)+') '+nombre) })
-      (navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(lines.join('\n')).then(()=>alert('Copiado')):(()=>{var w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()}))()
+      navigator.clipboard?.writeText(lines.join('\n')).then(()=>showBanner('Copiado')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()})
     }
   }
 
-  // Cambios (no desplegable)
+  // Cambios
   const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML=''
   for(let i=db.cambios.length-1;i>=0;i--){
     const c=db.cambios[i]
@@ -794,14 +819,14 @@ function renderHistorial(){
     tr.innerHTML="<td>"+desc+"</td><td><button class='btn danger only-super' data-delc='"+i+"'>Borrar</button></td>"
     tc.appendChild(tr)
   }
-  tc.onclick=function(e){const t=e.target; if(t.dataset.delc){ if(!isSuper())return alert('Solo Superadmin'); const i=parseInt(t.dataset.delc,10); if(confirm('Borrar item?')){db.cambios.splice(i,1); save(); renderHistorial()} }}
+  tc.onclick=function(e){const t=e.target; if(t.dataset.delc){ if(!isSuper())return showBanner('Solo Superadmin'); const i=parseInt(t.dataset.delc,10); ask('Borrar item?').then(ok=>{if(!ok)return; db.cambios.splice(i,1); save(); renderHistorial()}) }}
 
   applyRoleVisibility()
 }
 
 $qs(null,'#btnGuardarLlamados').onclick=function(){
-  if(!isAdmin())return alert('Solo Admin')
-  if(!db.historial.length)return
+  if(!isAdmin())return showBanner('Solo Admin');
+  if(!db.historial.length)return;
   const idx=db.historial.length-1; const h=db.historial[idx]
   const checks=$all("input[type='checkbox'][data-h='"+idx+"']"); h.llamados=checks.filter(c=>c.checked).map(c=>c.dataset.id)
   save(); renderHistorial(); showBanner('Llamados guardados')
@@ -809,21 +834,19 @@ $qs(null,'#btnGuardarLlamados').onclick=function(){
 
 /* Export / Import */
 $qs(null,'#btnExportar').onclick=function(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='recargapp_db.json';a.click();URL.revokeObjectURL(url)}
-$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return alert('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){alert('Archivo invalido')}};fr.readAsText(f)};inp.click()}
+$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return showBanner('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){showBanner('Archivo invalido')}};fr.readAsText(f)};inp.click()}
 
-/* Seed + Render */
-(function(){if(db.personas&&db.personas.length)return;const base=Date.now();const N=['Julio Angulo','Leandro Ordonez','Mariano Lezcano','Medina Diego','Jorge Tobar','Ortigoza Joaquin','Quirico Andres','Cheche Tobias','Moore Mariano','Mareco','Oliva Enzo','Mansilla David','Maidana Marcos'];db.personas=N.map((n,i)=>({id:uid(),nombre:n,dni:'',legajo:'',jerarquia:'- vacio -',antiguedad:0,obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:base+i,rorder:base+i,debeLista:0,salteado:false}));save()})()
+/* Render inicial */
 function renderAll(){renderGeneral();renderHoy();renderHistorial();applyRoleVisibility()}
 renderAll()
 
-/* Drawer "Mas" */
+/* Drawer */
 const drawer=$qs(null,'#drawer'), fab=$qs(null,'#fabMore')
 fab.onclick=function(){drawer.style.display='block'; loadReleaseNotes()}
 $qs(null,'#closeDrawer').onclick=()=>drawer.style.display='none'
 $qs(null,'#drawer .back').onclick=()=>drawer.style.display='none'
 
 async function loadReleaseNotes(){
-  // Mostrar version en header del drawer
   const vtxt=$qs(null,'#appVersion').textContent.trim()
   $qs(null,'#drawerVersion').textContent=vtxt?('('+vtxt+')'):''
   const box=$qs(null,'#releaseNotes')
@@ -831,10 +854,8 @@ async function loadReleaseNotes(){
     const res=await fetch('/RecargApp/release-notes.json?t='+(+new Date()),{cache:'no-store'})
     if(!res.ok) throw 0
     const data=await res.json()
-    // data puede ser {notes:[...]} o un array directamente
     const notes=Array.isArray(data)?data:(Array.isArray(data.notes)?data.notes:[])
     if(!notes.length){box.textContent='No hay notas disponibles.';return}
-    // Ordenar por version o fecha descendente si vienen varias
     const html=notes.map(n=>{
       if(typeof n==='string') return '<li>'+n+'</li>'
       const head=(n.version?('V'+n.version+' - '):'')+(n.date||'')
@@ -846,7 +867,7 @@ async function loadReleaseNotes(){
   }catch(e){ box.textContent='No pude leer /RecargApp/release-notes.json' }
 }
 
-/* PWA, updates y version */
+/* PWA updates + version */
 (function(){
   let userAccepted=false
   if('serviceWorker' in navigator){
@@ -854,12 +875,11 @@ async function loadReleaseNotes(){
     navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(userAccepted) location.reload() })
     navigator.serviceWorker.getRegistration().then(reg=>{
       if(!reg)return
-      function ask(){ if(confirm('Hay una actualizacion disponible. Instalar ahora?')){ userAccepted=true; reg.waiting&&reg.waiting.postMessage({type:'SKIP_WAITING'}) } }
-      if(reg.waiting) ask()
-      reg.addEventListener('updatefound',()=>{const nw=reg.installing; if(!nw)return; nw.addEventListener('statechange',()=>{ if(nw.state==='installed' && navigator.serviceWorker.controller) ask() }) })
-      // Boton buscar actualizaciones
+      function askUp(){ ask('Hay una actualizacion disponible. Instalar ahora?').then(ok=>{ if(ok){ userAccepted=true; reg.waiting&&reg.waiting.postMessage({type:'SKIP_WAITING'}) } }) }
+      if(reg.waiting) askUp()
+      reg.addEventListener('updatefound',()=>{const nw=reg.installing; if(!nw)return; nw.addEventListener('statechange',()=>{ if(nw.state==='installed' && navigator.serviceWorker.controller) askUp() }) })
       const btn=$qs(null,'#btnCheckUpdate'), msg=$qs(null,'#updMsg')
-      if(btn){ btn.onclick=async()=>{ msg.textContent='Buscando...'; try{ await reg.update(); setTimeout(async()=>{const r=await navigator.serviceWorker.getRegistration(); if(r&&r.waiting){ msg.textContent='Actualizacion lista'; if(confirm('Instalar ahora?')){userAccepted=true; r.waiting.postMessage({type:'SKIP_WAITING'})}} else { msg.textContent='Estas actualizado' }},300)}catch(_){ msg.textContent='No se pudo verificar' } } }
+      if(btn){ btn.onclick=async()=>{ msg.textContent='Buscando...'; try{ await reg.update(); setTimeout(async()=>{const r=await navigator.serviceWorker.getRegistration(); if(r&&r.waiting){ msg.textContent='Actualizacion lista'; ask('Instalar ahora?').then(ok=>{ if(ok){userAccepted=true; r.waiting.postMessage({type:'SKIP_WAITING'})} else {msg.textContent='Pendiente'} })} else { msg.textContent='Estas actualizado' }},300)}catch(_){ msg.textContent='No se pudo verificar' } } }
     })
   }
   // install prompt propio
@@ -867,7 +887,7 @@ async function loadReleaseNotes(){
   window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'})
   if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
 
-  // Version visible (desde manifest)
+  // Version desde manifest
   ;(async function(){
     const el=$qs(null,'#appVersion'); if(!el)return
     try{
