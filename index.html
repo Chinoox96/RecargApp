@@ -916,6 +916,101 @@ async function loadReleaseNotes(){
     }catch(_){ el.textContent='V?' }
   })()
 })()
+
+// ===== Registro del SW y ciclo de actualizaci車n controlado por el usuario =====
+(function pwaSetup(){
+  if (!('serviceWorker' in navigator)) return;
+
+  // 1) Registrar
+  navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
+    .catch(err => console.error('SW fail', err));
+
+  // 2) Recargar cuando se active un SW nuevo (despu谷s de tu confirmaci車n)
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (reloading) return;
+    reloading = true;
+    location.reload();
+  });
+
+  // 3) Funci車n para preguntar y aplicar update
+  function askToUpdate(reg) {
+    // Simple confirm 〞 sin ventanas raras
+    if (confirm('Hay una actualizaci車n de RecargApp disponible. ?Instalar ahora?')) {
+      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
+    }
+  }
+
+  // 4) Detectar nuevas versiones y preguntar
+  navigator.serviceWorker.getRegistration('/RecargApp/').then((reg) => {
+    if (!reg) return;
+
+    // Si ya hay un worker en "waiting", preguntar ya
+    if (reg.waiting) {
+      askToUpdate(reg);
+    }
+
+    // Cuando se encuentre una nueva versi車n
+    reg.addEventListener('updatefound', () => {
+      const sw = reg.installing;
+      if (!sw) return;
+      sw.addEventListener('statechange', () => {
+        // Llega a "installed" y YA hay controller ↙ significa que es una actualizaci車n
+        if (sw.state === 'installed' && navigator.serviceWorker.controller) {
+          // NO instalamos solos: pedimos confirmaci車n
+          askToUpdate(reg);
+        }
+      });
+    });
+
+    // 5) Cablear el bot車n "Buscar actualizaciones" (si existe en tu DOM)
+    const btnCheck = document.getElementById('btnCheckUpdate');
+    if (btnCheck) {
+      btnCheck.addEventListener('click', async () => {
+        try {
+          await reg.update(); // fuerza a chequear en red
+          // Si tras update hay waiting ↙ preguntar
+          if (reg.waiting) {
+            askToUpdate(reg);
+          } else if (reg.installing) {
+            // Si est芍 instalando, esperamos el installed
+            reg.installing.addEventListener('statechange', () => {
+              if (reg.installing?.state === 'installed' && navigator.serviceWorker.controller) {
+                askToUpdate(reg);
+              }
+            });
+            alert('Buscando actualizaci車n＃');
+          } else {
+            alert('Est芍s actualizado.');
+          }
+        } catch (e) {
+          alert('No se pudo verificar. Reintent芍 en un momento.');
+          console.error(e);
+        }
+      });
+    }
+  });
+
+  // 6) Bot車n de instalar (si us芍s uno)
+  let deferredPrompt = null;
+  const btnInstall = document.getElementById('btnInstall');
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (btnInstall) btnInstall.style.display = 'inline-block';
+  });
+  if (btnInstall) {
+    btnInstall.addEventListener('click', async () => {
+      if (!deferredPrompt) return;
+      await deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      btnInstall.style.display = 'none';
+    });
+  }
+})();
+</script>
+
 </script>
 </body>
 </html>
