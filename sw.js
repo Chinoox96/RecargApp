@@ -2,7 +2,7 @@
 // Sube este archivo a: /RecargApp/sw.js
 
 // 1) Cambiá este número en cada release para invalidar el cache
-const CACHE_VERSION = 'recargapp-v1.5.5';
+const CACHE_VERSION = 'recargapp-v1.5.6';
 
 // 2) Prefijo de rutas en GitHub Pages (tu repo)
 const SCOPE_PREFIX = '/RecargApp';
@@ -100,4 +100,25 @@ self.addEventListener('fetch', (event) => {
       }
     })()
   );
+});
+// Dentro de sw.js (mantené lo que ya tienes). Solo agrega este bloque en el listener 'message':
+self.addEventListener('message', (event) => {
+  if (!event.data) return;
+
+  if (event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+
+  // NUEVO: reportar la versión activa del SW
+  if (event.data.type === 'GET_VERSION') {
+    try {
+      event.ports[0] && event.ports[0].postMessage({
+        type: 'VERSION',
+        cacheVersion: (typeof CACHE_VERSION !== 'undefined') ? CACHE_VERSION : 'unknown',
+        phase: self.registration.waiting ? 'waiting'
+             : self.registration.installing ? 'installing'
+             : 'active'
+      });
+    } catch (_) {}
+  }
 });

@@ -60,7 +60,7 @@ th{color:var(--accent)}
 .pill.info{background:#0b1223;color:#cbd5e1;border-color:#334155}
 .clickable{cursor:pointer}
 
-/* Drawer (M芍s) */
+/* Drawer (Mas) */
 #fabMore{position:fixed;right:14px;bottom:14px;z-index:40}
 #drawer{position:fixed;inset:0;display:none;z-index:50}
 #drawer .back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
@@ -141,7 +141,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <span class="pill err">LICENCIA</span> se muestran pero no numeran. Con <b>Presente</b> (13/26/04) suben y cuentan. (debe X) se ve en la fila.
     </div>
 
-    <!-- PASIVOS -->
+    <!-- PASIVOS (debajo) -->
     <div class="section" style="margin-top:12px">
       <h2>PASIVOS</h2>
       <div class="row">
@@ -235,7 +235,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       </div>
     </div>
 
-    <!-- Cambios (una linea) -->
+    <!-- Cambios (una linea por item) -->
     <div id="histCambios" class="section" style="display:none;padding:10px">
       <div class="tableWrap">
         <table id="tablaCambios">
@@ -247,8 +247,8 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </section>
 </main>
 
-<!-- Bot車n / Drawer ※M芍s§ -->
-<button class="btn" id="fabMore" title="Mas">? Mas</button>
+<!-- Boton / Drawer "Mas" -->
+<button class="btn" id="fabMore" title="Mas">... Mas</button>
 <div id="drawer">
   <div class="back"></div>
   <div class="panel">
@@ -259,7 +259,9 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
     </div>
 
     <div class="row" style="gap:8px;margin:10px 0">
-      <button class="btn" id="btnCheckUpdate">Buscar actualizaciones</button>
+      <!-- ojo: ID corregido a btnCheckUpdates para coincidir con JS -->
+      <button class="btn" id="btnCheckUpdates">Buscar actualizaciones</button>
+      <button class="btn" id="btnApplyUpdate">Actualizar ahora</button>
       <span id="updMsg" class="muted"></span>
     </div>
 
@@ -333,7 +335,12 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </div>
 </div>
 
-<footer>Version <span id="appVersion">〞</span></footer>
+<footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
+  Version instalada: <span id="appVersion">〞</span>
+  <span id="appVersionAvailWrap" style="display:none">
+    &nbsp;﹞&nbsp; Disponible: <span id="appVersionAvail"></span>
+  </span>
+</footer>
 
 <script>
 /* ===== util ===== */
@@ -357,7 +364,7 @@ function save(){localStorage.setItem(KEY,JSON.stringify(db))}
 function load(){try{return JSON.parse(localStorage.getItem(KEY)||'null')}catch(_){return null}}
 
 let db=load()||{personas:[],historial:[],cambios:[],generalHead:0};
-if(!db.personas||!db.personas.length){ // seed garantizado
+if(!db.personas||!db.personas.length){
   const base=Date.now();
   const N=['Julio Angulo','Leandro Ordonez','Mariano Lezcano','Medina Diego','Jorge Tobar','Ortigoza Joaquin','Quirico Andres','Cheche Tobias','Moore Mariano','Mareco','Oliva Enzo','Mansilla David','Maidana Marcos'];
   db.personas=N.map((n,i)=>({id:uid(),nombre:n,dni:'',legajo:'',jerarquia:'- vacio -',antiguedad:0,obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:base+i,rorder:base+i,debeLista:0,salteado:false}));
@@ -539,7 +546,7 @@ function attachEstadoHandlers(tb){
     if(!el) return;
     if(!isAdmin()) return showBanner('Solo Admin');
 
-    // Para Undo
+    // Undo
     pushUndo({ type:'prioridad', prioridad: prioridadHoy });
 
     const id  = el.dataset.id;
@@ -547,14 +554,12 @@ function attachEstadoHandlers(tb){
 
     if (act === 'toggle-art') {
       const k = (el.dataset.tipo === '13' ? 'ART13' : 'ART26');
-      // >>> FIX: cuando se apaga, borrar la clave <<<
       if (prioridadHoy[id] === k) {
         delete prioridadHoy[id];
       } else {
         prioridadHoy[id] = k;
       }
     } else if (act === 'toggle-lic') {
-      // >>> FIX: idem para 04 <<<
       if (prioridadHoy[id] === 'ART04') {
         delete prioridadHoy[id];
       } else {
@@ -565,7 +570,6 @@ function attachEstadoHandlers(tb){
     renderHoy();
   };
 }
-
 
 function getPlan(){
   const falt=Math.max(0,parseInt(faltEl.value||'0',10))
@@ -588,8 +592,8 @@ function getPlan(){
 function renderHoy(){
   setTitulo()
   const fecha=fechaEl.value
-  // activar 04 el dia siguiente de fin de licencia
-  db.personas.forEach(p=>{ if(p&&p.obs&&p.obs.licencia&&isDayAfter(p.obs.licencia.hasta,fecha)){ if(!prioridadHoy[p.id])prioridadHoy[p.id]='ART04' }})
+  // activar 04 el dia siguiente de fin de licencia (solo si corresponde)
+  db.personas.forEach(p=>{ if(p&&p.obs&&p.obs.licencia&&isDayAfter(p.obs.licencia.hasta,fecha)){ if(!prioridadHoy[p.id])prioridadHoy[p.id]='ART04' } })
   const prev={}
   $all('#tablaDia tbody tr[data-id]').forEach(r=>{
     const id=r.dataset.id; const sel=r.querySelector('select'); const inp=r.querySelector('input[type="text"]')
@@ -654,7 +658,7 @@ $qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return showBanner('Solo 
 $qs(null,'#extraCancel').onclick=()=>mExtra.style.display='none'
 $qs(null,'#extraOk').onclick=function(){
   if(!isAdmin())return
-  const nombre=($qs(null,'#extraNombre').value||'Extra').trim()
+  const nombre=($qs(null,'#extraNombre').value||'').trim()||'Extra'
   const jer=$qs(null,'#extraJerarquia').value||'- vacio -'
   const pab=$qs(null,'#extraPab').value||''
   const obs=$qs(null,'#extraObs').value||''
@@ -679,7 +683,7 @@ $qs(null,'#accClose').onclick=()=>{mAcc.style.display='none';accId=null}
 $qs(null,'#accArt13').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='13'; save(); renderHoy() }
 $qs(null,'#accArt26').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='26'; save(); renderHoy() }
 $qs(null,'#accArtClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art=null; save(); renderHoy() }
-$qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); prioridadHoy[accId]=(prioridadHoy[accId]==='ART04')?undefined:'ART04'; renderHoy() }
+$qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); if(prioridadHoy[accId]==='ART04'){delete prioridadHoy[accId]} else {prioridadHoy[accId]='ART04'}; renderHoy() }
 $qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return showBanner('Completar fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
 $qs(null,'#accLicClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy() }
 $qs(null,'#accAut').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy() }
@@ -725,7 +729,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   const tail=Date.now()+100000; let k=0; db.personas.forEach(p=>{if(p.salteado)p.rorder=tail+(++k)})
   db.personas.forEach(p=>{p.obs.autorizado=false; p.salteado=false})
 
-  // layout
+  // layout (para copiar despues)
   let c=0; const layout=[]
   plan.mostrados.forEach(item=>{
     const p=item.p, saltar=item.saltar; const prio=prioridadHoy[p.id]; const per=getById(p.id)||{}
@@ -803,8 +807,7 @@ function renderHistorial(){
     tb.appendChild(tr)
     const det=document.createElement('tr'); det.id=vid; det.style.display='none'
     const htmlRec=(h.layout||[]).map(x=>{
-      if(x.counted){const pab=x.pabellon?(' - Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-        const obs=x.obsRecargo?(' - Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
+      if(x.counted){const pab=x.pabellon?(' - Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):''; const obs=x.obsRecargo?(' - Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
       else{return '<li>- '+x.nombre+'</li>'}
     }).join('')
     const htmlPas=(h.pasivos||[]).map((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre);const chk=(h.llamados||[]).indexOf(x.id)>=0?'checked':'';const dis=(idx===db.historial.length-1&&isAdmin())?'':'disabled';return '<li><label><input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+dis+' '+chk+'> '+(i+1)+') '+nombre+'</label></li>'}).join('')||'<li>-</li>'
@@ -823,7 +826,7 @@ function renderHistorial(){
     }
   }
 
-  // Cambios
+  // Cambios (no desplegable)
   const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML=''
   for(let i=db.cambios.length-1;i>=0;i--){
     const c=db.cambios[i]
@@ -858,7 +861,7 @@ $qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return showBanner('Sol
 function renderAll(){renderGeneral();renderHoy();renderHistorial();applyRoleVisibility()}
 renderAll()
 
-/* Drawer */
+/* Drawer "Mas" y notas */
 const drawer=$qs(null,'#drawer'), fab=$qs(null,'#fabMore')
 fab.onclick=function(){drawer.style.display='block'; loadReleaseNotes()}
 $qs(null,'#closeDrawer').onclick=()=>drawer.style.display='none'
@@ -885,132 +888,114 @@ async function loadReleaseNotes(){
   }catch(e){ box.textContent='No pude leer /RecargApp/release-notes.json' }
 }
 
-/* PWA updates + version */
-(function(){
-  let userAccepted=false
-  if('serviceWorker' in navigator){
-    navigator.serviceWorker.register('/RecargApp/sw.js',{scope:'/RecargApp/'}).catch(()=>{})
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(userAccepted) location.reload() })
-    navigator.serviceWorker.getRegistration().then(reg=>{
-      if(!reg)return
-      function askUp(){ ask('Hay una actualizacion disponible. Instalar ahora?').then(ok=>{ if(ok){ userAccepted=true; reg.waiting&&reg.waiting.postMessage({type:'SKIP_WAITING'}) } }) }
-      if(reg.waiting) askUp()
-      reg.addEventListener('updatefound',()=>{const nw=reg.installing; if(!nw)return; nw.addEventListener('statechange',()=>{ if(nw.state==='installed' && navigator.serviceWorker.controller) askUp() }) })
-      const btn=$qs(null,'#btnCheckUpdate'), msg=$qs(null,'#updMsg')
-      if(btn){ btn.onclick=async()=>{ msg.textContent='Buscando...'; try{ await reg.update(); setTimeout(async()=>{const r=await navigator.serviceWorker.getRegistration(); if(r&&r.waiting){ msg.textContent='Actualizacion lista'; ask('Instalar ahora?').then(ok=>{ if(ok){userAccepted=true; r.waiting.postMessage({type:'SKIP_WAITING'})} else {msg.textContent='Pendiente'} })} else { msg.textContent='Estas actualizado' }},300)}catch(_){ msg.textContent='No se pudo verificar' } } }
-    })
-  }
-  // install prompt propio
-  let deferred=null; const btnI=$qs(null,'#btnInstall')
-  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'})
-  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
-
-  // Version desde manifest
-  ;(async function(){
-    const el=$qs(null,'#appVersion'); if(!el)return
-    try{
-      const res=await fetch('/RecargApp/manifest.json?t='+(+new Date()),{cache:'no-store'})
-      const m=await res.json()
-      const v=m.version?('V'+m.version):((m.name&&(m.name.match(/V\d+(\.\d+)*/i)||[])[0])||'')
-      el.textContent=v||'V?'
-    }catch(_){ el.textContent='V?' }
-  })()
-})()
-
-// ===== Registro del SW y ciclo de actualizaci車n controlado por el usuario =====
-(function pwaSetup(){
+/* ===== PWA / Version visible ===== */
+(async function wireUpdatesUI(){
   if (!('serviceWorker' in navigator)) return;
+  const reg = await navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' }).catch(()=>null);
+  if(!reg) return;
 
-  // 1) Registrar
-  navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' })
-    .catch(err => console.error('SW fail', err));
+  // Version instalada (desde SW si responde, si no, desde manifest)
+  async function getInstalledSwVersion() {
+    if (!navigator.serviceWorker.controller) return null;
+    return new Promise((resolve) => {
+      const ch = new MessageChannel();
+      ch.port1.onmessage = (ev) => resolve(ev.data || null);
+      try { navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [ch.port2]); }
+      catch { resolve(null); }
+    });
+  }
+  async function renderInstalledVersion() {
+    const el = document.getElementById('appVersion');
+    if (!el) return;
+    const info = await getInstalledSwVersion();
+    if (info && info.cacheVersion) {
+      const v = String(info.cacheVersion).replace(/^.*?-v/i, 'V');
+      el.textContent = v;
+    } else {
+      try {
+        const res = await fetch('/RecargApp/manifest.json', { cache: 'no-store' });
+        const m = await res.json();
+        const v = m.version ? 'V' + m.version :
+                  (m.name && (m.name.match(/V\d+(\.\d+)*/i)?.[0] || ''));
+        el.textContent = v || '〞';
+      } catch {
+        el.textContent = '〞';
+      }
+    }
+  }
+  renderInstalledVersion();
 
-  // 2) Recargar cuando se active un SW nuevo (despu谷s de tu confirmaci車n)
-  let reloading = false;
+  // Mostrar "Disponible" sin instalar
+  async function checkForUpdateAndShow(reg) {
+    const availWrap = document.getElementById('appVersionAvailWrap');
+    const availEl   = document.getElementById('appVersionAvail');
+    if (!availWrap || !availEl) return;
+    try { await reg.update(); } catch (_) {}
+    const showAvail = async () => {
+      try {
+        const res = await fetch('/RecargApp/manifest.json', { cache: 'no-store' });
+        const m = await res.json();
+        const v = m.version ? 'V' + m.version :
+                  (m.name && (m.name.match(/V\d+(\.\d+)*/i)?.[0] || ''));
+        if (v) { availEl.textContent = v; availWrap.style.display = 'inline'; }
+      } catch {}
+    };
+    if (reg.waiting) { await showAvail(); return; }
+    const installing = reg.installing;
+    if (installing) {
+      installing.addEventListener('statechange', async () => {
+        if (installing.state === 'installed') await showAvail();
+      });
+    }
+  }
+
+  checkForUpdateAndShow(reg);
+  reg.addEventListener('updatefound', () => checkForUpdateAndShow(reg));
+
+  // Aplicar update solo con confirm
+  const btnApply = document.getElementById('btnApplyUpdate');
+  if (btnApply) {
+    btnApply.onclick = async () => {
+      const reg2 = await navigator.serviceWorker.getRegistration('/RecargApp/');
+      if (reg2 && reg2.waiting) {
+        const ok = await ask('Hay una actualizacion disponible. Instalar ahora?');
+        if (ok) reg2.waiting.postMessage({ type: 'SKIP_WAITING' });
+      } else {
+        showBanner('No hay una actualizacion esperando');
+      }
+    };
+  }
+
+  // Boton de buscar updates
+  const btn = document.getElementById('btnCheckUpdates');
+  if (btn) {
+    btn.onclick = async () => {
+      const msg = document.getElementById('updMsg');
+      if (msg) msg.textContent = 'Buscando...';
+      await checkForUpdateAndShow(reg);
+      const availWrap = document.getElementById('appVersionAvailWrap');
+      if (!availWrap || availWrap.style.display !== 'inline') {
+        if (msg) msg.textContent = 'Estas actualizado';
+        else showBanner('Estas actualizado');
+      } else {
+        if (msg) msg.textContent = 'Actualizacion disponible';
+      }
+    };
+  }
+
+  // Reload al activar
+  let refreshing=false;
   navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (reloading) return;
-    reloading = true;
-    location.reload();
+    if (refreshing) return;
+    refreshing = true;
+    window.location.reload();
   });
 
-  // 3) Funci車n para preguntar y aplicar update
-  function askToUpdate(reg) {
-    // Simple confirm 〞 sin ventanas raras
-    if (confirm('Hay una actualizaci車n de RecargApp disponible. ?Instalar ahora?')) {
-      reg.waiting?.postMessage({ type: 'SKIP_WAITING' });
-    }
-  }
-
-  // 4) Detectar nuevas versiones y preguntar
-  navigator.serviceWorker.getRegistration('/RecargApp/').then((reg) => {
-    if (!reg) return;
-
-    // Si ya hay un worker en "waiting", preguntar ya
-    if (reg.waiting) {
-      askToUpdate(reg);
-    }
-
-    // Cuando se encuentre una nueva versi車n
-    reg.addEventListener('updatefound', () => {
-      const sw = reg.installing;
-      if (!sw) return;
-      sw.addEventListener('statechange', () => {
-        // Llega a "installed" y YA hay controller ↙ significa que es una actualizaci車n
-        if (sw.state === 'installed' && navigator.serviceWorker.controller) {
-          // NO instalamos solos: pedimos confirmaci車n
-          askToUpdate(reg);
-        }
-      });
-    });
-
-    // 5) Cablear el bot車n "Buscar actualizaciones" (si existe en tu DOM)
-    const btnCheck = document.getElementById('btnCheckUpdate');
-    if (btnCheck) {
-      btnCheck.addEventListener('click', async () => {
-        try {
-          await reg.update(); // fuerza a chequear en red
-          // Si tras update hay waiting ↙ preguntar
-          if (reg.waiting) {
-            askToUpdate(reg);
-          } else if (reg.installing) {
-            // Si est芍 instalando, esperamos el installed
-            reg.installing.addEventListener('statechange', () => {
-              if (reg.installing?.state === 'installed' && navigator.serviceWorker.controller) {
-                askToUpdate(reg);
-              }
-            });
-            alert('Buscando actualizaci車n＃');
-          } else {
-            alert('Est芍s actualizado.');
-          }
-        } catch (e) {
-          alert('No se pudo verificar. Reintent芍 en un momento.');
-          console.error(e);
-        }
-      });
-    }
-  });
-
-  // 6) Bot車n de instalar (si us芍s uno)
-  let deferredPrompt = null;
-  const btnInstall = document.getElementById('btnInstall');
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (btnInstall) btnInstall.style.display = 'inline-block';
-  });
-  if (btnInstall) {
-    btnInstall.addEventListener('click', async () => {
-      if (!deferredPrompt) return;
-      await deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      btnInstall.style.display = 'none';
-    });
-  }
+  // Install prompt
+  let deferred=null; const btnI=$qs(null,'#btnInstall');
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'});
+  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
 })();
-</script>
-
 </script>
 </body>
 </html>
