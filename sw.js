@@ -2,7 +2,7 @@
 // Sube este archivo a: /RecargApp/sw.js
 
 // 1) Cambiá este número en cada release para invalidar el cache
-const CACHE_VERSION = 'recargapp-v1.5.6';
+const CACHE_VERSION = 'recargapp-v1.5.7';
 
 // 2) Prefijo de rutas en GitHub Pages (tu repo)
 const SCOPE_PREFIX = '/RecargApp';

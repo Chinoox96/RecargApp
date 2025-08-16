@@ -60,7 +60,7 @@ th{color:var(--accent)}
 .pill.info{background:#0b1223;color:#cbd5e1;border-color:#334155}
 .clickable{cursor:pointer}
 
-/* Drawer (M芍s) */
+/* Drawer (Mas) */
 #fabMore{position:fixed;right:14px;bottom:14px;z-index:40}
 #drawer{position:fixed;inset:0;display:none;z-index:50}
 #drawer .back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
@@ -71,12 +71,12 @@ th{color:var(--accent)}
 /* Footer */
 footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 
-/* Confirm / Notify modals */
+/* Modales */
 .modalShade{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60}
 .modalBox{background:#0b1223;border:1px solid var(--line);border-radius:12px;max-width:92vw;min-width:280px;padding:14px}
 .modalHead{font-size:12px;color:#9ca3af;margin-bottom:8px}
 
-/* PIN modal overrides z-index */
+/* PIN modal arriba de todo */
 #modalPin{z-index:61}
 
 @media (max-width:720px){
@@ -97,7 +97,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
     <div class="actions">
       <span id="lockState" class="role">Modo lectura</span>
       <button class="btn" id="btnCambiarPinAdmin" style="display:none">Cambiar PIN</button>
-      <button class="btn" id="btnToggleAdmin">Iniciar sesi車n</button>
+      <button class="btn" id="btnToggleAdmin">Iniciar sesion</button>
     </div>
   </div>
   <div class="tabs">
@@ -110,7 +110,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 <main>
   <!-- HOY -->
   <section class="section" data-panel="hoy">
-    <h2 id="tituloDia">RECARGOS DEL D赤A</h2>
+    <h2 id="tituloDia">RECARGOS DEL DIA</h2>
     <div class="row">
       <label>Fecha</label><input id="fecha" type="date" style="max-width:160px">
       <label>Faltantes</label><input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
@@ -127,11 +127,11 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
           <tr>
             <th style="width:46px">#</th>
             <th style="width:240px">Nombre</th>
-            <th style="width:120px">Jerarqu赤a</th>
+            <th style="width:120px">Jerarquia</th>
             <th style="width:240px">Estado</th>
-            <th style="width:160px">Pabell車n</th>
+            <th style="width:160px">Pabellon</th>
             <th style="width:220px">Obs recargo</th>
-            <th style="width:110px">Acc</th>
+            <th style="width:100px">Acc</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -139,8 +139,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
     </div>
 
     <div class="note" style="margin-top:6px">
-      * <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill info">SALTEADO</span>,
-      <span class="pill err">LICENCIA</span> se muestran pero no numeran. Con <b>Presente</b> (13/26/04) suben y cuentan.
+      * ART, AUTORIZADO, SALTEADO, LICENCIA se muestran pero no numeran. Con Presente (13/26/04) suben y cuentan.
     </div>
 
     <!-- PASIVOS -->
@@ -149,8 +148,8 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <div class="row">
         <label>Para:</label>
         <select id="pasivosPara" style="max-width:280px">
-          <option value="mismo">1er d赤a de franco (mismo d赤a)</option>
-          <option value="siguiente">2do d赤a de franco (al d赤a siguiente)</option>
+          <option value="mismo">1er dia de franco (mismo dia)</option>
+          <option value="siguiente">2do dia de franco (al dia siguiente)</option>
         </select>
         <div class="spacer"></div>
         <button class="btn only-admin" id="btnImprimirPasivos">Imprimir pasivos</button>
@@ -158,7 +157,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       </div>
       <div class="tableWrap" style="margin-top:6px">
         <table id="tablaPasivos">
-          <thead><tr><th style="width:42px">#</th><th>Nombre</th><th style="width:160px">Jerarqu赤a</th></tr></thead>
+          <thead><tr><th style="width:42px">#</th><th>Nombre</th><th style="width:160px">Jerarquia</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -180,25 +179,15 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <select id="jerarquia" style="max-width:160px">
         <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
       </select>
-      <input id="antiguedad" type="number" placeholder="Antig邦edad (a?os)" style="max-width:140px">
+      <input id="antiguedad" type="number" placeholder="Antiguedad (anios)" style="max-width:140px">
       <button class="btn primary only-admin" id="btnAgregar">Agregar</button>
-      <button class="btn only-admin" id="btnOrdenarCriterios">Ordenar (Jerarqu赤a ↙ Antig邦edad)</button>
+      <button class="btn only-admin" id="btnOrdenarCriterios">Ordenar (Jerarquia -> Antiguedad)</button>
       <button class="btn only-admin" id="btnDeshacerOrden">Deshacer orden</button>
       <button class="btn warn only-admin" id="btnEditarGeneral">Editar</button>
     </div>
     <div class="tableWrap" style="margin-top:8px">
       <table id="tablaGeneral">
-        <thead><tr>
-          <th style="width:64px">Orden</th>
-          <th style="width:260px">Nombre</th>
-          <th style="width:120px">DNI</th>
-          <th style="width:120px">Legajo</th>
-          <th style="width:150px">Jerarqu赤a</th>
-          <th style="width:80px">Antig.</th>
-          <th style="width:70px">Debe</th>
-          <th>Obs</th>
-          <th style="width:90px" class="muted">Eliminar</th>
-        </tr></thead>
+        <thead id="theadGeneral"></thead>
         <tbody></tbody>
       </table>
     </div>
@@ -220,7 +209,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <button class="tab subtab active" id="subRec">Recargos</button>
       <button class="tab subtab" id="subCamb">Cambios</button>
       <div class="spacer"></div>
-      <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del 迆ltimo</button>
+      <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del ultimo</button>
     </div>
 
     <!-- Recargos -->
@@ -237,7 +226,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       </div>
     </div>
 
-    <!-- Cambios (una l赤nea) -->
+    <!-- Cambios (una linea) -->
     <div id="histCambios" class="section" style="display:none;padding:10px">
       <div class="tableWrap">
         <table id="tablaCambios">
@@ -249,8 +238,8 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </section>
 </main>
 
-<!-- Bot車n / Drawer ※M芍s§ -->
-<button class="btn" id="fabMore" title="M芍s">? M芍s</button>
+<!-- Boton / Drawer "Mas" -->
+<button class="btn" id="fabMore" title="Mas">... Mas</button>
 <div id="drawer">
   <div class="back"></div>
   <div class="panel">
@@ -262,14 +251,14 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 
     <div class="row" style="gap:8px;margin:10px 0">
       <button class="btn" id="btnCheckUpdate">Buscar actualizaciones</button>
-      <button class="btn" id="btnApplyUpdate" style="display:inline-block">Est芍s al d赤a</button>
-      <span id="updMsg" class="muted"></span>
+      <span id="updInline" class="muted">estas al dia</span>
+      <button class="btn" id="btnApplyUpdate" style="display:none">Actualizar</button>
     </div>
 
-    <h3>Descripci車n</h3>
-    <p>Gestor de recargos del d赤a, pasivos e historial. Incluye lista general con orden, permisos por rol y soporte PWA.</p>
+    <h3>Descripcion</h3>
+    <p>Gestor de recargos del dia, pasivos e historial. Incluye lista general con orden, permisos por rol y soporte PWA.</p>
 
-    <h3>Notas de actualizaci車n</h3>
+    <h3>Notas de actualizacion</h3>
     <div id="releaseNotes" class="note">Cargando...</div>
   </div>
 </div>
@@ -277,20 +266,20 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 <!-- Modal Extra -->
 <div id="modalExtra" class="modalShade">
   <div class="modalBox">
-    <div class="modalHead" id="hostHeader1"></div>
+    <div class="modalHead">RecargApp</div>
     <h3 style="margin:0 0 8px;font-size:16px">Agregar extra</h3>
     <div class="row"><input id="extraNombre" placeholder="Nombre (opcional)" style="flex:1"></div>
     <div class="row">
       <select id="extraJerarquia" style="max-width:220px">
-        <option value="">(sin jerarqu赤a)</option>
+        <option value="">(sin jerarquia)</option>
         <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
       </select>
       <select id="extraPab" style="max-width:220px">
-        <option value="">(sin pabell車n)</option>
-        <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option><option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option><option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Port車n</option>
+        <option value="">(sin pabellon)</option>
+        <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option><option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option><option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Porton</option>
       </select>
     </div>
-    <div class="row"><input id="extraObs" placeholder="Observaci車n (opcional)" style="flex:1"></div>
+    <div class="row"><input id="extraObs" placeholder="Observacion (opcional)" style="flex:1"></div>
     <div class="row" style="justify-content:flex-end">
       <button class="btn" id="extraCancel">Cancelar</button>
       <button class="btn primary" id="extraOk">Agregar</button>
@@ -301,7 +290,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 <!-- Modal Acciones -->
 <div id="modalAcc" class="modalShade">
   <div class="modalBox" style="min-width:320px">
-    <div class="modalHead" id="hostHeader2"></div>
+    <div class="modalHead">RecargApp</div>
     <h3 style="margin:0 0 8px;font-size:16px">Acciones para <span id="accNombre"></span></h3>
     <div class="row">
       <button class="btn" id="accArt13">ART 13</button>
@@ -327,11 +316,11 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </div>
 </div>
 
-<!-- Modal Confirm gen谷rico -->
+<!-- Modal Confirm -->
 <div id="confirm" class="modalShade">
   <div class="modalBox">
-    <div class="modalHead" id="hostHeader3"></div>
-    <div id="confirmMsg" style="margin-bottom:10px">?Confirmar?</div>
+    <div class="modalHead">RecargApp</div>
+    <div id="confirmMsg" style="margin-bottom:10px">Confirmar?</div>
     <div class="row" style="justify-content:flex-end">
       <button class="btn" id="confirmNo">Cancelar</button>
       <button class="btn danger" id="confirmYes">Confirmar</button>
@@ -339,10 +328,10 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </div>
 </div>
 
-<!-- Modal Notify gen谷rico (sin banner) -->
+<!-- Modal Notify -->
 <div id="notify" class="modalShade">
   <div class="modalBox">
-    <div class="modalHead" id="hostHeader4"></div>
+    <div class="modalHead">RecargApp</div>
     <div id="notifyMsg" style="margin-bottom:10px">Mensaje</div>
     <div class="row" style="justify-content:flex-end">
       <button class="btn primary" id="notifyOk">OK</button>
@@ -353,7 +342,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 <!-- Modal PIN -->
 <div id="modalPin" class="modalShade">
   <div class="modalBox">
-    <div class="modalHead" id="hostHeader5"></div>
+    <div class="modalHead">RecargApp</div>
     <h3 style="margin:0 0 8px;font-size:16px">Ingresar PIN</h3>
     <input id="pinInput" type="password" placeholder="PIN" style="width:100%;margin-bottom:8px">
     <div class="row" style="justify-content:flex-end">
@@ -364,7 +353,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 </div>
 
 <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
-  Versi車n <span id="appVersion">〞</span>
+  Version <span id="appVersion">-</span>
   <span id="appVersionAvailWrap" style="display:none">
     &nbsp;﹞&nbsp; Disponible: <span id="appVersionAvail"></span>
   </span>
@@ -379,11 +368,9 @@ function today(){return new Date().toISOString().slice(0,10)}
 function fmtDM(s){var a=s.split('-');return a[2]+'/'+a[1]}
 function isDayAfter(a,b){if(!a||!b)return false;var d=new Date(a),e=new Date(b);var n=new Date(d.getTime()+86400000);return n.toISOString().slice(0,10)===e.toISOString().slice(0,10)}
 function inLic(p,f){var L=p.obs.licencia;return L&&L.desde&&L.hasta&&(f>=L.desde&&f<=L.hasta)}
-/* Confirm propio (modal) */
-function ask(msg){return new Promise(res=>{const box=$qs(null,'#confirm');$qs(null,'#confirmMsg').textContent=msg;setHostHeader('#hostHeader3');box.style.display='flex';const y=$qs(null,'#confirmYes'),n=$qs(null,'#confirmNo');function done(v){box.style.display='none';y.onclick=n.onclick=null;res(v)};y.onclick=()=>done(true);n.onclick=()=>done(false)})}
-/* Notify propio (modal) */
-function notify(msg){return new Promise(res=>{const box=$qs(null,'#notify');$qs(null,'#notifyMsg').textContent=msg;setHostHeader('#hostHeader4');box.style.display='flex';const b=$qs(null,'#notifyOk');function done(){box.style.display='none';b.onclick=null;res()}b.onclick=done})}
-function setHostHeader(sel){const el=$qs(null,sel); if(el) el.textContent=location.host;}
+/* Confirm propio */
+function ask(msg){return new Promise(res=>{const box=$qs(null,'#confirm');$qs(null,'#confirmMsg').textContent=msg;box.style.display='flex';const y=$qs(null,'#confirmYes'),n=$qs(null,'#confirmNo');function done(v){box.style.display='none';y.onclick=n.onclick=null;res(v)};y.onclick=()=>done(true);n.onclick=()=>done(false)})}
+function notify(msg){return new Promise(res=>{const box=$qs(null,'#notify');$qs(null,'#notifyMsg').textContent=msg;box.style.display='flex';const b=$qs(null,'#notifyOk');function done(){box.style.display='none';b.onclick=null;res()}b.onclick=done})}
 
 /* ===== Modelo ===== */
 const KEY='recargapp.v1';
@@ -411,7 +398,7 @@ function applyRoleVisibility(){
   $all('.only-super').forEach(b=>{b.style.display=isSuper()?'':'none'; if(!isSuper()) b.setAttribute('disabled','disabled'); else b.removeAttribute('disabled')})
 }
 
-/* ===== Sesi車n: PIN modal ===== */
+/* ===== Sesion con PIN modal ===== */
 const lockState=$qs(null,'#lockState');
 const btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 const btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
@@ -425,12 +412,11 @@ btnToggleAdmin.onclick=function(){
   if(role!=='viewer'){
     role='viewer';
     lockState.textContent='Modo lectura';
-    btnToggleAdmin.textContent='Iniciar sesi車n';
+    btnToggleAdmin.textContent='Iniciar sesion';
     btnCambiarPinAdmin.style.display='none';
     applyRoleVisibility();
     return;
   }
-  setHostHeader('#hostHeader5');
   modalPin.style.display='flex';
   pinInput.value='';
   setTimeout(()=>pinInput.focus(),10);
@@ -454,11 +440,10 @@ pinInput.addEventListener('keydown',e=>{ if(e.key==='Enter') pinOk.click(); });
 
 btnCambiarPinAdmin.onclick=async function(){
   if(!isSuper()) return;
-  // Modal simple de cambio via prompt propio:
-  const newPin = prompt('Nueva contrase?a ADMIN (4-8 d赤gitos):'); // (opcional mantener 1 prompt nativo SOLO aqu赤 si quer谷s)
-  if(newPin==null) return;
-  if(!/^\d{4,8}$/.test(newPin.trim())) return notify('Debe ser 4-8 d赤gitos.');
-  setAdminPin(newPin.trim());
+  const np=prompt('Nueva contrasena ADMIN (4-8 digitos):');
+  if(np==null) return;
+  if(!/^\d{4,8}$/.test(np.trim())) return notify('Debe ser 4-8 digitos.');
+  setAdminPin(np.trim());
   notify('PIN ADMIN actualizado');
 };
 
@@ -486,6 +471,8 @@ function elegibles(){return [].concat(db.personas).sort((a,b)=>(a.rorder||0)-(b.
 const nombreEl=$qs(null,'#nombre'),dniEl=$qs(null,'#dni'),legajoEl=$qs(null,'#legajo'),jerarquiaEl=$qs(null,'#jerarquia'),antigEl=$qs(null,'#antiguedad')
 let snapshotOrden=null, editGeneral=false
 
+function logCambio(det){ db.cambios.push({t:Date.now(),tipo:'cambio',detalle:det}); }
+
 $qs(null,'#btnAgregar').onclick=function(){
   if(!isAdmin())return notify('Solo Admin');
   if(!nombreEl.value.trim())return notify('Nombre requerido');
@@ -501,7 +488,7 @@ $qs(null,'#btnOrdenarCriterios').onclick=function(){
   pushUndo({type:'general',personas:db.personas})
   db.personas.sort((a,b)=>rank[a.jerarquia]-rank[b.jerarquia] || (b.antiguedad||0)-(a.antiguedad||0))
   const base=Date.now(); db.personas.forEach((p,i)=>p.order=base+i)
-  db.cambios.push({t:Date.now(),tipo:'ordenar',detalle:'Jerarqu赤a ↙ Antig邦edad'})
+  db.cambios.push({t:Date.now(),tipo:'ordenar',detalle:'Jerarquia -> Antiguedad'})
   save(); renderGeneral(); renderHoy()
 }
 $qs(null,'#btnDeshacerOrden').onclick=function(){
@@ -516,7 +503,16 @@ $qs(null,'#btnEditarGeneral').onclick=function(){
   if(!isAdmin())return notify('Solo Admin');
   editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent=editGeneral?'Guardar':'Editar'; renderGeneral()
 }
-window.setField=function(id,key,val){ if(!isAdmin())return notify('Solo Admin'); const p=getById(id); if(!p)return; pushUndo({type:'general',personas:db.personas}); p[key]=val; save(); };
+window.setField=function(id,key,val){
+  if(!isAdmin())return notify('Solo Admin');
+  const p=getById(id); if(!p)return;
+  const prev = (key in p)? p[key] : undefined;
+  pushUndo({type:'general',personas:db.personas});
+  p[key]=val; save();
+  if(prev!==val){
+    logCambio('Campo '+key+' de '+(p.nombre||id)+' paso de "'+(prev==null?'':prev)+'" a "'+val+'"');
+  }
+};
 async function eliminar(id){
   if(!isAdmin())return notify('Solo Admin');
   const p=getById(id); if(!p)return;
@@ -527,6 +523,21 @@ async function eliminar(id){
   save(); renderGeneral(); renderHoy()
 }
 function renderGeneral(){
+  // thead dinamico segun permisos/editar
+  const thead=$qs(null,'#theadGeneral');
+  const showDel = (editGeneral && isAdmin());
+  thead.innerHTML = '<tr>'
+    +'<th style="width:64px">Orden</th>'
+    +'<th style="width:260px">Nombre</th>'
+    +'<th style="width:120px">DNI</th>'
+    +'<th style="width:120px">Legajo</th>'
+    +'<th style="width:150px">Jerarquia</th>'
+    +'<th style="width:80px">Antig.</th>'
+    +'<th style="width:70px">Debe</th>'
+    +'<th>Obs</th>'
+    +(showDel?'<th style="width:70px" class="muted">Eliminar</th>':'')
+    +'</tr>';
+
   const tb=$qs(null,'#tablaGeneral tbody'); tb.innerHTML=''
   const list=[].concat(db.personas).sort((a,b)=>a.order-b.order)
   list.forEach((p,i)=>{
@@ -546,7 +557,7 @@ function renderGeneral(){
         pushUndo({type:'general',personas:db.personas})
         const moved=ordered.splice(a,1)[0]; ordered.splice(b,0,moved)
         const base=Date.now(); ordered.forEach((x,idx)=>x.order=base+idx)
-        db.cambios.push({t:Date.now(),tipo:'mover',nombre:moved.nombre,detalle:'↙ posici車n '+(b+1)})
+        db.cambios.push({t:Date.now(),tipo:'mover',nombre:moved.nombre,detalle:'a posicion '+(b+1)})
         save(); renderGeneral(); renderHoy()
       }
     }
@@ -564,7 +575,8 @@ function renderGeneral(){
     if(p.obs.licencia&&p.obs.licencia.desde&&p.obs.licencia.hasta)obs.push('LIC '+fmtDM(p.obs.licencia.desde)+'-'+fmtDM(p.obs.licencia.hasta));
     if(p.obs.autorizado)obs.push('AUTORIZADO'); if(p.salteado)obs.push('SALTEADO')
     const cObs=cell(obs.join(' ﹞ ')||'<span class="muted">-</span>')
-    const cDel=editGeneral?"<td><button class='btn danger' onclick=\"eliminar('"+p.id+"')\">Eliminar</button></td>":"<td class='muted'>-</td>"
+    const cDel=(editGeneral&&isAdmin())?"<td><button class='btn danger' onclick=\"eliminar('"+p.id+"')\">X</button></td>":''
+
     tr.innerHTML=cOrden+cNombre+cDNI+cLeg+cJer+cAnt+cDebe+cObs+cDel
     if(!isAdmin()) $all('button,input,select',tr).forEach(el=>{el.setAttribute('disabled','disabled');el.title='Solo Admin'})
     tb.appendChild(tr)
@@ -578,7 +590,7 @@ setTitulo(); fechaEl.onchange=setTitulo
 
 $qs(null,'#btnReiniciar').onclick=async function(){
   if(!isAdmin())return notify('Solo Admin');
-  if(!(await ask('Reiniciar rotaci車n y limpiar estados?')))return
+  if(!(await ask('Reiniciar rotacion y limpiar estados?')))return
   const ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); const base=Date.now()
   pushUndo({type:'general',personas:db.personas})
   ordered.forEach((p,i)=>{p.rorder=base+i;p.obs.art=null;p.obs.autorizado=false;p.salteado=false;p.obs.licencia={desde:null,hasta:null};p.debeLista=0})
@@ -593,7 +605,6 @@ function estadoPills(p,fecha){
     const pres=(prioridadHoy[p.id]==='ART13'&&t==='13')||(prioridadHoy[p.id]==='ART26'&&t==='26')
     pills.push('<span class="pill warn clickable" data-act="toggle-art" data-id="'+p.id+'" data-tipo="'+t+'">'+(pres?'Presente '+t:'ART '+t)+'</span>')
   }
-  // LIC / 04 como toggle: muestra LIC dd/mm-dd/mm o Presente 04
   if(inLic(p,fecha)||prioridadHoy[p.id]==='ART04'){
     const L=p.obs.licencia||{desde:null,hasta:null}
     const pres04=(prioridadHoy[p.id]==='ART04')
@@ -640,14 +651,13 @@ function getPlan(){
   pART.forEach(p=>pushP(p,true)); p04.forEach(p=>pushP(p,true)); resto.forEach(p=>pushP(p,false))
   const asignados=numerados.slice(0,falt)
   const idxUlt=falt-1
-  const pasivos=(idxUlt>=0)?numerados.slice(idxUlt+1,idxUlt+2):numerados.slice(0,2)
+  const pasivos=(idxUlt>=0)?numerados.slice(idxUlt+1,idxUlt+3):numerados.slice(0,2) // siempre 2
   return {mostrados,asignados,pasivos}
 }
 
 function renderHoy(){
   setTitulo()
   const fecha=fechaEl.value
-  // activar 04 el d赤a siguiente del fin de licencia
   db.personas.forEach(p=>{ if(p&&p.obs&&p.obs.licencia&&isDayAfter(p.obs.licencia.hasta,fecha)){ if(!prioridadHoy[p.id])prioridadHoy[p.id]='ART04' }})
   const prev={}
   $all('#tablaDia tbody tr[data-id]').forEach(r=>{
@@ -663,7 +673,7 @@ function renderHoy(){
     const num=document.createElement('td'); num.textContent=saltar?'-':(++n)
     const estado=document.createElement('td'); estado.innerHTML=estadoPills(p,fecha)||'<span class="muted">-</span>'
     const pabSel=document.createElement('select')
-    ;['','Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Port車n'].forEach(x=>{const o=document.createElement('option');o.textContent=x;pabSel.appendChild(o)})
+    ;['','Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Porton'].forEach(x=>{const o=document.createElement('option');o.textContent=x;pabSel.appendChild(o)})
     if(prev[p.id]&&prev[p.id].pab)pabSel.value=prev[p.id].pab
     if(saltar||!isAdmin()){pabSel.disabled=true}
     const obs=document.createElement('input'); obs.type='text'; obs.placeholder='(ej. cubre Ibarra)'; if(prev[p.id]&&prev[p.id].obs)obs.value=prev[p.id].obs; if(!isAdmin()){obs.disabled=true}
@@ -712,7 +722,7 @@ $qs(null,'#btnCopiarListado').onclick=function(){
 
 /* Extra modal */
 const mExtra=$qs(null,'#modalExtra')
-$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return notify('Solo Admin'); setHostHeader('#hostHeader1'); mExtra.style.display='flex'}
+$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return notify('Solo Admin'); mExtra.style.display='flex'}
 $qs(null,'#extraCancel').onclick=()=>mExtra.style.display='none'
 $qs(null,'#extraOk').onclick=function(){
   if(!isAdmin())return
@@ -734,7 +744,6 @@ function openAcc(id){
   $qs(null,'#accNombre').textContent=p.nombre
   $qs(null,'#accLicD').value=(p.obs.licencia&&p.obs.licencia.desde)||''
   $qs(null,'#accLicH').value=(p.obs.licencia&&p.obs.licencia.hasta)||''
-  setHostHeader('#hostHeader2');
   mAcc.style.display='flex'
 }
 window.openAcc=openAcc
@@ -743,7 +752,7 @@ $qs(null,'#accArt13').onclick=function(){ if(!isAdmin()||!accId)return; const p=
 $qs(null,'#accArt26').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='26'; save(); renderHoy() }
 $qs(null,'#accArtClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art=null; save(); renderHoy() }
 $qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); prioridadHoy[accId]=(prioridadHoy[accId]==='ART04')?undefined:'ART04'; renderHoy() }
-$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return notify('Complet芍 fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
+$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return notify('Completar fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
 $qs(null,'#accLicClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy() }
 $qs(null,'#accAut').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy() }
 $qs(null,'#accSalt').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.salteado=!p.salteado; save(); renderHoy() }
@@ -789,7 +798,6 @@ $qs(null,'#btnConfirmar').onclick=async function(){
   const tail=Date.now()+100000; let k=0; db.personas.forEach(p=>{if(p.salteado)p.rorder=tail+(++k)})
   db.personas.forEach(p=>{p.obs.autorizado=false; p.salteado=false})
 
-  // layout para historial
   let c=0; const layout=[]
   plan.mostrados.forEach(item=>{
     const p=item.p, saltar=item.saltar; const prio=prioridadHoy[p.id]; const per=getById(p.id)||{}
@@ -815,7 +823,7 @@ $qs(null,'#btnDeshacer').onclick=function(){
   const s=popUndo(); if(!s){notify('Nada para deshacer');return}
   if(s.type==='prioridad'){prioridadHoy=s.prioridad||{}; renderHoy(); return}
   if(s.type==='general'){db.personas=JSON.parse(JSON.stringify(s.personas)); save(); renderGeneral(); renderHoy(); return}
-  if(s.type==='afterConfirm'){db.personas=JSON.parse(JSON.stringify(s.personas)); db.generalHead=s.generalHead; save(); renderHoy(); notify('Se revirti車 el listado (la confirmaci車n qued車 en historial)'); return}
+  if(s.type==='afterConfirm'){db.personas=JSON.parse(JSON.stringify(s.personas)); db.generalHead=s.generalHead; save(); renderHoy(); notify('Se revirtio el listado (la confirmacion quedo en historial)'); return}
 }
 
 /* Copiar resultado recargos+pasivos */
@@ -839,7 +847,7 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
   lines.push('')
   const para=$qs(null,'#pasivosPara').value
   if(para==='siguiente'){
-    const d=new Date(fecha); d.setDate(d.getDate()+1); const y=d.getFullYear(),m=('0'+(d.getMonth()+1)).slice(-2),dd=('0'+d.getDate()).slice(-2)
+    const d=new Date(fecha); d.setDate(d.getDate()+1); const m=('0'+(d.getMonth()+1)).slice(-2),dd=('0'+d.getDate()).slice(-2)
     lines.push('Pasivos (para '+dd+'/'+m+')','')
   }else{
     lines.push('Pasivos','')
@@ -865,64 +873,28 @@ function renderHistorial(){
     const h=db.historial[idx]; const rec=(h.layout||[]).filter(x=>x.counted).length; const extra=(h.layout||[]).filter(x=>x.extra===true).length; const llam=(h.llamados||[]).length
     const tr=document.createElement('tr'); const vid='rec_det_'+idx
     tr.innerHTML="<td><button class='btn' data-toggle='"+vid+"'>Ver</button></td>"
-      +"<td>"+h.fecha+" 〞 Recargos: "+rec+" 〞 Extras: "+extra+" 〞 Llamados: "+llam+"</td>"
+      +"<td>"+h.fecha+" - Recargos: "+rec+" - Extras: "+extra+" - Llamados: "+llam+"</td>"
       +"<td><button class='btn danger only-super' data-del='"+idx+"'>Borrar</button> <button class='btn' data-copy='"+idx+"'>Copiar</button></td>"
     tb.appendChild(tr)
     const det=document.createElement('tr'); det.id=vid; det.style.display='none'
     const htmlRec=(h.layout||[]).map(x=>{
-      if(x.counted){const pab=x.pabellon?(' 〞 Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-        const obs=x.obsRecargo?(' 〞 Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
+      if(x.counted){const pab=x.pabellon?(' - Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+        const obs=x.obsRecargo?(' - Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
       else{return '<li>- '+x.nombre+'</li>'}
     }).join('')
     const htmlPas=(h.pasivos||[]).map((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre);const chk=(h.llamados||[]).indexOf(x.id)>=0?'checked':'';const dis=(idx===db.historial.length-1&&isAdmin())?'':'disabled';return '<li><label><input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+dis+' '+chk+'> '+(i+1)+') '+nombre+'</label></li>'}).join('')||'<li>-</li>'
     det.innerHTML="<td></td><td colspan='2'><div class='row' style='gap:18px'><div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlRec+"</ul></div><div><b>Pasivos (Fue llamado)</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlPas+"</ul></div></div></td>"
     tb.appendChild(det)
   }
-
-  // Click handlers (ver / borrar / copiar)
-  tb.onclick = function(e){
-    const t = e.target.closest('button');
-    if(!t) return;
-
-    if(t.dataset.toggle){
-      const row = $qs(null, '#'+t.dataset.toggle);
-      if(row) row.style.display = (row.style.display==='none') ? 'table-row' : 'none';
-      return;
-    }
-
-    if(t.dataset.del){
-      if(!isSuper()) return notify('Solo Superadmin');
-      const i = parseInt(t.dataset.del,10);
-      ask('?Borrar registro?').then(ok=>{
-        if(!ok) return;
-        db.historial.splice(i,1);
-        save(); renderHistorial();
-      });
-      return;
-    }
-
+  tb.onclick=function(e){
+    const t=e.target
+    if(t.dataset.toggle){const row=$qs(null,'#'+t.dataset.toggle); if(row)row.style.display=(row.style.display==='none')?'table-row':'none'}
+    if(t.dataset.del){ if(!isSuper())return notify('Solo Superadmin'); const i=parseInt(t.dataset.del,10); ask('Borrar registro?').then(ok=>{if(!ok)return; db.historial.splice(i,1); save(); renderHistorial()}) }
     if(t.dataset.copy){
-      const i = parseInt(t.dataset.copy,10);
-      const h = db.historial[i];
-      const lines=['RECARGOS '+h.fecha,'']; let c=0;
-
-      (h.layout||[]).forEach(x=>{
-        if(x.counted){
-          const pab = x.pabellon?('  '+x.pabellon):'';
-          const tags = (x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
-          const obs  = x.obsRecargo?(' ('+x.obsRecargo+')'):'';
-          lines.push((++c)+') '+x.nombre+tags+obs+pab);
-        } else {
-          lines.push('- '+x.nombre);
-        }
-      });
-
-      lines.push('','Pasivos','');
-      (h.pasivos||[]).forEach((x,idx)=>{
-        const nombre = (getById(x.id)?getById(x.id).nombre:x.nombre);
-        lines.push((idx+1)+') '+nombre);
-      });
-
+      const i=parseInt(t.dataset.copy,10); const h=db.historial[i]; const lines=['RECARGOS '+h.fecha,'']; let c=0
+      (h.layout||[]).forEach(x=>{ if(x.counted){const pab=x.pabellon?('  '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+        const obs=x.obsRecargo?(' ('+x.obsRecargo+')'):''; lines.push((++c)+') '+x.nombre+tags+obs+pab)} else lines.push('- '+x.nombre) })
+      lines.push('','Pasivos',''); (h.pasivos||[]).forEach((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre); lines.push((i+1)+') '+nombre) })
       const btn=t, old=btn.textContent;
       const done=()=>{ btn.textContent='Copiado ?'; btn.disabled=true; setTimeout(()=>{btn.textContent=old; btn.disabled=false;},1200); };
       if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lines.join('\n')).then(done).catch(()=>notify('No pude copiar'));
@@ -930,38 +902,22 @@ function renderHistorial(){
     }
   }
 
-  // Cambios
-  const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML='';
-  function fmtTS(ts){
-    const d=new Date(ts);
-    const dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2);
-    const hh=('0'+d.getHours()).slice(-2), mi=('0'+d.getMinutes()).slice(-2);
-    return dd+'/'+mm+' '+hh+':'+mi;
-  }
+  // Cambios con fecha y hora
+  const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML=''
+  function fmtTS(ts){const d=new Date(ts);const dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2);const hh=('0'+d.getHours()).slice(-2), mi=('0'+d.getMinutes()).slice(-2);return dd+'/'+mm+' '+hh+':'+mi;}
   for(let i=db.cambios.length-1;i>=0;i--){
     const c=db.cambios[i]
-    const desc=c.tipo==='agregar'?'Se agreg車: '+c.nombre
-      : c.tipo==='eliminar'?'Se elimin車: '+c.nombre
-      : c.tipo==='mover'?'Se movi車: '+c.nombre+' '+(c.detalle||'')
-      : c.tipo==='ordenar'?'Se orden車: '+(c.detalle||'')
+    const desc=c.tipo==='agregar'?'Se agrego: '+c.nombre
+      : c.tipo==='eliminar'?'Se elimino: '+c.nombre
+      : c.tipo==='mover'?'Se movio: '+c.nombre+' '+(c.detalle||'')
+      : c.tipo==='ordenar'?'Se ordeno: '+(c.detalle||'')
       : c.tipo==='deshacer-orden'?'Se deshizo el orden'
       : (c.detalle||c.tipo)
     const tr=document.createElement('tr')
     tr.innerHTML="<td>["+fmtTS(c.t)+"] "+desc+"</td><td><button class='btn danger only-super' data-delc='"+i+"'>Borrar</button></td>"
     tc.appendChild(tr)
   }
-  tc.onclick=function(e){
-    const t=e.target.closest('button'); if(!t) return;
-    if(t.dataset.delc){
-      if(!isSuper()) return notify('Solo Superadmin');
-      const i=parseInt(t.dataset.delc,10);
-      ask('?Borrar item?').then(ok=>{
-        if(!ok) return;
-        db.cambios.splice(i,1);
-        save(); renderHistorial();
-      });
-    }
-  }
+  tc.onclick=function(e){const t=e.target; if(t.dataset.delc){ if(!isSuper())return notify('Solo Superadmin'); const i=parseInt(t.dataset.delc,10); ask('Borrar item?').then(ok=>{if(!ok)return; db.cambios.splice(i,1); save(); renderHistorial()}) }}
 
   applyRoleVisibility()
 }
@@ -973,22 +929,21 @@ $qs(null,'#btnGuardarLlamados').onclick=function(){
   const checks=$all("input[type='checkbox'][data-h='"+idx+"']"); h.llamados=checks.filter(c=>c.checked).map(c=>c.dataset.id)
   save(); renderHistorial();
   const btn=this, old=btn.textContent;
-  btn.textContent='Llamados guardados ?';
-  btn.disabled=true;
+  btn.textContent='Llamados guardados ?'; btn.disabled=true;
   setTimeout(()=>{btn.textContent=old; btn.disabled=false;},1200);
 }
 
 /* Borrar historiales */
 $qs(null,'#btnBorrarHistRec').onclick=function(){
   if(!isSuper()) return notify('Solo Superadmin');
-  ask('?Borrar TODO el historial de recargos?').then(ok=>{
+  ask('Borrar TODO el historial de recargos?').then(ok=>{
     if(!ok) return;
     db.historial=[]; save(); renderHistorial();
   });
 };
 $qs(null,'#btnBorrarHistCamb').onclick=function(){
   if(!isSuper()) return notify('Solo Superadmin');
-  ask('?Borrar TODO el historial de cambios?').then(ok=>{
+  ask('Borrar TODO el historial de cambios?').then(ok=>{
     if(!ok) return;
     db.cambios=[]; save(); renderHistorial();
   });
@@ -996,7 +951,7 @@ $qs(null,'#btnBorrarHistCamb').onclick=function(){
 
 /* Export / Import */
 $qs(null,'#btnExportar').onclick=function(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='recargapp_db.json';a.click();URL.revokeObjectURL(url)}
-$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return notify('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){notify('Archivo inv芍lido')}};fr.readAsText(f)};inp.click()}
+$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return notify('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){notify('Archivo invalido')}};fr.readAsText(f)};inp.click()}
 
 /* Render inicial */
 function renderAll(){renderGeneral();renderHoy();renderHistorial();applyRoleVisibility()}
@@ -1031,84 +986,67 @@ async function loadReleaseNotes(){
   }catch(e){ box.textContent='No pude leer /RecargApp/release-notes.json' }
 }
 
-/* ===== PWA / Version ===== */
+/* ===== PWA / Version y Updates ===== */
 (function(){
-  function toggleApplyButtonByWaiting(reg){
-    const btnApply = document.getElementById('btnApplyUpdate');
-    const updMsg   = document.getElementById('updMsg');
-    if(!btnApply) return;
-    if(reg.waiting){
-      btnApply.style.display='inline-block';
-      btnApply.textContent='Actualizar ahora';
-      if(updMsg) updMsg.textContent='Actualizaci車n disponible';
+  function setInlineState(reg){
+    const txt=$qs(null,'#updInline');
+    const apply=$qs(null,'#btnApplyUpdate');
+    if(!txt||!apply) return;
+    if(reg && reg.waiting){
+      txt.textContent='actualizacion disponible';
+      apply.style.display='inline-block';
     }else{
-      btnApply.style.display='inline-block';
-      btnApply.textContent='Est芍s al d赤a';
-      if(updMsg) updMsg.textContent='';
+      txt.textContent='estas al dia';
+      apply.style.display='none';
     }
   }
 
-  // Registrar SW
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('/RecargApp/sw.js',{scope:'/RecargApp/'}).catch(()=>{});
-    let refreshing=false;
-    navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(refreshing) return; refreshing=true; location.reload(); });
-
     navigator.serviceWorker.getRegistration('/RecargApp/').then(reg=>{
       if(!reg) return;
-      toggleApplyButtonByWaiting(reg);
-
-      function askUp(){
-        ask('Hay una actualizaci車n disponible. ?Instalar ahora?').then(ok=>{
-          if(ok) reg.waiting&&reg.waiting.postMessage({type:'SKIP_WAITING'});
-        });
-      }
-      if(reg.waiting) askUp();
-      reg.addEventListener('updatefound',()=>{
-        const nw=reg.installing; if(!nw) return;
-        nw.addEventListener('statechange',()=>{
-          if(nw.state==='installed' && navigator.serviceWorker.controller){
-            toggleApplyButtonByWaiting(reg);
-            askUp();
-          }
-        });
-      });
+      setInlineState(reg);
 
       const btnCheck=$qs(null,'#btnCheckUpdate');
       const btnApply=$qs(null,'#btnApplyUpdate');
+
       if(btnCheck){
         btnCheck.onclick=async ()=>{
-          try{
-            await reg.update();
-            const reg2=await navigator.serviceWorker.getRegistration('/RecargApp/');
-            toggleApplyButtonByWaiting(reg2||reg);
-            if(!(reg2&&reg2.waiting)) notify('Est芍s al d赤a');
-          }catch(_){ notify('No se pudo verificar'); }
+          try{ await reg.update(); }catch(_){}
+          const fresh=await navigator.serviceWorker.getRegistration('/RecargApp/');
+          setInlineState(fresh||reg);
+          if(fresh && fresh.waiting){
+            // no auto prompt; el boton Aplicar esta visible
+          }
         };
       }
       if(btnApply){
         btnApply.onclick=async ()=>{
           const reg2=await navigator.serviceWorker.getRegistration('/RecargApp/');
-          if(reg2&&reg2.waiting){
-            const ok=await ask('Hay una actualizaci車n disponible. ?Aplicarla ahora?');
+          if(reg2 && reg2.waiting){
+            const ok = await ask('Hay una actualizacion disponible. Aplicar ahora?');
             if(ok) reg2.waiting.postMessage({type:'SKIP_WAITING'});
-          }else{
-            notify('Est芍s al d赤a');
           }
         };
       }
+
+      reg.addEventListener('updatefound',()=>{
+        const sw=reg.installing;
+        if(!sw) return;
+        sw.addEventListener('statechange',()=>{
+          if(sw.state==='installed' && navigator.serviceWorker.controller){
+            setInlineState(reg);
+          }
+        });
+      });
+
+      navigator.serviceWorker.addEventListener('controllerchange',()=>location.reload());
     });
   }
 
-  // Install prompt propio
-  let deferred=null; const btnI=$qs(null,'#btnInstall')
-  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'})
-  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
-
-  // Version desde manifest/SW visible en footer
+  // Version desde SW si posible, sino manifest
   (async function renderInstalledVersion(){
     const el = document.getElementById('appVersion'); if(!el) return;
-    // Intentar pedirle al SW la versi車n instalada
     async function getInstalledSwVersion(){
       if(!('serviceWorker' in navigator)) return null;
       if(!navigator.serviceWorker.controller) return null;
@@ -1126,7 +1064,6 @@ async function loadReleaseNotes(){
       el.textContent = v;
       return;
     }
-    // fallback
     try{
       const res=await fetch('/RecargApp/manifest.json?t='+(+new Date()),{cache:'no-store'})
       const m=await res.json()
@@ -1134,7 +1071,16 @@ async function loadReleaseNotes(){
       el.textContent=v||'V?'
     }catch(_){ el.textContent='V?' }
   })();
+
+  // Install prompt
+  let deferred=null; const btnI=$qs(null,'#btnInstall')
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'})
+  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
+
 })();
+
+/* Render all al final por si algo reordena encabezados */
+function renderAll(){renderGeneral();renderHoy();renderHistorial();applyRoleVisibility()}
 </script>
 </body>
 </html>
