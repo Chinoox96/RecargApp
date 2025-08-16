@@ -60,7 +60,7 @@ th{color:var(--accent)}
 .pill.info{background:#0b1223;color:#cbd5e1;border-color:#334155}
 .clickable{cursor:pointer}
 
-/* Drawer (Mas) */
+/* Drawer (M芍s) */
 #fabMore{position:fixed;right:14px;bottom:14px;z-index:40}
 #drawer{position:fixed;inset:0;display:none;z-index:50}
 #drawer .back{position:absolute;inset:0;background:rgba(0,0,0,.5)}
@@ -71,9 +71,13 @@ th{color:var(--accent)}
 /* Footer */
 footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 
-/* Confirm modal */
-#confirm{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60}
-#confirm .box{background:#0b1223;border:1px solid var(--line);border-radius:12px;max-width:92vw;min-width:260px;padding:14px}
+/* Confirm / Notify modals */
+.modalShade{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:60}
+.modalBox{background:#0b1223;border:1px solid var(--line);border-radius:12px;max-width:92vw;min-width:280px;padding:14px}
+.modalHead{font-size:12px;color:#9ca3af;margin-bottom:8px}
+
+/* PIN modal overrides z-index */
+#modalPin{z-index:61}
 
 @media (max-width:720px){
   .bar{grid-template-columns:42px 1fr 180px}
@@ -93,7 +97,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
     <div class="actions">
       <span id="lockState" class="role">Modo lectura</span>
       <button class="btn" id="btnCambiarPinAdmin" style="display:none">Cambiar PIN</button>
-      <button class="btn" id="btnToggleAdmin">Iniciar sesion</button>
+      <button class="btn" id="btnToggleAdmin">Iniciar sesi車n</button>
     </div>
   </div>
   <div class="tabs">
@@ -104,11 +108,9 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 </header>
 
 <main>
-  <div id="banner" class="section" style="display:none"></div>
-
   <!-- HOY -->
   <section class="section" data-panel="hoy">
-    <h2 id="tituloDia">RECARGOS DEL DIA</h2>
+    <h2 id="tituloDia">RECARGOS DEL D赤A</h2>
     <div class="row">
       <label>Fecha</label><input id="fecha" type="date" style="max-width:160px">
       <label>Faltantes</label><input id="faltantes" type="number" value="1" min="0" style="max-width:90px">
@@ -125,11 +127,11 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
           <tr>
             <th style="width:46px">#</th>
             <th style="width:240px">Nombre</th>
-            <th style="width:120px">Jerarquia</th>
+            <th style="width:120px">Jerarqu赤a</th>
             <th style="width:240px">Estado</th>
-            <th style="width:160px">Pabellon</th>
+            <th style="width:160px">Pabell車n</th>
             <th style="width:220px">Obs recargo</th>
-            <th style="width:90px">Acc</th>
+            <th style="width:110px">Acc</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -138,17 +140,17 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 
     <div class="note" style="margin-top:6px">
       * <span class="pill warn">ART</span>, <span class="pill ok">AUTORIZADO</span>, <span class="pill info">SALTEADO</span>,
-      <span class="pill err">LICENCIA</span> se muestran pero no numeran. Con <b>Presente</b> (13/26/04) suben y cuentan. (debe X) se ve en la fila.
+      <span class="pill err">LICENCIA</span> se muestran pero no numeran. Con <b>Presente</b> (13/26/04) suben y cuentan.
     </div>
 
-    <!-- PASIVOS (debajo) -->
+    <!-- PASIVOS -->
     <div class="section" style="margin-top:12px">
       <h2>PASIVOS</h2>
       <div class="row">
         <label>Para:</label>
         <select id="pasivosPara" style="max-width:280px">
-          <option value="mismo">1er dia de franco (mismo dia)</option>
-          <option value="siguiente">2do dia de franco (al dia siguiente)</option>
+          <option value="mismo">1er d赤a de franco (mismo d赤a)</option>
+          <option value="siguiente">2do d赤a de franco (al d赤a siguiente)</option>
         </select>
         <div class="spacer"></div>
         <button class="btn only-admin" id="btnImprimirPasivos">Imprimir pasivos</button>
@@ -156,7 +158,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       </div>
       <div class="tableWrap" style="margin-top:6px">
         <table id="tablaPasivos">
-          <thead><tr><th style="width:42px">#</th><th>Nombre</th><th style="width:160px">Jerarquia</th></tr></thead>
+          <thead><tr><th style="width:42px">#</th><th>Nombre</th><th style="width:160px">Jerarqu赤a</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -178,9 +180,9 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <select id="jerarquia" style="max-width:160px">
         <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
       </select>
-      <input id="antiguedad" type="number" placeholder="Antiguedad (anios)" style="max-width:140px">
+      <input id="antiguedad" type="number" placeholder="Antig邦edad (a?os)" style="max-width:140px">
       <button class="btn primary only-admin" id="btnAgregar">Agregar</button>
-      <button class="btn only-admin" id="btnOrdenarCriterios">Ordenar (Jerarquia -> Antiguedad)</button>
+      <button class="btn only-admin" id="btnOrdenarCriterios">Ordenar (Jerarqu赤a ↙ Antig邦edad)</button>
       <button class="btn only-admin" id="btnDeshacerOrden">Deshacer orden</button>
       <button class="btn warn only-admin" id="btnEditarGeneral">Editar</button>
     </div>
@@ -191,11 +193,11 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
           <th style="width:260px">Nombre</th>
           <th style="width:120px">DNI</th>
           <th style="width:120px">Legajo</th>
-          <th style="width:150px">Jerarquia</th>
+          <th style="width:150px">Jerarqu赤a</th>
           <th style="width:80px">Antig.</th>
           <th style="width:70px">Debe</th>
           <th>Obs</th>
-          <th style="width:80px" class="muted">Eliminar</th>
+          <th style="width:90px" class="muted">Eliminar</th>
         </tr></thead>
         <tbody></tbody>
       </table>
@@ -218,7 +220,7 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
       <button class="tab subtab active" id="subRec">Recargos</button>
       <button class="tab subtab" id="subCamb">Cambios</button>
       <div class="spacer"></div>
-      <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del ultimo</button>
+      <button class="btn primary only-admin" id="btnGuardarLlamados">Guardar llamados del 迆ltimo</button>
     </div>
 
     <!-- Recargos -->
@@ -228,14 +230,14 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
           <thead><tr>
             <th style="width:80px">Ver</th>
             <th>Resumen</th>
-            <th style="width:180px">Acciones</th>
+            <th style="width:220px">Acciones</th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
 
-    <!-- Cambios (una linea por item) -->
+    <!-- Cambios (una l赤nea) -->
     <div id="histCambios" class="section" style="display:none;padding:10px">
       <div class="tableWrap">
         <table id="tablaCambios">
@@ -247,8 +249,8 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </section>
 </main>
 
-<!-- Boton / Drawer "Mas" -->
-<button class="btn" id="fabMore" title="Mas">... Mas</button>
+<!-- Bot車n / Drawer ※M芍s§ -->
+<button class="btn" id="fabMore" title="M芍s">? M芍s</button>
 <div id="drawer">
   <div class="back"></div>
   <div class="panel">
@@ -259,36 +261,36 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
     </div>
 
     <div class="row" style="gap:8px;margin:10px 0">
-      <!-- ojo: ID corregido a btnCheckUpdates para coincidir con JS -->
-      <button class="btn" id="btnCheckUpdates">Buscar actualizaciones</button>
-      <button class="btn" id="btnApplyUpdate">Actualizar ahora</button>
+      <button class="btn" id="btnCheckUpdate">Buscar actualizaciones</button>
+      <button class="btn" id="btnApplyUpdate" style="display:inline-block">Est芍s al d赤a</button>
       <span id="updMsg" class="muted"></span>
     </div>
 
-    <h3>Descripcion</h3>
-    <p>Gestor de recargos del dia, pasivos e historial. Incluye lista general con orden, permisos por rol y soporte PWA.</p>
+    <h3>Descripci車n</h3>
+    <p>Gestor de recargos del d赤a, pasivos e historial. Incluye lista general con orden, permisos por rol y soporte PWA.</p>
 
-    <h3>Notas de actualizacion</h3>
+    <h3>Notas de actualizaci車n</h3>
     <div id="releaseNotes" class="note">Cargando...</div>
   </div>
 </div>
 
 <!-- Modal Extra -->
-<div id="modalExtra" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:20">
-  <div class="section" style="min-width:300px;max-width:95vw">
+<div id="modalExtra" class="modalShade">
+  <div class="modalBox">
+    <div class="modalHead" id="hostHeader1"></div>
     <h3 style="margin:0 0 8px;font-size:16px">Agregar extra</h3>
     <div class="row"><input id="extraNombre" placeholder="Nombre (opcional)" style="flex:1"></div>
     <div class="row">
       <select id="extraJerarquia" style="max-width:220px">
-        <option value="">(sin jerarquia)</option>
+        <option value="">(sin jerarqu赤a)</option>
         <option>AYTE MY (CG)</option><option>AYTE PR (CG)</option><option>AYTE 1ro (CG)</option><option>AYTE 2do (CG)</option><option>AYTE 3ro (CG)</option><option>AYTE 4to (CG)</option><option>AYTE 5to (CG)</option><option>SUBAYTE (CG)</option><option>- vacio -</option>
       </select>
       <select id="extraPab" style="max-width:220px">
-        <option value="">(sin pabellon)</option>
-        <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option><option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option><option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Porton</option>
+        <option value="">(sin pabell車n)</option>
+        <option>Vigilancia</option><option>Pab 1</option><option>Pab 3S</option><option>Pab 3N</option><option>Pab 5S</option><option>Pab 5N</option><option>Pab 7</option><option>Pab 9</option><option>Pab 11</option><option>Pab Aisl</option><option>Cruz</option><option>Port車n</option>
       </select>
     </div>
-    <div class="row"><input id="extraObs" placeholder="Observacion (opcional)" style="flex:1"></div>
+    <div class="row"><input id="extraObs" placeholder="Observaci車n (opcional)" style="flex:1"></div>
     <div class="row" style="justify-content:flex-end">
       <button class="btn" id="extraCancel">Cancelar</button>
       <button class="btn primary" id="extraOk">Agregar</button>
@@ -297,8 +299,9 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 </div>
 
 <!-- Modal Acciones -->
-<div id="modalAcc" style="position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:21">
-  <div class="section" style="min-width:320px;max-width:95vw">
+<div id="modalAcc" class="modalShade">
+  <div class="modalBox" style="min-width:320px">
+    <div class="modalHead" id="hostHeader2"></div>
     <h3 style="margin:0 0 8px;font-size:16px">Acciones para <span id="accNombre"></span></h3>
     <div class="row">
       <button class="btn" id="accArt13">ART 13</button>
@@ -324,10 +327,11 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </div>
 </div>
 
-<!-- Modal Confirm propio -->
-<div id="confirm">
-  <div class="box">
-    <div id="confirmMsg" style="margin-bottom:10px">Confirmar?</div>
+<!-- Modal Confirm gen谷rico -->
+<div id="confirm" class="modalShade">
+  <div class="modalBox">
+    <div class="modalHead" id="hostHeader3"></div>
+    <div id="confirmMsg" style="margin-bottom:10px">?Confirmar?</div>
     <div class="row" style="justify-content:flex-end">
       <button class="btn" id="confirmNo">Cancelar</button>
       <button class="btn danger" id="confirmYes">Confirmar</button>
@@ -335,8 +339,32 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
   </div>
 </div>
 
+<!-- Modal Notify gen谷rico (sin banner) -->
+<div id="notify" class="modalShade">
+  <div class="modalBox">
+    <div class="modalHead" id="hostHeader4"></div>
+    <div id="notifyMsg" style="margin-bottom:10px">Mensaje</div>
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn primary" id="notifyOk">OK</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal PIN -->
+<div id="modalPin" class="modalShade">
+  <div class="modalBox">
+    <div class="modalHead" id="hostHeader5"></div>
+    <h3 style="margin:0 0 8px;font-size:16px">Ingresar PIN</h3>
+    <input id="pinInput" type="password" placeholder="PIN" style="width:100%;margin-bottom:8px">
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn" id="pinCancel">Cancelar</button>
+      <button class="btn primary" id="pinOk">Ingresar</button>
+    </div>
+  </div>
+</div>
+
 <footer style="text-align:center;color:#aaa;font-size:0.8em;margin:12px 0;">
-  Version instalada: <span id="appVersion">〞</span>
+  Versi車n <span id="appVersion">〞</span>
   <span id="appVersionAvailWrap" style="display:none">
     &nbsp;﹞&nbsp; Disponible: <span id="appVersionAvail"></span>
   </span>
@@ -346,14 +374,16 @@ footer{color:#aaa;font-size:.8em;text-align:center;margin:14px 0}
 /* ===== util ===== */
 function $qs(r,s){return (r||document).querySelector(s)}
 function $all(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
-function showBanner(t,o){o=o||{};const b=$qs(null,'#banner');if(!b)return;b.textContent=t;b.style.display='block';if(showBanner._t)clearTimeout(showBanner._t);if(!o.sticky)showBanner._t=setTimeout(()=>b.style.display='none',o.timeout||3200)}
 function uid(){return Math.random().toString(36).slice(2,9)}
 function today(){return new Date().toISOString().slice(0,10)}
 function fmtDM(s){var a=s.split('-');return a[2]+'/'+a[1]}
 function isDayAfter(a,b){if(!a||!b)return false;var d=new Date(a),e=new Date(b);var n=new Date(d.getTime()+86400000);return n.toISOString().slice(0,10)===e.toISOString().slice(0,10)}
 function inLic(p,f){var L=p.obs.licencia;return L&&L.desde&&L.hasta&&(f>=L.desde&&f<=L.hasta)}
-/* confirm propio */
-function ask(msg){return new Promise(res=>{const box=$qs(null,'#confirm');$qs(null,'#confirmMsg').textContent=msg;box.style.display='flex';const yes=$qs(null,'#confirmYes'),no=$qs(null,'#confirmNo');function done(v){box.style.display='none';yes.onclick=no.onclick=null;res(v)};yes.onclick=()=>done(true);no.onclick=()=>done(false)})}
+/* Confirm propio (modal) */
+function ask(msg){return new Promise(res=>{const box=$qs(null,'#confirm');$qs(null,'#confirmMsg').textContent=msg;setHostHeader('#hostHeader3');box.style.display='flex';const y=$qs(null,'#confirmYes'),n=$qs(null,'#confirmNo');function done(v){box.style.display='none';y.onclick=n.onclick=null;res(v)};y.onclick=()=>done(true);n.onclick=()=>done(false)})}
+/* Notify propio (modal) */
+function notify(msg){return new Promise(res=>{const box=$qs(null,'#notify');$qs(null,'#notifyMsg').textContent=msg;setHostHeader('#hostHeader4');box.style.display='flex';const b=$qs(null,'#notifyOk');function done(){box.style.display='none';b.onclick=null;res()}b.onclick=done})}
+function setHostHeader(sel){const el=$qs(null,sel); if(el) el.textContent=location.host;}
 
 /* ===== Modelo ===== */
 const KEY='recargapp.v1';
@@ -381,24 +411,56 @@ function applyRoleVisibility(){
   $all('.only-super').forEach(b=>{b.style.display=isSuper()?'':'none'; if(!isSuper()) b.setAttribute('disabled','disabled'); else b.removeAttribute('disabled')})
 }
 
-/* ===== Sesion ===== */
+/* ===== Sesi車n: PIN modal ===== */
 const lockState=$qs(null,'#lockState');
 const btnToggleAdmin=$qs(null,'#btnToggleAdmin');
 const btnCambiarPinAdmin=$qs(null,'#btnCambiarPinAdmin');
 
+const modalPin=$qs(null,'#modalPin');
+const pinInput=$qs(null,'#pinInput');
+const pinOk=$qs(null,'#pinOk');
+const pinCancel=$qs(null,'#pinCancel');
+
 btnToggleAdmin.onclick=function(){
-  if(role!=='viewer'){role='viewer';lockState.textContent='Modo lectura';btnToggleAdmin.textContent='Iniciar sesion';btnCambiarPinAdmin.style.display='none';applyRoleVisibility();return}
-  var code=prompt('Ingresar PIN');
-  if(code===ADMIN_PIN){role='admin';lockState.textContent='ADMIN';btnToggleAdmin.textContent='Salir';btnCambiarPinAdmin.style.display='none';applyRoleVisibility()}
-  else if(code===SUPERADMIN_PIN){role='superadmin';lockState.textContent='SUPERADMIN';btnToggleAdmin.textContent='Salir';btnCambiarPinAdmin.style.display='inline-block';applyRoleVisibility()}
-  else if(code!==null){showBanner('PIN incorrecto')}
-}
+  if(role!=='viewer'){
+    role='viewer';
+    lockState.textContent='Modo lectura';
+    btnToggleAdmin.textContent='Iniciar sesi車n';
+    btnCambiarPinAdmin.style.display='none';
+    applyRoleVisibility();
+    return;
+  }
+  setHostHeader('#hostHeader5');
+  modalPin.style.display='flex';
+  pinInput.value='';
+  setTimeout(()=>pinInput.focus(),10);
+};
+pinCancel.onclick=()=>modalPin.style.display='none';
+pinOk.onclick=function(){
+  const code=pinInput.value.trim();
+  if(code===ADMIN_PIN){
+    role='admin'; lockState.textContent='ADMIN';
+    btnToggleAdmin.textContent='Salir'; btnCambiarPinAdmin.style.display='none';
+    applyRoleVisibility(); modalPin.style.display='none';
+  }else if(code===SUPERADMIN_PIN){
+    role='superadmin'; lockState.textContent='SUPERADMIN';
+    btnToggleAdmin.textContent='Salir'; btnCambiarPinAdmin.style.display='inline-block';
+    applyRoleVisibility(); modalPin.style.display='none';
+  }else{
+    notify('PIN incorrecto');
+  }
+};
+pinInput.addEventListener('keydown',e=>{ if(e.key==='Enter') pinOk.click(); });
+
 btnCambiarPinAdmin.onclick=async function(){
-  if(!isSuper())return;
-  var np=prompt('Nueva contrasena ADMIN (4-8 digitos):'); if(np==null)return;
-  if(!/^\d{4,8}$/.test(np.trim()))return showBanner('Debe ser 4-8 digitos');
-  setAdminPin(np.trim()); showBanner('PIN ADMIN actualizado');
-}
+  if(!isSuper()) return;
+  // Modal simple de cambio via prompt propio:
+  const newPin = prompt('Nueva contrase?a ADMIN (4-8 d赤gitos):'); // (opcional mantener 1 prompt nativo SOLO aqu赤 si quer谷s)
+  if(newPin==null) return;
+  if(!/^\d{4,8}$/.test(newPin.trim())) return notify('Debe ser 4-8 d赤gitos.');
+  setAdminPin(newPin.trim());
+  notify('PIN ADMIN actualizado');
+};
 
 /* ===== Tabs ===== */
 $all('.tab[data-tab]').forEach(t=>{
@@ -425,38 +487,38 @@ const nombreEl=$qs(null,'#nombre'),dniEl=$qs(null,'#dni'),legajoEl=$qs(null,'#le
 let snapshotOrden=null, editGeneral=false
 
 $qs(null,'#btnAgregar').onclick=function(){
-  if(!isAdmin())return showBanner('Solo Admin');
-  if(!nombreEl.value.trim())return showBanner('Nombre requerido');
+  if(!isAdmin())return notify('Solo Admin');
+  if(!nombreEl.value.trim())return notify('Nombre requerido');
   const p={id:uid(),nombre:nombreEl.value.trim(),dni:dniEl.value.trim(),legajo:legajoEl.value.trim(),jerarquia:jerarquiaEl.value,antiguedad:parseInt(antigEl.value||'0',10),obs:{art:null,licencia:{desde:null,hasta:null},autorizado:false},order:Date.now(),rorder:Date.now(),debeLista:0,salteado:false}
   pushUndo({type:'general',personas:db.personas})
   db.personas.push(p); db.cambios.push({t:Date.now(),tipo:'agregar',nombre:p.nombre})
   save(); nombreEl.value='';dniEl.value='';legajoEl.value='';antigEl.value=''; renderGeneral(); renderHoy()
 }
 $qs(null,'#btnOrdenarCriterios').onclick=function(){
-  if(!isAdmin())return showBanner('Solo Admin');
+  if(!isAdmin())return notify('Solo Admin');
   snapshotOrden=db.personas.map(p=>p.id)
   const rank={'AYTE MY (CG)':1,'AYTE PR (CG)':2,'AYTE 1ro (CG)':3,'AYTE 2do (CG)':4,'AYTE 3ro (CG)':5,'AYTE 4to (CG)':6,'AYTE 5to (CG)':7,'SUBAYTE (CG)':8,'- vacio -':9}
   pushUndo({type:'general',personas:db.personas})
   db.personas.sort((a,b)=>rank[a.jerarquia]-rank[b.jerarquia] || (b.antiguedad||0)-(a.antiguedad||0))
   const base=Date.now(); db.personas.forEach((p,i)=>p.order=base+i)
-  db.cambios.push({t:Date.now(),tipo:'ordenar',detalle:'Jerarquia -> Antiguedad'})
+  db.cambios.push({t:Date.now(),tipo:'ordenar',detalle:'Jerarqu赤a ↙ Antig邦edad'})
   save(); renderGeneral(); renderHoy()
 }
 $qs(null,'#btnDeshacerOrden').onclick=function(){
-  if(!isAdmin())return showBanner('Solo Admin');
-  if(!snapshotOrden)return showBanner('No hay orden anterior');
+  if(!isAdmin())return notify('Solo Admin');
+  if(!snapshotOrden)return notify('No hay orden anterior');
   pushUndo({type:'general',personas:db.personas})
   const base=Date.now(); snapshotOrden.forEach((id,i)=>{const p=getById(id); if(p)p.order=base+i})
   db.cambios.push({t:Date.now(),tipo:'deshacer-orden'})
   save(); renderGeneral(); renderHoy()
 }
 $qs(null,'#btnEditarGeneral').onclick=function(){
-  if(!isAdmin())return showBanner('Solo Admin');
+  if(!isAdmin())return notify('Solo Admin');
   editGeneral=!editGeneral; $qs(null,'#btnEditarGeneral').textContent=editGeneral?'Guardar':'Editar'; renderGeneral()
 }
-window.setField=function(id,key,val){ if(!isAdmin())return showBanner('Solo Admin'); const p=getById(id); if(!p)return; pushUndo({type:'general',personas:db.personas}); p[key]=val; save(); }
+window.setField=function(id,key,val){ if(!isAdmin())return notify('Solo Admin'); const p=getById(id); if(!p)return; pushUndo({type:'general',personas:db.personas}); p[key]=val; save(); };
 async function eliminar(id){
-  if(!isAdmin())return showBanner('Solo Admin');
+  if(!isAdmin())return notify('Solo Admin');
   const p=getById(id); if(!p)return;
   if(!(await ask('Eliminar a '+p.nombre+' del listado?')))return;
   pushUndo({type:'general',personas:db.personas})
@@ -484,7 +546,7 @@ function renderGeneral(){
         pushUndo({type:'general',personas:db.personas})
         const moved=ordered.splice(a,1)[0]; ordered.splice(b,0,moved)
         const base=Date.now(); ordered.forEach((x,idx)=>x.order=base+idx)
-        db.cambios.push({t:Date.now(),tipo:'mover',nombre:moved.nombre,detalle:'a posicion '+(b+1)})
+        db.cambios.push({t:Date.now(),tipo:'mover',nombre:moved.nombre,detalle:'↙ posici車n '+(b+1)})
         save(); renderGeneral(); renderHoy()
       }
     }
@@ -498,7 +560,9 @@ function renderGeneral(){
     const cJer=editGeneral?'<td><select onchange="setField(\''+p.id+'\',\'jerarquia\',this.value)">'+jer+'</select></td>':cell(p.jerarquia)
     const cAnt=editGeneral?'<td><input type="number" min="0" value="'+(p.antiguedad||0)+'" onblur="setField(\''+p.id+'\',\'antiguedad\',parseInt(this.value||\'0\',10))"></td>':cell(p.antiguedad||0)
     const cDebe=editGeneral?'<td><input type="number" min="0" value="'+(p.debeLista||0)+'" onblur="setField(\''+p.id+'\',\'debeLista\',parseInt(this.value||\'0\',10))"></td>':cell(p.debeLista||0)
-    const obs=[]; if(p.obs.art)obs.push('ART '+p.obs.art); if(p.obs.licencia&&p.obs.licencia.desde&&p.obs.licencia.hasta)obs.push('LIC '+fmtDM(p.obs.licencia.desde)+'-'+fmtDM(p.obs.licencia.hasta)); if(p.obs.autorizado)obs.push('AUTORIZADO'); if(p.salteado)obs.push('SALTEADO')
+    const obs=[]; if(p.obs.art)obs.push('ART '+p.obs.art);
+    if(p.obs.licencia&&p.obs.licencia.desde&&p.obs.licencia.hasta)obs.push('LIC '+fmtDM(p.obs.licencia.desde)+'-'+fmtDM(p.obs.licencia.hasta));
+    if(p.obs.autorizado)obs.push('AUTORIZADO'); if(p.salteado)obs.push('SALTEADO')
     const cObs=cell(obs.join(' ﹞ ')||'<span class="muted">-</span>')
     const cDel=editGeneral?"<td><button class='btn danger' onclick=\"eliminar('"+p.id+"')\">Eliminar</button></td>":"<td class='muted'>-</td>"
     tr.innerHTML=cOrden+cNombre+cDNI+cLeg+cJer+cAnt+cDebe+cObs+cDel
@@ -513,12 +577,12 @@ function setTitulo(){ $qs(null,'#tituloDia').textContent='RECARGOS '+fmtDM(fecha
 setTitulo(); fechaEl.onchange=setTitulo
 
 $qs(null,'#btnReiniciar').onclick=async function(){
-  if(!isAdmin())return showBanner('Solo Admin');
-  if(!(await ask('Reiniciar rotacion y limpiar estados?')))return
+  if(!isAdmin())return notify('Solo Admin');
+  if(!(await ask('Reiniciar rotaci車n y limpiar estados?')))return
   const ordered=[].concat(db.personas).sort((a,b)=>a.order-b.order); const base=Date.now()
   pushUndo({type:'general',personas:db.personas})
   ordered.forEach((p,i)=>{p.rorder=base+i;p.obs.art=null;p.obs.autorizado=false;p.salteado=false;p.obs.licencia={desde:null,hasta:null};p.debeLista=0})
-  prioridadHoy={}; db.generalHead=0; save(); renderHoy(); showBanner('Lista reiniciada')
+  prioridadHoy={}; db.generalHead=0; save(); renderHoy();
 }
 $qs(null,'#btnActualizar').onclick=()=>renderHoy()
 
@@ -529,6 +593,7 @@ function estadoPills(p,fecha){
     const pres=(prioridadHoy[p.id]==='ART13'&&t==='13')||(prioridadHoy[p.id]==='ART26'&&t==='26')
     pills.push('<span class="pill warn clickable" data-act="toggle-art" data-id="'+p.id+'" data-tipo="'+t+'">'+(pres?'Presente '+t:'ART '+t)+'</span>')
   }
+  // LIC / 04 como toggle: muestra LIC dd/mm-dd/mm o Presente 04
   if(inLic(p,fecha)||prioridadHoy[p.id]==='ART04'){
     const L=p.obs.licencia||{desde:null,hasta:null}
     const pres04=(prioridadHoy[p.id]==='ART04')
@@ -544,9 +609,8 @@ function attachEstadoHandlers(tb){
   tb.onclick = function(ev){
     const el = ev.target.closest('[data-act]');
     if(!el) return;
-    if(!isAdmin()) return showBanner('Solo Admin');
+    if(!isAdmin()) return notify('Solo Admin');
 
-    // Undo
     pushUndo({ type:'prioridad', prioridad: prioridadHoy });
 
     const id  = el.dataset.id;
@@ -554,19 +618,10 @@ function attachEstadoHandlers(tb){
 
     if (act === 'toggle-art') {
       const k = (el.dataset.tipo === '13' ? 'ART13' : 'ART26');
-      if (prioridadHoy[id] === k) {
-        delete prioridadHoy[id];
-      } else {
-        prioridadHoy[id] = k;
-      }
+      if (prioridadHoy[id] === k) delete prioridadHoy[id]; else prioridadHoy[id] = k;
     } else if (act === 'toggle-lic') {
-      if (prioridadHoy[id] === 'ART04') {
-        delete prioridadHoy[id];
-      } else {
-        prioridadHoy[id] = 'ART04';
-      }
+      if (prioridadHoy[id] === 'ART04') delete prioridadHoy[id]; else prioridadHoy[id] = 'ART04';
     }
-
     renderHoy();
   };
 }
@@ -585,15 +640,15 @@ function getPlan(){
   pART.forEach(p=>pushP(p,true)); p04.forEach(p=>pushP(p,true)); resto.forEach(p=>pushP(p,false))
   const asignados=numerados.slice(0,falt)
   const idxUlt=falt-1
-  const pasivos=(idxUlt>=0)?numerados.slice(idxUlt+1,idxUlt+3):numerados.slice(0,2)
+  const pasivos=(idxUlt>=0)?numerados.slice(idxUlt+1,idxUlt+2):numerados.slice(0,2)
   return {mostrados,asignados,pasivos}
 }
 
 function renderHoy(){
   setTitulo()
   const fecha=fechaEl.value
-  // activar 04 el dia siguiente de fin de licencia (solo si corresponde)
-  db.personas.forEach(p=>{ if(p&&p.obs&&p.obs.licencia&&isDayAfter(p.obs.licencia.hasta,fecha)){ if(!prioridadHoy[p.id])prioridadHoy[p.id]='ART04' } })
+  // activar 04 el d赤a siguiente del fin de licencia
+  db.personas.forEach(p=>{ if(p&&p.obs&&p.obs.licencia&&isDayAfter(p.obs.licencia.hasta,fecha)){ if(!prioridadHoy[p.id])prioridadHoy[p.id]='ART04' }})
   const prev={}
   $all('#tablaDia tbody tr[data-id]').forEach(r=>{
     const id=r.dataset.id; const sel=r.querySelector('select'); const inp=r.querySelector('input[type="text"]')
@@ -608,7 +663,7 @@ function renderHoy(){
     const num=document.createElement('td'); num.textContent=saltar?'-':(++n)
     const estado=document.createElement('td'); estado.innerHTML=estadoPills(p,fecha)||'<span class="muted">-</span>'
     const pabSel=document.createElement('select')
-    ;['','Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Porton'].forEach(x=>{const o=document.createElement('option');o.textContent=x;pabSel.appendChild(o)})
+    ;['','Vigilancia','Pab 1','Pab 3S','Pab 3N','Pab 5S','Pab 5N','Pab 7','Pab 9','Pab 11','Pab Aisl','Cruz','Port車n'].forEach(x=>{const o=document.createElement('option');o.textContent=x;pabSel.appendChild(o)})
     if(prev[p.id]&&prev[p.id].pab)pabSel.value=prev[p.id].pab
     if(saltar||!isAdmin()){pabSel.disabled=true}
     const obs=document.createElement('input'); obs.type='text'; obs.placeholder='(ej. cubre Ibarra)'; if(prev[p.id]&&prev[p.id].obs)obs.value=prev[p.id].obs; if(!isAdmin()){obs.disabled=true}
@@ -649,16 +704,19 @@ $qs(null,'#btnCopiarListado').onclick=function(){
     if(saltar) lines.push('- '+p.nombre+' '+tags.join(' '))
     else lines.push((++n)+') '+p.nombre+' '+tags.join(' '))
   })
-  navigator.clipboard?.writeText(lines.join('\n')).then(()=>showBanner('Copiado')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()})
+  const btn=this, old=btn.textContent;
+  const done=()=>{ btn.textContent='Copiado ?'; btn.disabled=true; setTimeout(()=>{btn.textContent=old; btn.disabled=false;},1200); };
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lines.join('\n')).then(done).catch(()=>notify('No pude copiar'));
+  else done();
 }
 
 /* Extra modal */
 const mExtra=$qs(null,'#modalExtra')
-$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return showBanner('Solo Admin');mExtra.style.display='flex'}
+$qs(null,'#btnAgregarExtra').onclick=()=>{if(!isAdmin())return notify('Solo Admin'); setHostHeader('#hostHeader1'); mExtra.style.display='flex'}
 $qs(null,'#extraCancel').onclick=()=>mExtra.style.display='none'
 $qs(null,'#extraOk').onclick=function(){
   if(!isAdmin())return
-  const nombre=($qs(null,'#extraNombre').value||'').trim()||'Extra'
+  const nombre=($qs(null,'#extraNombre').value||'Extra').trim()
   const jer=$qs(null,'#extraJerarquia').value||'- vacio -'
   const pab=$qs(null,'#extraPab').value||''
   const obs=$qs(null,'#extraObs').value||''
@@ -671,11 +729,12 @@ $qs(null,'#extraOk').onclick=function(){
 /* Modal Acciones */
 const mAcc=$qs(null,'#modalAcc'); let accId=null
 function openAcc(id){
-  if(!isAdmin())return showBanner('Solo Admin')
+  if(!isAdmin())return notify('Solo Admin')
   accId=id; const p=getById(id); if(!p)return
   $qs(null,'#accNombre').textContent=p.nombre
   $qs(null,'#accLicD').value=(p.obs.licencia&&p.obs.licencia.desde)||''
   $qs(null,'#accLicH').value=(p.obs.licencia&&p.obs.licencia.hasta)||''
+  setHostHeader('#hostHeader2');
   mAcc.style.display='flex'
 }
 window.openAcc=openAcc
@@ -683,15 +742,15 @@ $qs(null,'#accClose').onclick=()=>{mAcc.style.display='none';accId=null}
 $qs(null,'#accArt13').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='13'; save(); renderHoy() }
 $qs(null,'#accArt26').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art='26'; save(); renderHoy() }
 $qs(null,'#accArtClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.art=null; save(); renderHoy() }
-$qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); if(prioridadHoy[accId]==='ART04'){delete prioridadHoy[accId]} else {prioridadHoy[accId]='ART04'}; renderHoy() }
-$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return showBanner('Completar fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
+$qs(null,'#accPres04').onclick=function(){ if(!isAdmin()||!accId)return; pushUndo({type:'prioridad',prioridad:prioridadHoy}); prioridadHoy[accId]=(prioridadHoy[accId]==='ART04')?undefined:'ART04'; renderHoy() }
+$qs(null,'#accLicSave').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); const d=$qs(null,'#accLicD').value,h=$qs(null,'#accLicH').value; if(!d||!h)return notify('Complet芍 fechas'); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:d,hasta:h}; save(); renderHoy() }
 $qs(null,'#accLicClear').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.licencia={desde:null,hasta:null}; save(); renderHoy() }
 $qs(null,'#accAut').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.obs.autorizado=!p.obs.autorizado; save(); renderHoy() }
 $qs(null,'#accSalt').onclick=function(){ if(!isAdmin()||!accId)return; const p=getById(accId); pushUndo({type:'general',personas:db.personas}); p.salteado=!p.salteado; save(); renderHoy() }
 
 /* Confirmar */
-$qs(null,'#btnConfirmar').onclick=function(){
-  if(!isAdmin())return showBanner('Solo Admin')
+$qs(null,'#btnConfirmar').onclick=async function(){
+  if(!isAdmin())return notify('Solo Admin')
   const plan=getPlan()
   const idsAsig={}; plan.asignados.forEach(p=>idsAsig[p.id]=true)
   const rows=$all('#tablaDia tbody tr[data-id]')
@@ -705,7 +764,8 @@ $qs(null,'#btnConfirmar').onclick=function(){
   const pasivos=plan.pasivos
   const fecha=fechaEl.value
   const falt=Math.max(0,parseInt(faltEl.value||'0',10))
-  const glist=generalList(); if(!glist.length){showBanner('No hay personal');return}
+  const glist=generalList(); if(!glist.length){await notify('No hay personal');return}
+  if(!(await ask('Confirmar guardia '+fmtDM(fecha)+'?')))return;
   if(db.generalHead>=glist.length)db.generalHead=0
   pushUndo({type:'afterConfirm',personas:db.personas,generalHead:db.generalHead})
 
@@ -729,7 +789,7 @@ $qs(null,'#btnConfirmar').onclick=function(){
   const tail=Date.now()+100000; let k=0; db.personas.forEach(p=>{if(p.salteado)p.rorder=tail+(++k)})
   db.personas.forEach(p=>{p.obs.autorizado=false; p.salteado=false})
 
-  // layout (para copiar despues)
+  // layout para historial
   let c=0; const layout=[]
   plan.mostrados.forEach(item=>{
     const p=item.p, saltar=item.saltar; const prio=prioridadHoy[p.id]; const per=getById(p.id)||{}
@@ -746,16 +806,16 @@ $qs(null,'#btnConfirmar').onclick=function(){
     }else if(saltar){ layout.push({id:p.id,nombre:p.nombre,counted:false,tags:tags}) }
   })
   db.historial.push({fecha:fmtDM(fecha),recargos:recargos,pasivos:pasivos.map(x=>({id:x.id,nombre:x.nombre})),llamados:[],layout:layout})
-  save(); prioridadHoy={}; renderHistorial(); renderHoy(); showBanner('Guardia guardada')
+  save(); prioridadHoy={}; renderHistorial(); renderHoy();
 }
 
 /* Deshacer */
 document.addEventListener('keydown',e=>{if(e.ctrlKey&&e.key.toLowerCase()==='z')$qs(null,'#btnDeshacer').click()})
 $qs(null,'#btnDeshacer').onclick=function(){
-  const s=popUndo(); if(!s){showBanner('Nada para deshacer');return}
+  const s=popUndo(); if(!s){notify('Nada para deshacer');return}
   if(s.type==='prioridad'){prioridadHoy=s.prioridad||{}; renderHoy(); return}
   if(s.type==='general'){db.personas=JSON.parse(JSON.stringify(s.personas)); save(); renderGeneral(); renderHoy(); return}
-  if(s.type==='afterConfirm'){db.personas=JSON.parse(JSON.stringify(s.personas)); db.generalHead=s.generalHead; save(); renderHoy(); showBanner('Se revirtio el listado (la confirmacion queda en historial)'); return}
+  if(s.type==='afterConfirm'){db.personas=JSON.parse(JSON.stringify(s.personas)); db.generalHead=s.generalHead; save(); renderHoy(); notify('Se revirti車 el listado (la confirmaci車n qued車 en historial)'); return}
 }
 
 /* Copiar resultado recargos+pasivos */
@@ -788,7 +848,10 @@ $qs(null,'#btnCopiarResultado').onclick=function(){
     const tr=$qs(null,'#tablaDia tbody tr[data-id="'+p.id+'"]'); const inp=tr?tr.querySelector('input[type="text"]'):null; const ob=inp?inp.value.trim():''
     lines.push((i+1)+') '+p.nombre+(ob?(' ('+ob+')'):''))
   })
-  navigator.clipboard?.writeText(lines.join('\n')).then(()=>showBanner('Copiado')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()})
+  const btn=this, old=btn.textContent;
+  const done=()=>{ btn.textContent='Copiado ?'; btn.disabled=true; setTimeout(()=>{btn.textContent=old; btn.disabled=false;},1200); };
+  if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lines.join('\n')).then(done).catch(()=>notify('No pude copiar'));
+  else done();
 }
 
 /* Historial */
@@ -802,74 +865,150 @@ function renderHistorial(){
     const h=db.historial[idx]; const rec=(h.layout||[]).filter(x=>x.counted).length; const extra=(h.layout||[]).filter(x=>x.extra===true).length; const llam=(h.llamados||[]).length
     const tr=document.createElement('tr'); const vid='rec_det_'+idx
     tr.innerHTML="<td><button class='btn' data-toggle='"+vid+"'>Ver</button></td>"
-      +"<td>"+h.fecha+" - Recargos: "+rec+" - Extras: "+extra+" - Llamados: "+llam+"</td>"
+      +"<td>"+h.fecha+" 〞 Recargos: "+rec+" 〞 Extras: "+extra+" 〞 Llamados: "+llam+"</td>"
       +"<td><button class='btn danger only-super' data-del='"+idx+"'>Borrar</button> <button class='btn' data-copy='"+idx+"'>Copiar</button></td>"
     tb.appendChild(tr)
     const det=document.createElement('tr'); det.id=vid; det.style.display='none'
     const htmlRec=(h.layout||[]).map(x=>{
-      if(x.counted){const pab=x.pabellon?(' - Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):''; const obs=x.obsRecargo?(' - Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
+      if(x.counted){const pab=x.pabellon?(' 〞 Pab: '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+        const obs=x.obsRecargo?(' 〞 Obs: '+x.obsRecargo):''; return '<li>'+x.n+') '+x.nombre+tags+pab+obs+'</li>'}
       else{return '<li>- '+x.nombre+'</li>'}
     }).join('')
     const htmlPas=(h.pasivos||[]).map((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre);const chk=(h.llamados||[]).indexOf(x.id)>=0?'checked':'';const dis=(idx===db.historial.length-1&&isAdmin())?'':'disabled';return '<li><label><input type="checkbox" data-h="'+idx+'" data-id="'+x.id+'" '+dis+' '+chk+'> '+(i+1)+') '+nombre+'</label></li>'}).join('')||'<li>-</li>'
     det.innerHTML="<td></td><td colspan='2'><div class='row' style='gap:18px'><div><b>Recargos</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlRec+"</ul></div><div><b>Pasivos (Fue llamado)</b><ul style='padding-left:18px;margin:6px 0 0'>"+htmlPas+"</ul></div></div></td>"
     tb.appendChild(det)
   }
-  tb.onclick=function(e){
-    const t=e.target
-    if(t.dataset.toggle){const row=$qs(null,'#'+t.dataset.toggle); if(row)row.style.display=(row.style.display==='none')?'table-row':'none'}
-    if(t.dataset.del){ if(!isSuper())return showBanner('Solo Superadmin'); const i=parseInt(t.dataset.del,10); ask('Borrar registro?').then(ok=>{if(!ok)return; db.historial.splice(i,1); save(); renderHistorial()}) }
+
+  // Click handlers (ver / borrar / copiar)
+  tb.onclick = function(e){
+    const t = e.target.closest('button');
+    if(!t) return;
+
+    if(t.dataset.toggle){
+      const row = $qs(null, '#'+t.dataset.toggle);
+      if(row) row.style.display = (row.style.display==='none') ? 'table-row' : 'none';
+      return;
+    }
+
+    if(t.dataset.del){
+      if(!isSuper()) return notify('Solo Superadmin');
+      const i = parseInt(t.dataset.del,10);
+      ask('?Borrar registro?').then(ok=>{
+        if(!ok) return;
+        db.historial.splice(i,1);
+        save(); renderHistorial();
+      });
+      return;
+    }
+
     if(t.dataset.copy){
-      const i=parseInt(t.dataset.copy,10); const h=db.historial[i]; const lines=['RECARGOS '+h.fecha,'']; let c=0
-      (h.layout||[]).forEach(x=>{ if(x.counted){const pab=x.pabellon?('  '+x.pabellon):''; const tags=(x.tags&&x.tags.length)?(' '+x.tags.join(' ')):''; const obs=x.obsRecargo?(' ('+x.obsRecargo+')'):''; lines.push((++c)+') '+x.nombre+tags+obs+pab)} else lines.push('- '+x.nombre) })
-      lines.push('','Pasivos',''); (h.pasivos||[]).forEach((x,i)=>{const nombre=(getById(x.id)?getById(x.id).nombre:x.nombre); lines.push((i+1)+') '+nombre) })
-      navigator.clipboard?.writeText(lines.join('\n')).then(()=>showBanner('Copiado')).catch(()=>{const w=window.open('','_blank');w.document.write('<pre>'+lines.join('\n')+'</pre>');w.document.close();w.focus()})
+      const i = parseInt(t.dataset.copy,10);
+      const h = db.historial[i];
+      const lines=['RECARGOS '+h.fecha,'']; let c=0;
+
+      (h.layout||[]).forEach(x=>{
+        if(x.counted){
+          const pab = x.pabellon?('  '+x.pabellon):'';
+          const tags = (x.tags&&x.tags.length)?(' '+x.tags.join(' ')):'';
+          const obs  = x.obsRecargo?(' ('+x.obsRecargo+')'):'';
+          lines.push((++c)+') '+x.nombre+tags+obs+pab);
+        } else {
+          lines.push('- '+x.nombre);
+        }
+      });
+
+      lines.push('','Pasivos','');
+      (h.pasivos||[]).forEach((x,idx)=>{
+        const nombre = (getById(x.id)?getById(x.id).nombre:x.nombre);
+        lines.push((idx+1)+') '+nombre);
+      });
+
+      const btn=t, old=btn.textContent;
+      const done=()=>{ btn.textContent='Copiado ?'; btn.disabled=true; setTimeout(()=>{btn.textContent=old; btn.disabled=false;},1200); };
+      if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(lines.join('\n')).then(done).catch(()=>notify('No pude copiar'));
+      else done();
     }
   }
 
-  // Cambios (no desplegable)
-  const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML=''
+  // Cambios
+  const tc=$qs(null,'#tablaCambios tbody'); tc.innerHTML='';
+  function fmtTS(ts){
+    const d=new Date(ts);
+    const dd=('0'+d.getDate()).slice(-2), mm=('0'+(d.getMonth()+1)).slice(-2);
+    const hh=('0'+d.getHours()).slice(-2), mi=('0'+d.getMinutes()).slice(-2);
+    return dd+'/'+mm+' '+hh+':'+mi;
+  }
   for(let i=db.cambios.length-1;i>=0;i--){
     const c=db.cambios[i]
-    const desc=c.tipo==='agregar'?'Se agrego: '+c.nombre
-      : c.tipo==='eliminar'?'Se elimino: '+c.nombre
-      : c.tipo==='mover'?'Se movio: '+c.nombre+' '+(c.detalle||'')
-      : c.tipo==='ordenar'?'Se ordeno: '+(c.detalle||'')
+    const desc=c.tipo==='agregar'?'Se agreg車: '+c.nombre
+      : c.tipo==='eliminar'?'Se elimin車: '+c.nombre
+      : c.tipo==='mover'?'Se movi車: '+c.nombre+' '+(c.detalle||'')
+      : c.tipo==='ordenar'?'Se orden車: '+(c.detalle||'')
       : c.tipo==='deshacer-orden'?'Se deshizo el orden'
       : (c.detalle||c.tipo)
     const tr=document.createElement('tr')
-    tr.innerHTML="<td>"+desc+"</td><td><button class='btn danger only-super' data-delc='"+i+"'>Borrar</button></td>"
+    tr.innerHTML="<td>["+fmtTS(c.t)+"] "+desc+"</td><td><button class='btn danger only-super' data-delc='"+i+"'>Borrar</button></td>"
     tc.appendChild(tr)
   }
-  tc.onclick=function(e){const t=e.target; if(t.dataset.delc){ if(!isSuper())return showBanner('Solo Superadmin'); const i=parseInt(t.dataset.delc,10); ask('Borrar item?').then(ok=>{if(!ok)return; db.cambios.splice(i,1); save(); renderHistorial()}) }}
+  tc.onclick=function(e){
+    const t=e.target.closest('button'); if(!t) return;
+    if(t.dataset.delc){
+      if(!isSuper()) return notify('Solo Superadmin');
+      const i=parseInt(t.dataset.delc,10);
+      ask('?Borrar item?').then(ok=>{
+        if(!ok) return;
+        db.cambios.splice(i,1);
+        save(); renderHistorial();
+      });
+    }
+  }
 
   applyRoleVisibility()
 }
 
 $qs(null,'#btnGuardarLlamados').onclick=function(){
-  if(!isAdmin())return showBanner('Solo Admin');
+  if(!isAdmin())return notify('Solo Admin');
   if(!db.historial.length)return;
   const idx=db.historial.length-1; const h=db.historial[idx]
   const checks=$all("input[type='checkbox'][data-h='"+idx+"']"); h.llamados=checks.filter(c=>c.checked).map(c=>c.dataset.id)
-  save(); renderHistorial(); showBanner('Llamados guardados')
+  save(); renderHistorial();
+  const btn=this, old=btn.textContent;
+  btn.textContent='Llamados guardados ?';
+  btn.disabled=true;
+  setTimeout(()=>{btn.textContent=old; btn.disabled=false;},1200);
 }
+
+/* Borrar historiales */
+$qs(null,'#btnBorrarHistRec').onclick=function(){
+  if(!isSuper()) return notify('Solo Superadmin');
+  ask('?Borrar TODO el historial de recargos?').then(ok=>{
+    if(!ok) return;
+    db.historial=[]; save(); renderHistorial();
+  });
+};
+$qs(null,'#btnBorrarHistCamb').onclick=function(){
+  if(!isSuper()) return notify('Solo Superadmin');
+  ask('?Borrar TODO el historial de cambios?').then(ok=>{
+    if(!ok) return;
+    db.cambios=[]; save(); renderHistorial();
+  });
+};
 
 /* Export / Import */
 $qs(null,'#btnExportar').onclick=function(){const blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='recargapp_db.json';a.click();URL.revokeObjectURL(url)}
-$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return showBanner('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){showBanner('Archivo invalido')}};fr.readAsText(f)};inp.click()}
+$qs(null,'#btnImportar').onclick=function(){if(!isAdmin())return notify('Solo Admin');const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{db=JSON.parse(fr.result);save();renderAll()}catch(_){notify('Archivo inv芍lido')}};fr.readAsText(f)};inp.click()}
 
 /* Render inicial */
 function renderAll(){renderGeneral();renderHoy();renderHistorial();applyRoleVisibility()}
 renderAll()
 
-/* Drawer "Mas" y notas */
+/* Drawer */
 const drawer=$qs(null,'#drawer'), fab=$qs(null,'#fabMore')
-fab.onclick=function(){drawer.style.display='block'; loadReleaseNotes()}
+fab.onclick=function(){drawer.style.display='block'; loadReleaseNotes(); $qs(null,'#drawerVersion').textContent='('+($qs(null,'#appVersion').textContent||'')+')'}
 $qs(null,'#closeDrawer').onclick=()=>drawer.style.display='none'
 $qs(null,'#drawer .back').onclick=()=>drawer.style.display='none'
 
 async function loadReleaseNotes(){
-  const vtxt=$qs(null,'#appVersion').textContent.trim()
-  $qs(null,'#drawerVersion').textContent=vtxt?('('+vtxt+')'):''
   const box=$qs(null,'#releaseNotes')
   try{
     const res=await fetch('/RecargApp/release-notes.json?t='+(+new Date()),{cache:'no-store'})
@@ -880,121 +1019,121 @@ async function loadReleaseNotes(){
     const html=notes.map(n=>{
       if(typeof n==='string') return '<li>'+n+'</li>'
       const head=(n.version?('V'+n.version+' - '):'')+(n.date||'')
-      const items=Array.isArray(n.items)?('<ul>'+n.items.map(i=>'<li>'+i+'</li>').join('')+'</ul>'):''
-      const text=(n.text||'')
-      return '<div style="margin:8px 0"><b>'+head+'</b>'+items+(text?('<div>'+text+'</div>'):'')+'</div>'
+      let body=''
+      if (Array.isArray(n.items) && n.items.length){
+        body += '<ul>'+ n.items.map(i=>'<li>'+i+'</li>').join('') + '</ul>';
+      }
+      if (n.text) body += '<div>'+n.text+'</div>';
+      if (!body) body = '<div class="muted">Sin detalles</div>';
+      return '<div style="margin:8px 0"><b>'+head+'</b>'+body+'</div>'
     }).join('')
     box.innerHTML=html
   }catch(e){ box.textContent='No pude leer /RecargApp/release-notes.json' }
 }
 
-/* ===== PWA / Version visible ===== */
-(async function wireUpdatesUI(){
-  if (!('serviceWorker' in navigator)) return;
-  const reg = await navigator.serviceWorker.register('/RecargApp/sw.js', { scope: '/RecargApp/' }).catch(()=>null);
-  if(!reg) return;
+/* ===== PWA / Version ===== */
+(function(){
+  function toggleApplyButtonByWaiting(reg){
+    const btnApply = document.getElementById('btnApplyUpdate');
+    const updMsg   = document.getElementById('updMsg');
+    if(!btnApply) return;
+    if(reg.waiting){
+      btnApply.style.display='inline-block';
+      btnApply.textContent='Actualizar ahora';
+      if(updMsg) updMsg.textContent='Actualizaci車n disponible';
+    }else{
+      btnApply.style.display='inline-block';
+      btnApply.textContent='Est芍s al d赤a';
+      if(updMsg) updMsg.textContent='';
+    }
+  }
 
-  // Version instalada (desde SW si responde, si no, desde manifest)
-  async function getInstalledSwVersion() {
-    if (!navigator.serviceWorker.controller) return null;
-    return new Promise((resolve) => {
-      const ch = new MessageChannel();
-      ch.port1.onmessage = (ev) => resolve(ev.data || null);
-      try { navigator.serviceWorker.controller.postMessage({ type: 'GET_VERSION' }, [ch.port2]); }
-      catch { resolve(null); }
+  // Registrar SW
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('/RecargApp/sw.js',{scope:'/RecargApp/'}).catch(()=>{});
+    let refreshing=false;
+    navigator.serviceWorker.addEventListener('controllerchange',()=>{ if(refreshing) return; refreshing=true; location.reload(); });
+
+    navigator.serviceWorker.getRegistration('/RecargApp/').then(reg=>{
+      if(!reg) return;
+      toggleApplyButtonByWaiting(reg);
+
+      function askUp(){
+        ask('Hay una actualizaci車n disponible. ?Instalar ahora?').then(ok=>{
+          if(ok) reg.waiting&&reg.waiting.postMessage({type:'SKIP_WAITING'});
+        });
+      }
+      if(reg.waiting) askUp();
+      reg.addEventListener('updatefound',()=>{
+        const nw=reg.installing; if(!nw) return;
+        nw.addEventListener('statechange',()=>{
+          if(nw.state==='installed' && navigator.serviceWorker.controller){
+            toggleApplyButtonByWaiting(reg);
+            askUp();
+          }
+        });
+      });
+
+      const btnCheck=$qs(null,'#btnCheckUpdate');
+      const btnApply=$qs(null,'#btnApplyUpdate');
+      if(btnCheck){
+        btnCheck.onclick=async ()=>{
+          try{
+            await reg.update();
+            const reg2=await navigator.serviceWorker.getRegistration('/RecargApp/');
+            toggleApplyButtonByWaiting(reg2||reg);
+            if(!(reg2&&reg2.waiting)) notify('Est芍s al d赤a');
+          }catch(_){ notify('No se pudo verificar'); }
+        };
+      }
+      if(btnApply){
+        btnApply.onclick=async ()=>{
+          const reg2=await navigator.serviceWorker.getRegistration('/RecargApp/');
+          if(reg2&&reg2.waiting){
+            const ok=await ask('Hay una actualizaci車n disponible. ?Aplicarla ahora?');
+            if(ok) reg2.waiting.postMessage({type:'SKIP_WAITING'});
+          }else{
+            notify('Est芍s al d赤a');
+          }
+        };
+      }
     });
   }
-  async function renderInstalledVersion() {
-    const el = document.getElementById('appVersion');
-    if (!el) return;
+
+  // Install prompt propio
+  let deferred=null; const btnI=$qs(null,'#btnInstall')
+  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'})
+  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
+
+  // Version desde manifest/SW visible en footer
+  (async function renderInstalledVersion(){
+    const el = document.getElementById('appVersion'); if(!el) return;
+    // Intentar pedirle al SW la versi車n instalada
+    async function getInstalledSwVersion(){
+      if(!('serviceWorker' in navigator)) return null;
+      if(!navigator.serviceWorker.controller) return null;
+      return new Promise((resolve)=>{
+        const ch = new MessageChannel();
+        ch.port1.onmessage = (ev)=>resolve(ev.data||null);
+        try{
+          navigator.serviceWorker.controller.postMessage({type:'GET_VERSION'}, [ch.port2]);
+        }catch(e){ resolve(null); }
+      });
+    }
     const info = await getInstalledSwVersion();
     if (info && info.cacheVersion) {
       const v = String(info.cacheVersion).replace(/^.*?-v/i, 'V');
       el.textContent = v;
-    } else {
-      try {
-        const res = await fetch('/RecargApp/manifest.json', { cache: 'no-store' });
-        const m = await res.json();
-        const v = m.version ? 'V' + m.version :
-                  (m.name && (m.name.match(/V\d+(\.\d+)*/i)?.[0] || ''));
-        el.textContent = v || '〞';
-      } catch {
-        el.textContent = '〞';
-      }
+      return;
     }
-  }
-  renderInstalledVersion();
-
-  // Mostrar "Disponible" sin instalar
-  async function checkForUpdateAndShow(reg) {
-    const availWrap = document.getElementById('appVersionAvailWrap');
-    const availEl   = document.getElementById('appVersionAvail');
-    if (!availWrap || !availEl) return;
-    try { await reg.update(); } catch (_) {}
-    const showAvail = async () => {
-      try {
-        const res = await fetch('/RecargApp/manifest.json', { cache: 'no-store' });
-        const m = await res.json();
-        const v = m.version ? 'V' + m.version :
-                  (m.name && (m.name.match(/V\d+(\.\d+)*/i)?.[0] || ''));
-        if (v) { availEl.textContent = v; availWrap.style.display = 'inline'; }
-      } catch {}
-    };
-    if (reg.waiting) { await showAvail(); return; }
-    const installing = reg.installing;
-    if (installing) {
-      installing.addEventListener('statechange', async () => {
-        if (installing.state === 'installed') await showAvail();
-      });
-    }
-  }
-
-  checkForUpdateAndShow(reg);
-  reg.addEventListener('updatefound', () => checkForUpdateAndShow(reg));
-
-  // Aplicar update solo con confirm
-  const btnApply = document.getElementById('btnApplyUpdate');
-  if (btnApply) {
-    btnApply.onclick = async () => {
-      const reg2 = await navigator.serviceWorker.getRegistration('/RecargApp/');
-      if (reg2 && reg2.waiting) {
-        const ok = await ask('Hay una actualizacion disponible. Instalar ahora?');
-        if (ok) reg2.waiting.postMessage({ type: 'SKIP_WAITING' });
-      } else {
-        showBanner('No hay una actualizacion esperando');
-      }
-    };
-  }
-
-  // Boton de buscar updates
-  const btn = document.getElementById('btnCheckUpdates');
-  if (btn) {
-    btn.onclick = async () => {
-      const msg = document.getElementById('updMsg');
-      if (msg) msg.textContent = 'Buscando...';
-      await checkForUpdateAndShow(reg);
-      const availWrap = document.getElementById('appVersionAvailWrap');
-      if (!availWrap || availWrap.style.display !== 'inline') {
-        if (msg) msg.textContent = 'Estas actualizado';
-        else showBanner('Estas actualizado');
-      } else {
-        if (msg) msg.textContent = 'Actualizacion disponible';
-      }
-    };
-  }
-
-  // Reload al activar
-  let refreshing=false;
-  navigator.serviceWorker.addEventListener('controllerchange', () => {
-    if (refreshing) return;
-    refreshing = true;
-    window.location.reload();
-  });
-
-  // Install prompt
-  let deferred=null; const btnI=$qs(null,'#btnInstall');
-  window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferred=e; if(btnI)btnI.style.display='inline-block'});
-  if(btnI){btnI.onclick=async()=>{if(!deferred)return; await deferred.prompt(); await deferred.userChoice; deferred=null; btnI.style.display='none'}}
+    // fallback
+    try{
+      const res=await fetch('/RecargApp/manifest.json?t='+(+new Date()),{cache:'no-store'})
+      const m=await res.json()
+      const v=m.version?('V'+m.version):((m.name&&(m.name.match(/V\d+(\.\d+)*/i)||[])[0])||'')
+      el.textContent=v||'V?'
+    }catch(_){ el.textContent='V?' }
+  })();
 })();
 </script>
 </body>
