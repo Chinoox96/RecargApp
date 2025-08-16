@@ -534,20 +534,38 @@ function estadoPills(p,fecha){
   return pills.join(' ')
 }
 function attachEstadoHandlers(tb){
-  tb.onclick=function(ev){
-    const el=ev.target.closest('[data-act]'); if(!el)return
-    if(!isAdmin())return showBanner('Solo Admin');
-    pushUndo({type:'prioridad',prioridad:prioridadHoy})
-    const id=el.dataset.id, act=el.dataset.act
-    if(act==='toggle-art'){
-      const k=(el.dataset.tipo==='13'?'ART13':'ART26')
-      prioridadHoy[id]=(prioridadHoy[id]===k)?undefined:k
-    }else if(act==='toggle-lic'){
-      prioridadHoy[id]=(prioridadHoy[id]==='ART04')?undefined:'ART04'
+  tb.onclick = function(ev){
+    const el = ev.target.closest('[data-act]');
+    if(!el) return;
+    if(!isAdmin()) return showBanner('Solo Admin');
+
+    // Para Undo
+    pushUndo({ type:'prioridad', prioridad: prioridadHoy });
+
+    const id  = el.dataset.id;
+    const act = el.dataset.act;
+
+    if (act === 'toggle-art') {
+      const k = (el.dataset.tipo === '13' ? 'ART13' : 'ART26');
+      // >>> FIX: cuando se apaga, borrar la clave <<<
+      if (prioridadHoy[id] === k) {
+        delete prioridadHoy[id];
+      } else {
+        prioridadHoy[id] = k;
+      }
+    } else if (act === 'toggle-lic') {
+      // >>> FIX: idem para 04 <<<
+      if (prioridadHoy[id] === 'ART04') {
+        delete prioridadHoy[id];
+      } else {
+        prioridadHoy[id] = 'ART04';
+      }
     }
-    renderHoy()
-  }
+
+    renderHoy();
+  };
 }
+
 
 function getPlan(){
   const falt=Math.max(0,parseInt(faltEl.value||'0',10))
